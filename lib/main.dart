@@ -17,10 +17,14 @@ class MyApp extends StatelessWidget {
       title: 'Fusic',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: MyColors.violet),
+        colorScheme: ColorScheme.light(background: MyColors.white(context)),
         fontFamily: 'Inter',
-        useMaterial3: true,
       ),
+      darkTheme: ThemeData(
+        colorScheme: ColorScheme.dark(background: MyColors.black(context)),
+        fontFamily: 'Inter',
+      ),
+      themeMode: ThemeMode.system,
     );
   }
 }
