@@ -44,3 +44,4 @@ app.*.map.json
 
 .design/
 .env.dart
+/assets/music/
