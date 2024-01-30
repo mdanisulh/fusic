@@ -1,49 +1,36 @@
-import 'dart:io';
-
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:fusic/core/providers.dart';
+import 'package:fusic/features/home/controller/file_list_controller.dart';
 import 'package:fusic/features/home/widgets/custom_search_delegate.dart';
+import 'package:fusic/models/file_metadata.dart';
 import 'package:fusic/theme/theme.dart';
 import 'package:just_audio/just_audio.dart';
-import 'package:permission_handler/permission_handler.dart';
 
-final AudioPlayer audioPlayer = AudioPlayer();
-
-class HomeView extends StatelessWidget {
+class HomeView extends ConsumerWidget {
   const HomeView({super.key});
 
-  // Future<void> pickDirectoryAndListFiles() async {
-  //   PermissionStatus status = await Permission.audio.request();
-  //   print(status);
-  //   String? directoryPath = await FilePicker.platform.getDirectoryPath();
-
-  //   if (directoryPath == null) {
-  //     print('No directory selected');
-  //     return;
-  //   }
-
-  //   final dir = Directory(directoryPath);
-  //   print(directoryPath);
-  //   List<FileSystemEntity> files = dir.listSync(recursive: true, followLinks: false);
-  //   print(files.length);
-  //   for (FileSystemEntity file in files) {
-  //     print(file.path);
-  //   }
-  // }
-
-  Future<void> pickAndPlayAudioFile() async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles(type: FileType.audio);
-
-    if (result != null) {
-      PlatformFile file = result.files.first;
-      await audioPlayer.setFilePath(file.path!);
-      audioPlayer.play();
+  Future<void> selectDirectory(WidgetRef ref) async {
+    String? directoryPath = await FilePicker.platform.getDirectoryPath();
+    if (directoryPath != null) {
+      ref.read(fileListProvider.notifier).loadFiles(directoryPath);
     }
   }
 
+  void playSong(AudioPlayer audioPlayer, String filePath, WidgetRef ref) async {
+    await audioPlayer.setFilePath(filePath);
+    if (audioPlayer.playing) {
+      await audioPlayer.stop();
+    }
+    audioPlayer.play();
+  }
+
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final audioPlayer = ref.watch(audioProvider);
+    List<FileMetadata> files = ref.watch(fileListProvider);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: MyColors.white(context),
@@ -87,15 +74,30 @@ class HomeView extends StatelessWidget {
                   child: Icon(Icons.search, size: 25, color: MyColors.black(context)),
                 ),
               ),
-              onPressed: () {
+              onPressed: () async {
                 showSearch(context: context, delegate: CustomSearchDelegate());
               },
             ),
           ),
         ],
       ),
-      body: const Center(
-        child: Text('Home'),
+      body: ListView.builder(
+        itemCount: files.length,
+        itemBuilder: (context, index) {
+          return ListTile(
+            leading: files[index].artwork != null
+                ? Image.memory(
+                    files[index].artwork!,
+                    width: 50,
+                    height: 50,
+                    fit: BoxFit.cover,
+                  )
+                : const Icon(Icons.music_note),
+            onTap: () => playSong(audioPlayer, files[index].filePath, ref),
+            title: Text(files[index].title),
+            subtitle: Text(files[index].artist.join(', ')),
+          );
+        },
       ),
     );
   }
