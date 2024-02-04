@@ -1,31 +1,30 @@
 import 'dart:io';
 import 'dart:typed_data';
+
 import 'package:audiotagger/models/audiofile.dart';
 import 'package:audiotagger/models/tag.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:fusic/core/providers.dart';
 import 'package:fusic/models/file_metadata.dart';
 import 'package:hive/hive.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-final fileListProvider = StateNotifierProvider<FileListController, List<FileMetadata>>((ref) => FileListController(ref));
+part 'file_list_notifier.g.dart';
 
-class FileListController extends StateNotifier<List<FileMetadata>> {
-  final StateNotifierProviderRef ref;
-  FileListController(this.ref) : super([]) {
-    loadState();
-  }
-
-  Future<void> loadState() async {
+@riverpod
+class FileListNotifier extends _$FileListNotifier {
+  late final _audiotagger = ref.read(audiotaggerProvider);
+  @override
+  List<FileMetadata> build() {
     Box<FileMetadata> box = Hive.box<FileMetadata>('files');
-    List<FileMetadata> files = box.values.toList();
-    state = files;
+    return box.values.toList();
   }
 
   Future<FileMetadata?> loadMetadata(String path) async {
     try {
-      final AudioFile? audioFile = await ref.read(audiotaggerProvider).readAudioFile(path: path);
-      final Tag? tag = await ref.read(audiotaggerProvider).readTags(path: path);
-      final Uint8List? artwork = await ref.read(audiotaggerProvider).readArtwork(path: path);
+      final AudioFile? audioFile = await _audiotagger.readAudioFile(path: path);
+      final Tag? tag = await _audiotagger.readTags(path: path);
+      final Uint8List? artwork = await _audiotagger.readArtwork(path: path);
       if (tag == null || audioFile == null) throw Exception('Failed to load metadata');
       final int duration = audioFile.length ?? 0;
       return FileMetadata(
@@ -67,5 +66,12 @@ class FileListController extends StateNotifier<List<FileMetadata>> {
     }
     state.sort((a, b) => a.title.compareTo(b.title));
     saveState();
+  }
+
+  Future<void> selectDirectory() async {
+    String? directoryPath = await FilePicker.platform.getDirectoryPath();
+    if (directoryPath != null) {
+      ref.read(fileListNotifierProvider.notifier).loadFiles(directoryPath);
+    }
   }
 }

@@ -1,36 +1,20 @@
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:fusic/core/providers.dart';
-import 'package:fusic/features/home/controller/file_list_controller.dart';
+import 'package:fusic/features/home/controller/file_list_notifier.dart';
+import 'package:fusic/features/home/controller/queue_notifier.dart';
+import 'package:fusic/features/home/widgets/bottom_card.dart';
 import 'package:fusic/features/home/widgets/custom_search_delegate.dart';
 import 'package:fusic/models/file_metadata.dart';
 import 'package:fusic/theme/theme.dart';
-import 'package:just_audio/just_audio.dart';
 
 class HomeView extends ConsumerWidget {
   const HomeView({super.key});
 
-  Future<void> selectDirectory(WidgetRef ref) async {
-    String? directoryPath = await FilePicker.platform.getDirectoryPath();
-    if (directoryPath != null) {
-      ref.read(fileListProvider.notifier).loadFiles(directoryPath);
-    }
-  }
-
-  void playSong(AudioPlayer audioPlayer, String filePath, WidgetRef ref) async {
-    await audioPlayer.setFilePath(filePath);
-    if (audioPlayer.playing) {
-      await audioPlayer.stop();
-    }
-    audioPlayer.play();
-  }
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final audioPlayer = ref.watch(audioProvider);
-    List<FileMetadata> files = ref.watch(fileListProvider);
+    final List<FileMetadata> files = ref.watch(fileListNotifierProvider);
+    final currentSongIndex = ref.watch(currentSongIndexProvider);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: MyColors.white(context),
@@ -74,8 +58,8 @@ class HomeView extends ConsumerWidget {
                   child: Icon(Icons.search, size: 25, color: MyColors.black(context)),
                 ),
               ),
-              onPressed: () async {
-                showSearch(context: context, delegate: CustomSearchDelegate());
+              onPressed: () {
+                showSearch(context: context, delegate: CustomSearchDelegate(files, ref));
               },
             ),
           ),
@@ -85,6 +69,9 @@ class HomeView extends ConsumerWidget {
         itemCount: files.length,
         itemBuilder: (context, index) {
           return ListTile(
+            selectedColor: MyColors.black(context),
+            selectedTileColor: MyColors.lightGrey(context),
+            selected: currentSongIndex == index,
             leading: files[index].artwork != null
                 ? Image.memory(
                     files[index].artwork!,
@@ -93,12 +80,14 @@ class HomeView extends ConsumerWidget {
                     fit: BoxFit.cover,
                   )
                 : const Icon(Icons.music_note),
-            onTap: () => playSong(audioPlayer, files[index].filePath, ref),
+            onTap: () => ref.read(queueNotifierProvider.notifier).playSong(index),
             title: Text(files[index].title),
             subtitle: Text(files[index].artist.join(', ')),
+            trailing: Text('${files[index].duration ~/ 60}:${files[index].duration % 60}'),
           );
         },
       ),
+      bottomNavigationBar: BottomCard(files: files),
     );
   }
 }
