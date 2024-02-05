@@ -1,6 +1,8 @@
+import 'package:audio_service/audio_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fusic/core/core.dart';
+import 'package:fusic/features/home/controller/audio_handler.dart';
 import 'package:fusic/models/file_metadata.dart';
 import 'package:fusic/theme/theme.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -14,21 +16,29 @@ void main() async {
   runApp(const ProviderScope(child: MyApp()));
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends ConsumerWidget {
   const MyApp({super.key});
 
-  void getPermission() async {
+  void init(WidgetRef ref) async {
     final status = await Permission.audio.request();
     if (status.isPermanentlyDenied) {
       openAppSettings();
     } else if (status.isDenied) {
       await Permission.audio.request();
     }
+    audioHandler = await AudioService.init(
+      builder: () => AudioPlayerHandler(ref),
+      config: const AudioServiceConfig(
+        androidNotificationChannelId: 'co.anicoder.fusic.audio',
+        androidNotificationChannelName: 'Fusic',
+        androidNotificationOngoing: true,
+      ),
+    );
   }
 
   @override
-  Widget build(BuildContext context) {
-    getPermission();
+  Widget build(BuildContext context, WidgetRef ref) {
+    init(ref);
     return MaterialApp.router(
       routerConfig: router,
       title: 'Fusic',

@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:fusic/core/providers.dart';
+import 'package:fusic/features/home/controller/audio_handler.dart';
 import 'package:fusic/features/home/controller/file_list_notifier.dart';
 import 'package:fusic/models/file_metadata.dart';
 import 'package:just_audio/just_audio.dart';
@@ -47,14 +48,14 @@ class QueueNotifier extends _$QueueNotifier {
     if (state.isEmpty) {
       createQueue(index);
     }
-    await audioPlayer.setFilePath(_files[index].filePath);
+    await audioHandler.setSong(_files[index]);
     if (audioPlayer.playing) {
-      await audioPlayer.stop();
+      await audioHandler.stop();
       _playerStateSubscription?.cancel();
     }
     _currentIndex = state.indexOf(index);
     ref.read(currentSongIndexProvider.notifier).set(index);
-    audioPlayer.play();
+    audioHandler.play();
     _playerStateSubscription = audioPlayer.playerStateStream.listen((event) {
       if (event.processingState == ProcessingState.completed) {
         playNext();
@@ -78,14 +79,15 @@ class QueueNotifier extends _$QueueNotifier {
 
   void playPause() {
     if (audioPlayer.playing) {
-      audioPlayer.pause();
+      audioHandler.pause();
     } else {
-      audioPlayer.play();
+      audioHandler.play();
     }
   }
 
   @override
   List<int> build() {
+    audioPlayer.setVolume(0.1);
     return [];
   }
 }
