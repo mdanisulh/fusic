@@ -6,12 +6,12 @@ part of 'queue_notifier.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$currentSongIndexHash() => r'381a5215ef0adbbdca8eaddc2f221060ef31845f';
+String _$currentSongIndexHash() => r'111ab4567971795ae462866fb36c3b94f52d22d9';
 
 /// See also [CurrentSongIndex].
 @ProviderFor(CurrentSongIndex)
 final currentSongIndexProvider =
-    AutoDisposeNotifierProvider<CurrentSongIndex, int>.internal(
+    AutoDisposeNotifierProvider<CurrentSongIndex, int?>.internal(
   CurrentSongIndex.new,
   name: r'currentSongIndexProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -21,8 +21,8 @@ final currentSongIndexProvider =
   allTransitiveDependencies: null,
 );
 
-typedef _$CurrentSongIndex = AutoDisposeNotifier<int>;
-String _$queueNotifierHash() => r'97bc511ba251921d17a2313bf7b38547de847f7d';
+typedef _$CurrentSongIndex = AutoDisposeNotifier<int?>;
+String _$queueNotifierHash() => r'ac343231e77b88a50c977877fc1c997ad192b03a';
 
 /// See also [QueueNotifier].
 @ProviderFor(QueueNotifier)

@@ -11,9 +11,8 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'file_list_notifier.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 class FileListNotifier extends _$FileListNotifier {
-  late final _audiotagger = ref.read(audiotaggerProvider);
   @override
   List<FileMetadata> build() {
     Box<FileMetadata> box = Hive.box<FileMetadata>('files');
@@ -22,9 +21,9 @@ class FileListNotifier extends _$FileListNotifier {
 
   Future<FileMetadata?> loadMetadata(String path) async {
     try {
-      final AudioFile? audioFile = await _audiotagger.readAudioFile(path: path);
-      final Tag? tag = await _audiotagger.readTags(path: path);
-      final Uint8List? artwork = await _audiotagger.readArtwork(path: path);
+      final AudioFile? audioFile = await audiotagger.readAudioFile(path: path);
+      final Tag? tag = await audiotagger.readTags(path: path);
+      final Uint8List? artwork = await audiotagger.readArtwork(path: path);
       if (tag == null || audioFile == null) throw Exception('Failed to load metadata');
       final int duration = audioFile.length ?? 0;
       return FileMetadata(

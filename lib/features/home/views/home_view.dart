@@ -65,28 +65,35 @@ class HomeView extends ConsumerWidget {
           ),
         ],
       ),
-      body: ListView.builder(
-        itemCount: files.length,
-        itemBuilder: (context, index) {
-          return ListTile(
-            selectedColor: MyColors.black(context),
-            selectedTileColor: MyColors.lightGrey(context),
-            selected: currentSongIndex == index,
-            leading: files[index].artwork != null
-                ? Image.memory(
-                    files[index].artwork!,
-                    width: 50,
-                    height: 50,
-                    fit: BoxFit.cover,
-                  )
-                : const Icon(Icons.music_note),
-            onTap: () => ref.read(queueNotifierProvider.notifier).playSong(index),
-            title: Text(files[index].title),
-            subtitle: Text(files[index].artist.join(', ')),
-            trailing: Text('${files[index].duration ~/ 60}:${files[index].duration % 60}'),
-          );
-        },
-      ),
+      body: files.isEmpty
+          ? Center(
+              child:IconButton(
+                icon: const Icon(Icons.folder),
+                onPressed: () async => await ref.read(fileListNotifierProvider.notifier).selectDirectory(),
+              ),
+            )
+          : ListView.builder(
+              itemCount: files.length,
+              itemBuilder: (context, index) {
+                return ListTile(
+                  selectedColor: MyColors.black(context),
+                  selectedTileColor: MyColors.lightGrey(context),
+                  selected: currentSongIndex == index,
+                  leading: files[index].artwork != null
+                      ? Image.memory(
+                          files[index].artwork!,
+                          width: 50,
+                          height: 50,
+                          fit: BoxFit.cover,
+                        )
+                      : const Icon(Icons.music_note),
+                  onTap: () => ref.read(queueNotifierProvider.notifier).playSong(index),
+                  title: Text(files[index].title),
+                  subtitle: Text(files[index].artist.join(', ')),
+                  trailing: Text('${files[index].duration ~/ 60}:${files[index].duration % 60}'),
+                );
+              },
+            ),
       bottomNavigationBar: BottomCard(files: files),
     );
   }

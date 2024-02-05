@@ -13,15 +13,14 @@ class CurrentSongIndex extends _$CurrentSongIndex {
   void set(int value) => state = value;
 
   @override
-  int build() {
-    return 0;
+  int? build() {
+    return null;
   }
 }
 
 @Riverpod(keepAlive: true)
 class QueueNotifier extends _$QueueNotifier {
-  late final List<FileMetadata> _files = ref.read(fileListNotifierProvider);
-  late final AudioPlayer audioPlayer = ref.read(audioPlayerProvider);
+  late final List<FileMetadata> _files = ref.watch(fileListNotifierProvider);
   late int _currentIndex;
   StreamSubscription<PlayerState>? _playerStateSubscription;
 

@@ -9,7 +9,7 @@ class QueueView extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final files = ref.read(fileListNotifierProvider);
     final queue = ref.watch(queueNotifierProvider);
-    final currentSongIndex = queue.indexOf(ref.read(currentSongIndexProvider));
+    final currentSongIndex = queue.indexOf(ref.read(currentSongIndexProvider)!);
     return Scaffold(
       body: ListView.builder(
         itemCount: files.length - currentSongIndex,
