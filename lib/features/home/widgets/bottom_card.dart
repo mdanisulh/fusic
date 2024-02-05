@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fusic/core/providers.dart';
 import 'package:fusic/features/home/controller/file_list_notifier.dart';
 import 'package:fusic/features/home/controller/queue_notifier.dart';
+import 'package:fusic/features/home/widgets/progress_bar.dart';
 import 'package:fusic/models/file_metadata.dart';
 import 'package:fusic/theme/theme.dart';
 import 'package:go_router/go_router.dart';
@@ -21,7 +22,7 @@ class _BottomCardState extends ConsumerState<BottomCard> {
     return currentSongIndex == null
         ? const SizedBox()
         : Container(
-            color: MyColors.lightGrey(context),
+            color: MyColors.grey(context),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.end,
@@ -38,32 +39,49 @@ class _BottomCardState extends ConsumerState<BottomCard> {
                   onTap: () {
                     context.pushNamed('queue');
                   },
-                  title: Text(widget.files[currentSongIndex].title),
-                  trailing: Text('${widget.files[currentSongIndex].duration ~/ 60}:${widget.files[currentSongIndex].duration % 60}'),
-                  subtitle: Text(widget.files[currentSongIndex].artist.join(', ')),
+                  title: Text(
+                    widget.files[currentSongIndex].title,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(color: MyColors.white(context)),
+                  ),
+                  trailing: Text(
+                    '${widget.files[currentSongIndex].duration ~/ 60}:${widget.files[currentSongIndex].duration % 60}',
+                    style: TextStyle(color: MyColors.white(context)),
+                  ),
+                  subtitle: Text(
+                    widget.files[currentSongIndex].artist.join(', '),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(color: MyColors.white(context)),
+                  ),
+                ),
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 15),
+                  child: MyProgressBar(),
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     IconButton(
-                      icon: const Icon(Icons.folder),
+                      icon: Icon(Icons.folder, color: MyColors.white(context)),
                       onPressed: () async => await ref.read(fileListNotifierProvider.notifier).selectDirectory(),
                     ),
                     IconButton(
-                      icon: const Icon(Icons.shuffle),
-                      onPressed: () => ref.read(queueNotifierProvider.notifier).createQueue(currentSongIndex),
-                    ),
-                    IconButton(
-                      icon: const Icon(Icons.skip_previous),
+                      icon: Icon(Icons.skip_previous, color: MyColors.white(context)),
                       onPressed: ref.read(queueNotifierProvider.notifier).playPrevious,
                     ),
                     IconButton(
-                      icon: audioPlayer.playing ? const Icon(Icons.pause) : const Icon(Icons.play_arrow),
+                      icon: audioPlayer.playing ? Icon(Icons.pause, color: MyColors.white(context)) : Icon(Icons.play_arrow, color: MyColors.white(context)),
                       onPressed: () => setState(() => ref.read(queueNotifierProvider.notifier).playPause()),
                     ),
                     IconButton(
-                      icon: const Icon(Icons.skip_next),
+                      icon: Icon(Icons.skip_next, color: MyColors.white(context)),
                       onPressed: ref.read(queueNotifierProvider.notifier).playNext,
+                    ),
+                    IconButton(
+                      icon: Icon(Icons.shuffle, color: MyColors.white(context)),
+                      onPressed: () => ref.read(queueNotifierProvider.notifier).createQueue(currentSongIndex),
                     ),
                   ],
                 ),

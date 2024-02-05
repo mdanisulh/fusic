@@ -67,7 +67,7 @@ class HomeView extends ConsumerWidget {
       ),
       body: files.isEmpty
           ? Center(
-              child:IconButton(
+              child: IconButton(
                 icon: const Icon(Icons.folder),
                 onPressed: () async => await ref.read(fileListNotifierProvider.notifier).selectDirectory(),
               ),
