@@ -1,0 +1,31 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .white .icon,
+  .grey:hover .icon {
+    @apply invert;
+  }
+  .grey .icon {
+    @apply invert-[0.7];
+  }
+  .white,
+  .grey:hover {
+    @apply text-white;
+  }
+  .grey {
+    @apply text-grey-light;
+  }
+  .red {
+    filter: invert(20%) sepia(100%) saturate(8000%);
+  }
+
+  ::-webkit-scrollbar {
+    width: 12px;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+  }
+}
