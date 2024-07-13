@@ -1,7 +1,8 @@
 "use client";
-import React, { createContext, useEffect, useReducer, useRef } from "react";
+import React, { createContext, useEffect, useRef } from "react";
 
 import Song, { dummySong } from "@/types/song";
+import { useLocalStorageReducer } from "../hooks/useLocalStorageReducer";
 import { useQueue } from "../hooks/useQueue";
 
 export const AudioContext = createContext<AudioInterface | null>(null);
@@ -23,7 +24,10 @@ interface AudioInterface extends AudioState {
   audio: HTMLAudioElement;
 }
 
-function audioReducer(state: AudioState, action: { type: any; payload: any }) {
+function audioReducer(
+  state: AudioState,
+  action: { type: string; payload: any },
+) {
   switch (action.type) {
     case "togglePlay":
       return { ...state, isPlaying: !state.isPlaying };
@@ -63,30 +67,17 @@ export default function AudioProvider({
     song: dummySong,
     volume: 1,
   };
-  function loadInitialState() {
-    const savedState = localStorage.getItem("audioState");
-    if (savedState) {
-      try {
-        const state: AudioState = JSON.parse(savedState);
-        state.isPlaying = false;
-        audio.src = state.song.url;
-        audio.volume = state.volume;
-        return state;
-      } catch (e) {
-        console.error("Error loading state from localStorage:", e);
-      }
-    }
-    return initialState;
-  }
-  const [state, dispatch] = useReducer(
+  const onInit = (state: AudioState) => {
+    state.isPlaying = false;
+    audio.src = state.song.url;
+    audio.volume = state.volume;
+  };
+  const [state, dispatch] = useLocalStorageReducer(
+    "audioState",
     audioReducer,
     initialState,
-    loadInitialState,
+    onInit,
   );
-
-  useEffect(() => {
-    localStorage.setItem("audioState", JSON.stringify(state));
-  }, [state]);
 
   useEffect(() => {
     const handleKeyPress = (e: KeyboardEvent) => {

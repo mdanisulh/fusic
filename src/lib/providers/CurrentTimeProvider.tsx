@@ -1,6 +1,7 @@
 "use client";
-import React, { createContext, useEffect, useState } from "react";
+import React, { createContext, useEffect } from "react";
 import { useAudio } from "../hooks/useAudio";
+import { useLocalStorageState } from "../hooks/useLocalStorageState";
 
 export const CurrentTimeContext = createContext({
   currentTime: 0,
@@ -13,19 +14,11 @@ export default function CurrentTimeProvider({
   children: React.ReactNode;
 }) {
   const { audio, isPlaying } = useAudio()!;
-  const [currentTime, setCurrentTime] = useState(0);
-
-  useEffect(() => {
-    const storedTime = localStorage.getItem("currentTime");
-    if (storedTime) {
-      audio.currentTime = parseFloat(storedTime);
-      setCurrentTime(parseFloat(storedTime));
-    }
-  }, [audio]);
-
-  useEffect(() => {
-    localStorage.setItem("currentTime", currentTime.toFixed(2));
-  }, [currentTime]);
+  const [currentTime, setCurrentTime] = useLocalStorageState<number>(
+    "currentTime",
+    0,
+    (value: number) => audio && (audio.currentTime = value),
+  );
 
   useEffect(() => {
     const updateCurrentTime = () => {
@@ -33,7 +26,7 @@ export default function CurrentTimeProvider({
     };
     audio.addEventListener("timeupdate", updateCurrentTime);
     return () => audio.removeEventListener("timeupdate", updateCurrentTime);
-  }, [isPlaying, audio]);
+  }, [isPlaying, audio, setCurrentTime]);
 
   const setTime = (time: number) => {
     audio.currentTime = time;

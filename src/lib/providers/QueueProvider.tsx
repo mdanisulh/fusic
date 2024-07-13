@@ -1,6 +1,7 @@
 "use client";
 import Song from "@/types/song";
-import React, { createContext, useEffect, useReducer } from "react";
+import React, { createContext } from "react";
+import { useLocalStorageReducer } from "../hooks/useLocalStorageReducer";
 import shuffleArray from "../utils/shuffleArray";
 
 export const QueueContext = createContext<QueueInterface | null>(null);
@@ -27,7 +28,7 @@ interface QueueInterface extends QueueState {
 
 const queueReducer = (
   state: QueueState,
-  action: { type: any; payload: any },
+  action: { type: string; payload: any },
 ) => {
   switch (action.type) {
     case "ADD_TO_EXTRA_QUEUE":
@@ -79,27 +80,11 @@ const QueueProvider = ({ children }: { children: React.ReactNode }) => {
     shuffle: false,
     repeat: 1,
   };
-  function loadInitialState() {
-    const savedState = localStorage.getItem("queueState");
-    if (savedState) {
-      try {
-        const state: QueueState = JSON.parse(savedState);
-        return state;
-      } catch (e) {
-        console.error("Error loading state from localStorage:", e);
-      }
-    }
-    return initialState;
-  }
-  const [state, dispatch] = useReducer(
+  const [state, dispatch] = useLocalStorageReducer(
+    "queueState",
     queueReducer,
     initialState,
-    loadInitialState,
   );
-
-  useEffect(() => {
-    localStorage.setItem("queueState", JSON.stringify(state));
-  }, [state]);
 
   const addToExtraQueue = (song: Song) =>
     dispatch({ type: "ADD_TO_EXTRA_QUEUE", payload: song });

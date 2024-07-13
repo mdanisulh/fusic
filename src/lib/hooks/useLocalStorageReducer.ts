@@ -1,12 +1,13 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useReducer } from "react";
 
-export const useLocalStorageState = <T>(
+export const useLocalStorageReducer = <T>(
   key: string,
+  reducer: (state: T, action: { type: string; payload: any }) => T,
   initialValue: T,
   onInit: (value: T) => void = () => {},
 ) => {
-  const [state, setState] = useState(() => {
+  const loadInitialState = () => {
     const storedValue = window.localStorage.getItem(key);
     if (storedValue) {
       const value: T = JSON.parse(storedValue);
@@ -14,14 +15,15 @@ export const useLocalStorageState = <T>(
       return value;
     }
     return initialValue;
-  });
+  };
+  const [state, dispatch] = useReducer(reducer, initialValue, loadInitialState);
 
   useEffect(() => {
     window.localStorage.setItem(key, JSON.stringify(state));
   }, [state, key]);
 
-  return [state, setState] as [
+  return [state, dispatch] as [
     state: T,
-    setState: React.Dispatch<React.SetStateAction<T>>,
+    dispatch: React.Dispatch<{ type: string; payload: any }>,
   ];
 };

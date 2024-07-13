@@ -18,9 +18,10 @@ export default function SideBar({
         `${name === "left" ? "right" : "left"}SideBarWidth`,
       ) ?? "280",
     );
-    const newWidth = parseInt(
+    let newWidth = parseInt(
       localStorage?.getItem(`${name}SideBarWidth`) ?? "280",
     );
+    if (name === "right") newWidth = Math.min(newWidth, 400);
     setOtherWidth(newOtherWidth);
     setWidth(newWidth);
     const mainWidth = window.innerWidth - newWidth - newOtherWidth - 32;
@@ -32,11 +33,10 @@ export default function SideBar({
   useEffect(() => {
     if (!isResizing) return;
     const onMouseMove = (e: MouseEvent) => {
-      let newWidth = e.clientX;
+      let newWidth = e.clientX - 8;
       if (name === "right") {
-        newWidth = window.innerWidth - e.clientX;
+        newWidth = Math.min(400, window.innerWidth - e.clientX - 8);
       }
-      newWidth -= 8;
       const mainWidth = window.innerWidth - newWidth - otherWidth;
       if (newWidth < 280 || mainWidth < 430) return;
       setWidth(newWidth);
@@ -59,9 +59,14 @@ export default function SideBar({
 
   const resizer = (
     <div
-      className="h-full w-2 cursor-e-resize"
+      className="group h-full w-2 cursor-e-resize"
       onMouseDown={() => setIsResizing(true)}
-    />
+    >
+      {isResizing && <div className="m-auto h-full w-0.5 bg-white" />}
+      {!isResizing && (
+        <div className="m-auto h-full w-0.5 group-hover:bg-white" />
+      )}
+    </div>
   );
   return (
     <div className="flex">
