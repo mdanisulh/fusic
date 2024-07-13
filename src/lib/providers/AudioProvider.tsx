@@ -16,6 +16,7 @@ interface AudioInterface extends AudioState {
   setTime: (time: number) => void;
   setVolume: (volume: number) => void;
   setSong: (song: Song) => void;
+  setQueue: (songs: Song[], id: string) => void;
   playPrevious: () => void;
   playNext: () => void;
   setLyrics: (lyrics: { time: number; line: string }[]) => void;
@@ -54,11 +55,8 @@ export default function AudioProvider({
     repeat,
     setCurrentIndex,
     removeFromExtraQueue,
+    updateQueue,
   } = useQueue()!;
-
-  useEffect(() => {
-    setSong(queue[shuffleIndices[currentIndex]]);
-  }, [queue]); // eslint-disable-line
 
   const initialState = {
     isPlaying: false,
@@ -213,6 +211,12 @@ export default function AudioProvider({
     dispatch({ type: "setVolume", payload: newVolume });
   };
 
+  const setQueue = (songs: Song[], id: string) => {
+    if (songs.length === 0) return;
+    const newIndex = updateQueue(songs, id);
+    setSong(songs[newIndex]);
+  };
+
   const togglePlay = () => dispatch({ type: "togglePlay", payload: undefined });
 
   const value = {
@@ -224,6 +228,7 @@ export default function AudioProvider({
     setSong,
     setTime,
     setVolume,
+    setQueue,
     togglePlay,
   };
   return (

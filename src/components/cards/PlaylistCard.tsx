@@ -10,12 +10,12 @@ export default function AlbumCard({
 }: {
   playlist: Omit<Playlist, "songs">;
 }) {
-  const { id, updateQueue } = useQueue()!;
-  const { isPlaying, togglePlay } = useAudio()!;
+  const { id } = useQueue()!;
+  const { isPlaying, togglePlay, setQueue } = useAudio()!;
   const handleClick = async () => {
     if (id === playlist.id) return togglePlay();
     const songs = await getPlaylist(playlist.id);
-    updateQueue(songs.songs, playlist.id);
+    setQueue(songs.songs, playlist.id);
   };
   return (
     <div className="group relative min-w-44 max-w-44 flex-1 cursor-pointer flex-row rounded-lg p-3 hover:bg-grey-dark">

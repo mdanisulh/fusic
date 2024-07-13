@@ -17,7 +17,7 @@ interface QueueState {
 interface QueueInterface extends QueueState {
   addToExtraQueue: (song: Song) => void;
   removeFromExtraQueue: (index: number) => void;
-  updateQueue: (queue: Song[], id: string) => void;
+  updateQueue: (queue: Song[], id: string) => number;
   clearQueue: () => void;
   removeFromQueue: (index: number) => void;
   toggleShuffle: () => void;
@@ -47,9 +47,7 @@ const queueReducer = (
         queue: action.payload.songs,
         id: action.payload.id,
         currentIndex: 0,
-        shuffleIndices: state.shuffle
-          ? shuffleArray(action.payload.songs.length)
-          : [...Array(action.payload.songs.length).keys()],
+        shuffleIndices: action.payload.shuffleIndices,
       };
     case "REMOVE_FROM_QUEUE":
       return {
@@ -112,8 +110,13 @@ const QueueProvider = ({ children }: { children: React.ReactNode }) => {
   const clearQueue = () =>
     dispatch({ type: "CLEAR_EXTRA_QUEUE", payload: null });
 
-  const updateQueue = (songs: Song[], id: string) =>
-    dispatch({ type: "UPDATE_QUEUE", payload: { songs, id } });
+  const updateQueue = (songs: Song[], id: string) => {
+    const shuffleIndices = state.shuffle
+      ? shuffleArray(songs.length)
+      : [...Array(songs.length).keys()];
+    dispatch({ type: "UPDATE_QUEUE", payload: { songs, id, shuffleIndices } });
+    return shuffleIndices[0];
+  };
 
   const removeFromQueue = (index: number) =>
     dispatch({ type: "REMOVE_FROM_QUEUE", payload: index });
