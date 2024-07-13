@@ -35,12 +35,12 @@ export async function getPlaylist(
   const playlist = data.data;
   const res: Playlist = {
     id: playlist.id,
-    name: playlist.name,
+    name: playlist.name.replace(/&quot;/g, '"'),
     image: playlist.image.map((img: { url: string }) => img.url),
     songs: playlist.songs.map((song: any) => transformSong(song)),
     artists: playlist.artists.map((artist: { id: string; name: string }) => ({
       id: artist.id,
-      name: artist.name,
+      name: artist.name.replace(/&quot;/g, '"'),
     })),
     playCount: playlist.playCount,
     songCount: playlist.songCount,

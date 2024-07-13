@@ -44,7 +44,7 @@ export async function getArtist(
   const artist = data.data;
   return {
     id: artist.id,
-    name: artist.name,
+    name: artist.name.replace(/&quot;/g, '"'),
     image: artist.image.map((img: { url: string }) => img.url),
     songs: artist.topSongs.map(transformSong),
     albums: artist.topAlbums.map(transformAlbum),

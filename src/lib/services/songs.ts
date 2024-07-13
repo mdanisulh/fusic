@@ -1,6 +1,8 @@
 import Song from "@/types/song";
 import { apiEndpoint } from "../constants/constants";
 
+const downloadQuality = 2; // 0 - 4
+
 export async function searchSongs(
   query: string,
   limit: number = 10,
@@ -57,13 +59,16 @@ export const transformSong = (song: {
   id: song.id,
   name: song.name.replace(/&quot;/g, '"'),
   image: song.image.map((img) => img.url),
-  url: song.downloadUrl[4].url,
+  url: song.downloadUrl[downloadQuality].url,
   duration: song.duration ?? 0,
   artists: song.artists.primary.map((artist) => ({
     id: artist.id,
-    name: artist.name,
+    name: artist.name.replace(/&quot;/g, '"'),
   })),
-  album: song.album && { id: song.album.id, name: song.album.name },
+  album: song.album && {
+    id: song.album.id,
+    name: song.album.name.replace(/&quot;/g, '"'),
+  },
   playCount: song.playCount,
   year: song.year,
 });

@@ -13,13 +13,13 @@ export async function searchAlbums(query: string, limit = 10, page = 0) {
 
 export const transformAlbum = (album: any): Album => ({
   id: album.id,
-  name: album.name,
+  name: album.name.replace(/&quot;/g, '"'),
   image: album.image.map((img: { url: string }) => img.url),
   songs: album.songs && album.songs.map((song: any) => transformSong(song)),
   artists: album.artists.primary.map(
     (artist: { id: string; name: string }) => ({
       id: artist.id,
-      name: artist.name,
+      name: artist.name.replace(/&quot;/g, '"'),
     }),
   ),
   playCount: album.playCount,
