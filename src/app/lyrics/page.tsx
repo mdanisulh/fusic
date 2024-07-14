@@ -2,7 +2,15 @@
 import { useAudio } from "@/lib/hooks/useAudio";
 import { useCurrentTime } from "@/lib/hooks/useCurrentTime";
 import getAverageColor from "@/lib/utils/averageColor";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
+
+const transliterate = async (input: string) => {
+  const response = await fetch("/api/transliterate", {
+    method: "POST",
+    body: JSON.stringify({ input }),
+  });
+  return await response.json();
+};
 
 export default function LyricsPage() {
   const { song, setLyrics } = useAudio()!;
@@ -10,8 +18,8 @@ export default function LyricsPage() {
   const [color, setColor] = useState("");
   const lyrics = useMemo(() => song.lyrics ?? [], [song.lyrics]);
 
-  useEffect(() => {
-    async function fetchLyrics() {
+  const fetchLyrics = useCallback(
+    async (toTransliterate: boolean = false) => {
       const res = await fetch(
         "https://lrclib.net/api/get?" +
           new URLSearchParams({
@@ -24,6 +32,8 @@ export default function LyricsPage() {
       if (res.ok) {
         const data = await res.json();
         if (data.syncedLyrics) {
+          if (toTransliterate)
+            data.syncedLyrics = await transliterate(data.syncedLyrics);
           const lyricsLines = data.syncedLyrics.split("\n");
           const syncedLyrics = lyricsLines.map((line: string) => {
             const match = line.match(/\[(\d{2}):(\d{2})\.(\d{2})\] (.*)/);
@@ -38,12 +48,24 @@ export default function LyricsPage() {
               };
             }
           });
+          if (toTransliterate) {
+            syncedLyrics.pop();
+            syncedLyrics.unshift({ time: -1, line: "" });
+          }
           setLyrics(syncedLyrics);
         } else if (data.plainLyrics) {
-          const newLyrics = data.plainLyrics.split("\n").map((line: string) => {
-            return { time: 0, line: line };
-          });
-          setLyrics(newLyrics);
+          if (toTransliterate)
+            data.plainLyrics = await transliterate(data.plainLyrics);
+          const plainLyrics = data.plainLyrics
+            .split("\n")
+            .map((line: string) => {
+              return { time: 0, line: line };
+            });
+          if (toTransliterate) {
+            plainLyrics.pop();
+            plainLyrics.unshift({ time: -1, line: "" });
+          }
+          setLyrics(plainLyrics);
         } else {
           setLyrics([
             { time: 0, line: "Sorry, no lyrics found for this song" },
@@ -52,14 +74,18 @@ export default function LyricsPage() {
       } else {
         setLyrics([{ time: 0, line: "Sorry, no lyrics found for this song" }]);
       }
-    }
+    },
+    [setLyrics, song],
+  );
+
+  useEffect(() => {
     if (!song.lyrics) {
       fetchLyrics();
     }
     getAverageColor(document.querySelector(".abc")!).then((res: string) => {
       setColor(res);
     });
-  }, [song, setLyrics]);
+  }, [song, setLyrics, fetchLyrics]);
 
   useEffect(() => {
     if (lyrics.length === 0 || lyrics[lyrics.length - 1].time === 0) return;
@@ -77,24 +103,44 @@ export default function LyricsPage() {
   }, [currentTime, lyrics]);
 
   return (
-    <div
-      className="overflow-y-hidden scroll-smooth rounded-lg bg-scroll px-24 py-16 text-center text-white hover:overflow-y-scroll hover:pr-[84px]"
-      style={{ height: "calc(100vh - 96px)", backgroundColor: color }}
-    >
-      <div className="text-2xl font-bold leading-10">
-        {lyrics.map((item: { time: number; line: string }, index: number) => (
-          <p
-            key={`line-${index}`}
-            id={`line-${index}`}
-            onClick={() =>
-              lyrics[lyrics.length - 1].time !== 0 && setTime(item.time)
-            }
-            className={`${currentTime >= item.time && currentTime < (lyrics[index + 1]?.time || Infinity) ? "text-[27px] opacity-100" : "opacity-50"}`}
-          >
-            {item.line}
-          </p>
-        ))}
+    <div className="relative text-center text-white">
+      <div
+        className="overflow-y-hidden scroll-smooth rounded-lg bg-scroll px-24 py-16 hover:overflow-y-scroll hover:pr-[84px]"
+        style={{ height: "calc(100vh - 96px)", backgroundColor: color }}
+      >
+        <div className="text-2xl font-bold leading-10">
+          {lyrics.map((item: { time: number; line: string }, index: number) => (
+            <p
+              key={`line-${index}`}
+              id={`line-${index}`}
+              onClick={() =>
+                lyrics[lyrics.length - 1].time !== 0 && setTime(item.time)
+              }
+              className={`${currentTime >= item.time && currentTime < (lyrics[index + 1]?.time || Infinity) ? "text-[27px] opacity-100" : "opacity-50"}`}
+            >
+              {item.line}
+            </p>
+          ))}
+        </div>
       </div>
+      {lyrics.length > 1 && (
+        <div
+          className="absolute bottom-4 right-6 h-8 w-8 cursor-pointer rounded-lg border-2 border-white text-xl font-black leading-7 opacity-70 hover:opacity-100"
+          style={
+            lyrics[0].time === -1 // Checking if lyrics are transliterated
+              ? {
+                  backgroundColor: "white",
+                  color: color,
+                  opacity: 1,
+                  cursor: "not-allowed",
+                }
+              : {}
+          }
+          onClick={() => lyrics[0].time !== -1 && fetchLyrics(true)}
+        >
+          T
+        </div>
+      )}
     </div>
   );
 }

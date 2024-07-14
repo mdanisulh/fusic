@@ -7,6 +7,12 @@ settings:
 importers:
   .:
     dependencies:
+      "@google/generative-ai":
+        specifier: ^0.14.1
+        version: 0.14.1
+      dotenv:
+        specifier: ^16.4.5
+        version: 16.4.5
       next:
         specifier: 15.0.0-rc.0
         version: 15.0.0-rc.0(react-dom@19.0.0-rc-f994737d14-20240522(react@19.0.0-rc-f994737d14-20240522))(react@19.0.0-rc-f994737d14-20240522)
@@ -94,6 +100,13 @@ packages:
         integrity: sha512-Ys+3g2TaW7gADOJzPt83SJtCDhMjndcDMFVQ/Tj9iA1BfJzFKD9mAUXT3OenpuPHbI6P/myECxRJrofUsDx/5g==,
       }
     engines: { node: ^12.22.0 || ^14.17.0 || >=16.0.0 }
+
+  "@google/generative-ai@0.14.1":
+    resolution:
+      {
+        integrity: sha512-pevEyZCb0Oc+dYNlSberW8oZBm4ofeTD5wN01TowQMhTwdAbGAnJMtQzoklh6Blq2AKsx8Ox6FWa44KioZLZiA==,
+      }
+    engines: { node: ">=18.0.0" }
 
   "@humanwhocodes/config-array@0.11.14":
     resolution:
@@ -1061,6 +1074,13 @@ packages:
         integrity: sha512-yS+Q5i3hBf7GBkd4KG8a7eBNNWNGLTaEwwYWUijIYM7zrlYDM0BFXHjjPWlWZ1Rg7UaddZeIDmi9jF3HmqiQ2w==,
       }
     engines: { node: ">=6.0.0" }
+
+  dotenv@16.4.5:
+    resolution:
+      {
+        integrity: sha512-ZmdL2rui+eB2YwhsWzjInR8LldtZHGDoQ1ugH85ppHKwpUHL7j7rN0Ti9NCnGiQbhaZ11FpR+7ao1dNsmduNUg==,
+      }
+    engines: { node: ">=12" }
 
   eastasianwidth@0.2.0:
     resolution:
@@ -3005,6 +3025,8 @@ snapshots:
 
   "@eslint/js@8.57.0": {}
 
+  "@google/generative-ai@0.14.1": {}
+
   "@humanwhocodes/config-array@0.11.14":
     dependencies:
       "@humanwhocodes/object-schema": 2.0.3
@@ -3522,6 +3544,8 @@ snapshots:
   doctrine@3.0.0:
     dependencies:
       esutils: 2.0.3
+
+  dotenv@16.4.5: {}
 
   eastasianwidth@0.2.0: {}
 

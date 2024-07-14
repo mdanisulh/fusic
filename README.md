@@ -24,6 +24,7 @@
 - Search for songs, artists, album, playlists
 - Best Streaming Quality (320kbps)
 - Lyrics support (synced/plain)
+- Transliterate lyrics from all languages to English
 
 ### More features to be added soon
 
