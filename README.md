@@ -19,6 +19,10 @@
 
 <p align="center">Welcome to Fusic, the Open-Source music streaming platform inspired by Spotify.</p>
 
+> **Mobile Device Compatibility Notice:**
+>
+> For optimal viewing, users are advised to use their mobile devices in landscape mode. The application is currently optimized for screen sizes above 800px. I am actively working on a responsive design solution to improve user experience across all devices. Expect updates soon.
+
 ## Features
 
 - Search for songs, artists, album, playlists

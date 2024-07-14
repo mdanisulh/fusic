@@ -17,20 +17,28 @@ export default function SideBar({
 
   useEffect(() => {
     if (!isResizing) return;
-    const onMouseMove = (e: MouseEvent) => {
+    const onMouseMove = (e: TouchEvent | MouseEvent) => {
+      const clientX =
+        (e as unknown as TouchEvent).touches?.[0]?.clientX ||
+        (e as unknown as MouseEvent).clientX;
       const newWidth =
-        (name === "left" ? e.clientX : window.innerWidth - e.clientX) - 12;
+        (name === "left" ? clientX : window.innerWidth - clientX) - 12;
       setWidth(newWidth);
     };
     const onMouseUp = () => {
       setIsResizing(false);
     };
+
     window.addEventListener("mousemove", onMouseMove);
     window.addEventListener("mouseup", onMouseUp);
+    window.addEventListener("touchmove", onMouseMove);
+    window.addEventListener("touchend", onMouseUp);
 
     return () => {
       window.removeEventListener("mousemove", onMouseMove);
       window.removeEventListener("mouseup", onMouseUp);
+      window.removeEventListener("touchmove", onMouseMove);
+      window.removeEventListener("touchend", onMouseUp);
     };
   }, [isResizing, name, width, setWidth]);
 
@@ -38,6 +46,7 @@ export default function SideBar({
     <div
       className="group h-full w-2 cursor-e-resize py-1"
       onMouseDown={() => setIsResizing(true)}
+      onTouchStart={() => setIsResizing(true)}
     >
       {isResizing && <div className="m-auto h-full w-0.5 bg-white" />}
       {!isResizing && (
