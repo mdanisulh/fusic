@@ -108,7 +108,7 @@ export default function LyricsPage() {
         className="overflow-y-hidden scroll-smooth rounded-lg bg-scroll px-24 py-16 hover:overflow-y-scroll hover:pr-[84px]"
         style={{ height: "calc(100vh - 96px)", backgroundColor: color }}
       >
-        <div className="text-2xl font-bold leading-10">
+        <div className="inline-flex flex-col items-center text-2xl font-bold leading-10">
           {lyrics.map((item: { time: number; line: string }, index: number) => (
             <p
               key={`line-${index}`}
@@ -116,7 +116,12 @@ export default function LyricsPage() {
               onClick={() =>
                 lyrics[lyrics.length - 1].time !== 0 && setTime(item.time)
               }
-              className={`${currentTime >= item.time && currentTime < (lyrics[index + 1]?.time || Infinity) ? "text-[27px] opacity-100" : "opacity-50"}`}
+              className={
+                currentTime >= item.time &&
+                currentTime < (lyrics[index + 1]?.time || Infinity)
+                  ? "text-3xl"
+                  : "opacity-50"
+              }
             >
               {item.line}
             </p>
@@ -125,6 +130,7 @@ export default function LyricsPage() {
       </div>
       {lyrics.length > 1 && (
         <div
+          title="Transliterate"
           className="absolute bottom-4 right-6 h-8 w-8 cursor-pointer rounded-lg border-2 border-white text-xl font-black leading-7 opacity-70 hover:opacity-100"
           style={
             lyrics[0].time === -1 // Checking if lyrics are transliterated
