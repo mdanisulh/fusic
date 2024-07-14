@@ -9,6 +9,7 @@ import SideBar from "@/components/sideBar/SideBar";
 import AudioProvider from "@/lib/providers/AudioProvider";
 import CurrentTimeProvider from "@/lib/providers/CurrentTimeProvider";
 import QueueProvider from "@/lib/providers/QueueProvider";
+import UIConfigProvider from "@/lib/providers/UIConfigProvider";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -30,23 +31,27 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={inter.className}>
-      <body className="flex min-h-full select-none flex-col overflow-hidden bg-black">
+      <body className="h-screen select-none bg-black">
         <NoSSR>
           <QueueProvider>
             <AudioProvider>
               <CurrentTimeProvider>
-                <div className="flex h-full flex-1 p-2">
-                  <SideBar name="left">
-                    <LeftSideBar />
-                  </SideBar>
-                  <section className="main-section flex-1 rounded-lg bg-black-light">
-                    {children}
-                  </section>
-                  <SideBar name="right">
-                    <RightSideBar />
-                  </SideBar>
-                </div>
-                <BottomBar />
+                <UIConfigProvider>
+                  <div className="flex h-full flex-col">
+                    <div className="flex flex-1 overflow-hidden p-2">
+                      <SideBar name="left">
+                        <LeftSideBar />
+                      </SideBar>
+                      <section className="main-section flex-1 rounded-lg bg-black-light">
+                        {children}
+                      </section>
+                      <SideBar name="right">
+                        <RightSideBar />
+                      </SideBar>
+                    </div>
+                    <BottomBar />
+                  </div>
+                </UIConfigProvider>
               </CurrentTimeProvider>
             </AudioProvider>
           </QueueProvider>

@@ -103,10 +103,10 @@ export default function LyricsPage() {
   }, [currentTime, lyrics]);
 
   return (
-    <div className="relative text-center text-white">
+    <div className="relative h-full text-center text-white">
       <div
-        className="overflow-y-hidden scroll-smooth rounded-lg bg-scroll px-24 py-16 hover:overflow-y-scroll hover:pr-[84px]"
-        style={{ height: "calc(100vh - 96px)", backgroundColor: color }}
+        className="h-full overflow-y-hidden scroll-smooth rounded-lg bg-scroll px-24 py-16 hover:overflow-y-scroll hover:pr-[84px]"
+        style={{ backgroundColor: color }}
       >
         <div className="inline-flex flex-col items-center text-2xl font-bold leading-10">
           {lyrics.map((item: { time: number; line: string }, index: number) => (

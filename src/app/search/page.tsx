@@ -13,6 +13,7 @@ import Playlist from "@/types/playlist";
 import Song from "@/types/song";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
+
 type searchResults = {
   // topQuery: Item | null;
   songs: Song[];
@@ -20,6 +21,7 @@ type searchResults = {
   albums: Omit<Album, "songs">[];
   playlists: Omit<Playlist, "songs">[];
 };
+
 export default function Page() {
   const params = useSearchParams();
   const query = params.get("query")?.toString();
@@ -45,7 +47,7 @@ export default function Page() {
   }, [query]);
   return (
     searchResults && (
-      <div className="">
+      <div className="h-full">
         {searchResults.songs.length > 0 && (
           <div>
             <div className="cursor-text p-2 pt-4 text-2xl font-bold text-white">

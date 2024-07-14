@@ -1,5 +1,6 @@
 "use client";
 import { useAudio } from "@/lib/hooks/useAudio";
+import { useUIConfig } from "@/lib/hooks/useUIConfig";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import IconButton from "../common/IconButton";
@@ -8,10 +9,11 @@ import VolumeBar from "./VolumeBar";
 
 export default function BottomBar() {
   const { song } = useAudio()!;
+  const { rsbView, setRSBView } = useUIConfig()!;
   const path = usePathname();
   const router = useRouter();
   return (
-    <div className="bottom-0 z-50 flex h-20 w-full min-w-max p-2 pt-0">
+    <div className="z-50 flex h-20 w-full p-2 pt-0">
       <div className="flex flex-[3_0_0%] truncate">
         <Image
           src={song["image"][1]}
@@ -43,9 +45,16 @@ export default function BottomBar() {
       <div className="flex flex-[3_0_0%] justify-end">
         <IconButton
           iconPath="/assets/now-playing.svg"
+          altIconPath="dot"
           iconSize={16}
-          className="m-2"
+          className="m-2 h-8 self-center"
           title="Now Playing"
+          isActive={rsbView === "nowPlaying"}
+          onClick={() =>
+            rsbView === "nowPlaying"
+              ? setRSBView("none")
+              : setRSBView("nowPlaying")
+          }
         />
         <IconButton
           iconPath="/assets/lyrics.svg"
@@ -60,9 +69,14 @@ export default function BottomBar() {
         />
         <IconButton
           iconPath="/assets/queue.svg"
+          altIconPath="dot"
           iconSize={16}
-          className="p-2"
+          className="m-2 h-8 self-center"
           title="Queue"
+          isActive={rsbView === "queue"}
+          onClick={() =>
+            rsbView === "queue" ? setRSBView("none") : setRSBView("queue")
+          }
         />
         <VolumeBar />
       </div>
