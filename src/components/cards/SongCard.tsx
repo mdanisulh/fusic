@@ -33,7 +33,7 @@ export default function SongCard({ song }: { song: Song }) {
   }, [showContextMenu]);
   return (
     <div
-      className="group flex cursor-pointer truncate rounded-md p-2 hover:bg-grey-dark"
+      className="group flex cursor-pointer truncate rounded-md p-2 hover:bg-grey"
       onContextMenu={handleRightClick}
     >
       <div
