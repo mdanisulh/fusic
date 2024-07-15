@@ -15,7 +15,7 @@
     @apply text-white;
   }
   .grey {
-    @apply text-grey-light;
+    @apply text-light-grey;
   }
   .red {
     filter: invert(20%) sepia(100%) saturate(8000%);

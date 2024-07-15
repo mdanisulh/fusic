@@ -59,7 +59,7 @@ export default function PlayerControls() {
         />
       </div>
       <div className="flex flex-grow p-2 pt-0">
-        <div className="mr-2 flex w-10 justify-end text-xs text-grey-light">
+        <div className="text-light-grey mr-2 flex w-10 justify-end text-xs">
           {formatTime(currentTime)}
         </div>
         <Slider
@@ -67,7 +67,7 @@ export default function PlayerControls() {
           value={currentTime}
           onChange={setTime}
         />
-        <div className="ml-2 flex w-10 text-xs text-grey-light">
+        <div className="text-light-grey ml-2 flex w-10 text-xs">
           {formatTime(song["duration"])}
         </div>
       </div>

@@ -18,7 +18,7 @@ export default function AlbumCard({
     setQueue(songs.songs, playlist.id);
   };
   return (
-    <div className="group relative min-w-44 max-w-44 flex-1 cursor-pointer flex-row rounded-lg p-3 hover:bg-grey-dark">
+    <div className="hover:bg-dark-grey group relative min-w-44 max-w-44 flex-1 cursor-pointer flex-row rounded-lg p-3">
       <Image
         width={152}
         height={152}

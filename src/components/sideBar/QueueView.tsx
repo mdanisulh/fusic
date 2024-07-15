@@ -19,13 +19,13 @@ export default function QueueView() {
 
   const upcoming = shuffleIndices.slice(currentIndex + 1);
   return (
-    <div className="flex h-full flex-col rounded-lg bg-black-light">
+    <div className="bg-light-black flex h-full flex-col rounded-lg">
       <div className="sticky top-0 flex justify-between">
         <p className="my-1 p-4 font-bold text-white">Queue</p>
         <IconButton
           iconPath="/assets/close.svg"
           title="Close"
-          className="m-4 rounded-full p-2 font-bold hover:bg-grey-dark"
+          className="hover:bg-dark-grey m-4 rounded-full p-2 font-bold"
           iconSize={16}
         />
       </div>
@@ -51,7 +51,7 @@ export default function QueueView() {
             <div className="mt-1 flex justify-between p-2">
               <p className="font-bold text-white">Next in queue</p>
               <p
-                className="self-center pr-1 text-sm font-bold text-grey-light hover:pr-0 hover:text-[15px] hover:text-white"
+                className="text-light-grey self-center pr-1 text-sm font-bold hover:pr-0 hover:text-[15px] hover:text-white"
                 onClick={clearQueue}
               >
                 Clear Queue

@@ -9,7 +9,7 @@ export default function LeftSideBar() {
   const { isLSBCollapsed, setLSBCollapsed } = useUIConfig()!;
   return (
     <div className="flex h-full flex-col">
-      <div className="mb-1 rounded-lg bg-black-light px-2 py-1">
+      <div className="bg-light-black mb-1 rounded-lg px-2 py-1">
         <Link href="/">
           <IconButton
             iconPath="/assets/home-outlined.svg"
@@ -33,7 +33,7 @@ export default function LeftSideBar() {
           />
         </Link>
       </div>
-      <div className="mt-1 flex-grow rounded-lg bg-black-light">
+      <div className="bg-light-black mt-1 flex-grow rounded-lg">
         <div className="flex justify-between px-2 py-0">
           <div className="flex-initial self-center">
             <IconButton
@@ -51,7 +51,7 @@ export default function LeftSideBar() {
               <IconButton
                 iconPath="/assets/add.svg"
                 title="Create Playlist"
-                className="m-2 rounded-full p-2 font-bold hover:bg-grey-dark"
+                className="hover:bg-dark-grey m-2 rounded-full p-2 font-bold"
                 iconSize={16}
               />
             </div>

@@ -66,7 +66,7 @@ export default function SongCard({ song }: { song: Song }) {
         <div className="my-1 flex-shrink truncate text-sm text-white">
           {song["name"]}
         </div>
-        <div className="truncate text-sm text-grey-light">
+        <div className="text-light-grey truncate text-sm">
           {song["artists"].map((artist) => artist["name"]).join(", ")}
         </div>
       </div>

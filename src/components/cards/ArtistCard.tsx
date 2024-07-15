@@ -18,7 +18,7 @@ export default function AlbumCard({
     setQueue(songs, artist.id);
   };
   return (
-    <div className="group relative min-w-44 max-w-44 flex-1 cursor-pointer flex-row rounded-lg p-3 hover:bg-grey-dark">
+    <div className="hover:bg-dark-grey group relative min-w-44 max-w-44 flex-1 cursor-pointer flex-row rounded-lg p-3">
       <Image
         width={152}
         height={152}
@@ -39,7 +39,7 @@ export default function AlbumCard({
       />
       <div className="flex-col justify-between px-1 pt-2">
         <div className="truncate text-white">{artist.name}</div>
-        <div className="truncate text-sm text-grey-light">Artist</div>
+        <div className="text-light-grey truncate text-sm">Artist</div>
       </div>
     </div>
   );

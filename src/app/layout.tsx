@@ -42,7 +42,7 @@ export default function RootLayout({
                       <SideBar name="left">
                         <LeftSideBar />
                       </SideBar>
-                      <section className="main-section flex-1 rounded-lg bg-black-light">
+                      <section className="main-section bg-light-black flex-1 rounded-lg">
                         {children}
                       </section>
                       <SideBar name="right">

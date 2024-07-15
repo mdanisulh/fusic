@@ -27,7 +27,7 @@ export default function BottomBar() {
         />
         <div className="flex-col content-center truncate p-2 align-text-bottom">
           <div className="text-s truncate text-white">{song["name"]}</div>
-          <div className="truncate text-xs text-grey-light">
+          <div className="text-light-grey truncate text-xs">
             {song["artists"][0]["name"]}
           </div>
         </div>

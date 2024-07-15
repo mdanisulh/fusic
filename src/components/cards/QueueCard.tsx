@@ -51,7 +51,7 @@ export default function QueueCard({
   }, [showContextMenu]);
   return (
     <div
-      className="group flex cursor-pointer truncate rounded-md p-2 hover:bg-grey-dark"
+      className="hover:bg-dark-grey group flex cursor-pointer truncate rounded-md p-2"
       onContextMenu={handleRightClick}
     >
       <div
@@ -86,7 +86,7 @@ export default function QueueCard({
         <div className="my-1 flex-shrink truncate text-sm text-white">
           {song["name"]}
         </div>
-        <div className="truncate text-sm text-grey-light">
+        <div className="text-light-grey truncate text-sm">
           {song["artists"][0]["name"]}
         </div>
       </div>

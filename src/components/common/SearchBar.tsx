@@ -19,9 +19,9 @@ export default function SearchBar() {
   }, 300);
 
   return (
-    <div className="sticky top-0 z-50 flex h-16 flex-1 bg-black-light p-2">
+    <div className="bg-light-black sticky top-0 z-50 flex h-16 flex-1 p-2">
       <input
-        className="peer max-w-96 flex-grow rounded-full bg-grey-dark p-3 pl-9 pr-5 text-sm text-white focus:outline-none focus:outline-white"
+        className="bg-dark-grey peer max-w-96 flex-grow rounded-full p-3 pl-9 pr-5 text-sm text-white focus:outline-none focus:outline-white"
         placeholder="Search for songs, albums, artists, and more"
         onChange={(e) => handleSearch(e.target.value)}
         defaultValue={searchParams.get("query")?.toString()}
