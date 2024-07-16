@@ -1,7 +1,7 @@
 "use client";
-import React, { createContext, useEffect } from "react";
+import React, { createContext, useCallback, useEffect } from "react";
 import { useAudio } from "../hooks/useAudio";
-import { useLocalStorageState } from "../hooks/useLocalStorageState";
+import { useIDBState } from "../hooks/useIDBState";
 
 export const CurrentTimeContext = createContext({
   currentTime: 0,
@@ -14,10 +14,14 @@ export default function CurrentTimeProvider({
   children: React.ReactNode;
 }) {
   const { audio, isPlaying } = useAudio()!;
-  const [currentTime, setCurrentTime] = useLocalStorageState<number>(
+  const onInit = useCallback(
+    (value: number) => audio && (audio.currentTime = value),
+    [audio],
+  );
+  const [currentTime, setCurrentTime] = useIDBState<number>(
     "currentTime",
     0,
-    (value: number) => audio && (audio.currentTime = value),
+    onInit,
   );
 
   useEffect(() => {

@@ -1,6 +1,6 @@
 "use client";
-import React, { createContext, useEffect, useRef } from "react";
-import { useLocalStorageReducer } from "../hooks/useLocalStorageReducer";
+import React, { createContext, useCallback, useEffect, useRef } from "react";
+import { useIDBReducer } from "../hooks/useIDBReducer";
 
 export const UIConfigContext = createContext<UIConfigInterface | null>(null);
 
@@ -22,6 +22,8 @@ function uiConfigReducer(
   action: { type: string; payload: any },
 ) {
   switch (action.type) {
+    case "INIT":
+      return action.payload;
     case "setLSBWidth":
       return { ...state, lsbWidth: action.payload };
     case "setRSBWidth":
@@ -46,10 +48,11 @@ export default function UIConfigProvider({
     isLSBCollapsed: false,
     rsbView: "queue",
   };
-  const [state, dispatch] = useLocalStorageReducer(
-    "ui-config",
+  const [state, dispatch] = useIDBReducer(
+    "uiConfig",
     uiConfigReducer,
     initialState,
+    useCallback(() => {}, []),
   );
 
   const lsbWidthRef = useRef(280);

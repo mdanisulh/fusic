@@ -13,10 +13,10 @@ type Song = {
 export default Song;
 
 export const dummySong: Song = {
-  id: "fusic",
+  id: "",
   name: "Fusic",
   image: ["/logo.png", "/logo.png", "/logo.png"],
   url: "",
-  artists: [{ id: "fusic", name: "Fusic" }],
+  artists: [{ id: "", name: "Fusic" }],
   duration: 0,
 };

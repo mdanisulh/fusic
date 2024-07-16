@@ -42,7 +42,7 @@ export const getSongSuggestions = async (
     `${apiEndpoint}/songs/${id}/suggestions?limit=${limit}`,
   );
   const data = await response.json();
-  return data.data.map(transformSong);
+  return data.data ? data.data.map(transformSong) : [];
 };
 
 export const transformSong = (song: {

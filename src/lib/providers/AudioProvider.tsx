@@ -1,8 +1,8 @@
 "use client";
-import React, { createContext, useEffect, useRef } from "react";
+import React, { createContext, useCallback, useEffect, useRef } from "react";
 
 import Song, { dummySong } from "@/types/song";
-import { useLocalStorageReducer } from "../hooks/useLocalStorageReducer";
+import { useIDBReducer } from "../hooks/useIDBReducer";
 import { useQueue } from "../hooks/useQueue";
 
 export const AudioContext = createContext<AudioInterface | null>(null);
@@ -29,6 +29,8 @@ function audioReducer(
   action: { type: string; payload: any },
 ) {
   switch (action.type) {
+    case "INIT":
+      return action.payload;
     case "togglePlay":
       return { ...state, isPlaying: !state.isPlaying };
     case "setDuration":
@@ -67,16 +69,20 @@ export default function AudioProvider({
     song: dummySong,
     volume: 1,
   };
-  const onInit = (state: AudioState) => {
-    state.isPlaying = false;
-    audio.src = state.song.url;
-    audio.volume = state.volume;
-  };
-  const [state, dispatch] = useLocalStorageReducer(
+  const onInit = useCallback(
+    (state: AudioState) => {
+      state.isPlaying = false;
+      audio.src = state.song.url;
+      audio.volume = state.volume;
+    },
+    [audio],
+  );
+  const [state, dispatch] = useIDBReducer(
     "audioState",
     audioReducer,
     initialState,
     onInit,
+    true,
   );
 
   useEffect(() => {

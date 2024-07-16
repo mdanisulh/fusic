@@ -66,12 +66,12 @@ export default function LyricsPage() {
             plainLyrics.unshift({ time: -1, line: "" });
           }
           setLyrics(plainLyrics);
-        } else {
+        } else if (song.id) {
           setLyrics([
             { time: 0, line: "Sorry, no lyrics found for this song" },
           ]);
         }
-      } else {
+      } else if (song.id) {
         setLyrics([{ time: 0, line: "Sorry, no lyrics found for this song" }]);
       }
     },

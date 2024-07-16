@@ -19,7 +19,7 @@ export default function NowPlayingView() {
   }, [song.id]);
 
   return (
-    <div className="bg-light-black flex h-full flex-col rounded-lg">
+    <div className="flex h-full flex-col rounded-lg bg-light-black">
       <div className="sticky top-0 flex justify-between">
         <p
           className="my-1 truncate p-4 font-bold text-white"
@@ -36,7 +36,7 @@ export default function NowPlayingView() {
           <IconButton
             iconPath="/assets/close.svg"
             title="Close"
-            className="hover:bg-dark-grey m-4 ml-1 rounded-full p-2 font-bold"
+            className="m-4 ml-1 rounded-full p-2 font-bold hover:bg-dark-grey"
             iconSize={16}
           />
         </div>
@@ -61,7 +61,7 @@ export default function NowPlayingView() {
             <p className="truncate text-2xl font-bold text-white">
               {song["name"]}
             </p>
-            <p className="text-light-grey truncate text-sm">
+            <p className="truncate text-sm text-light-grey">
               {song["artists"]
                 .map((artist: { name: string }) => artist.name)
                 .join(", ")}
@@ -76,7 +76,9 @@ export default function NowPlayingView() {
           />
         </div>
         <div className="-translate-x-1">
-          <p className="p-2 text-lg font-bold text-white">Recommended</p>
+          {suggestions.length > 0 && (
+            <p className="p-2 text-lg font-bold text-white">Recommended</p>
+          )}
           {suggestions.map((suggestion) => (
             <SongCard key={suggestion.id} song={suggestion} />
           ))}

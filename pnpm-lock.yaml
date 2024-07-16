@@ -13,6 +13,9 @@ importers:
       dotenv:
         specifier: ^16.4.5
         version: 16.4.5
+      idb:
+        specifier: ^8.0.0
+        version: 8.0.0
       next:
         specifier: 15.0.0-rc.0
         version: 15.0.0-rc.0(react-dom@19.0.0-rc-f994737d14-20240522(react@19.0.0-rc-f994737d14-20240522))(react@19.0.0-rc-f994737d14-20240522)
@@ -1576,6 +1579,12 @@ packages:
         integrity: sha512-0hJU9SCPvmMzIBdZFqNPXWa6dqh7WdH0cII9y+CyS8rG3nL48Bclra9HmKhVVUHyPWNH5Y7xDwAB7bfgSjkUMQ==,
       }
     engines: { node: ">= 0.4" }
+
+  idb@8.0.0:
+    resolution:
+      {
+        integrity: sha512-l//qvlAKGmQO31Qn7xdzagVPPaHTxXx199MhrAFuVBTPqydcPYBWjkrbv4Y0ktB+GmWOiwHl237UUOrLmQxLvw==,
+      }
 
   ignore@5.3.1:
     resolution:
@@ -4020,6 +4029,8 @@ snapshots:
   hasown@2.0.2:
     dependencies:
       function-bind: 1.1.2
+
+  idb@8.0.0: {}
 
   ignore@5.3.1: {}
 

@@ -1,7 +1,7 @@
 "use client";
 import Song from "@/types/song";
-import React, { createContext } from "react";
-import { useLocalStorageReducer } from "../hooks/useLocalStorageReducer";
+import React, { createContext, useCallback } from "react";
+import { useIDBReducer } from "../hooks/useIDBReducer";
 import shuffleArray from "../utils/shuffleArray";
 
 export const QueueContext = createContext<QueueInterface | null>(null);
@@ -31,6 +31,8 @@ const queueReducer = (
   action: { type: string; payload: any },
 ) => {
   switch (action.type) {
+    case "INIT":
+      return action.payload;
     case "ADD_TO_EXTRA_QUEUE":
       return { ...state, extraQueue: [...state.extraQueue, action.payload] };
     case "REMOVE_FROM_EXTRA_QUEUE":
@@ -80,10 +82,11 @@ const QueueProvider = ({ children }: { children: React.ReactNode }) => {
     shuffle: false,
     repeat: 1,
   };
-  const [state, dispatch] = useLocalStorageReducer(
+  const [state, dispatch] = useIDBReducer(
     "queueState",
     queueReducer,
     initialState,
+    useCallback(() => {}, []),
   );
 
   const addToExtraQueue = (song: Song) =>
