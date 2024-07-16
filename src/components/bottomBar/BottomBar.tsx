@@ -6,12 +6,16 @@ import { usePathname, useRouter } from "next/navigation";
 import IconButton from "../common/IconButton";
 import PlayerControls from "./PlayerControls";
 import VolumeBar from "./VolumeBar";
+import { usePlaylist } from "@/lib/hooks/usePlaylistProvider";
 
 export default function BottomBar() {
   const { song } = useAudio()!;
   const { rsbView, setRSBView } = useUIConfig()!;
+  const { searchInPlaylist, addToPlaylist, removeFromPlaylist } =
+    usePlaylist()!;
   const path = usePathname();
   const router = useRouter();
+
   return (
     <div className="z-50 flex h-20 w-full p-2 pt-0">
       <div className="flex flex-[3_0_0%] truncate">
@@ -27,16 +31,21 @@ export default function BottomBar() {
         />
         <div className="flex-col content-center truncate p-2 align-text-bottom">
           <div className="text-s truncate text-white">{song["name"]}</div>
-          <div className="text-light-grey truncate text-xs">
+          <div className="truncate text-xs text-light-grey">
             {song["artists"][0]["name"]}
           </div>
         </div>
-        <Image
-          src="assets/favourite-filled.svg"
-          alt="Like"
-          width={24}
-          height={24}
-          className="mx-2 mb-2 flex invert"
+        <IconButton
+          iconPath="assets/favourite-outlined.svg"
+          altIconPath="assets/favourite-filled.svg"
+          isActive={searchInPlaylist(song["id"], "_liked")}
+          iconSize={24}
+          className="mx-2 mb-2"
+          onClick={() =>
+            searchInPlaylist(song["id"], "_liked")
+              ? removeFromPlaylist(song["id"], "_liked")
+              : addToPlaylist(song, "_liked")
+          }
         />
       </div>
       <div className="flex flex-[4_1_0%]">

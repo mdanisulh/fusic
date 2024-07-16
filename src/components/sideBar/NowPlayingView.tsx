@@ -1,4 +1,5 @@
 import { useAudio } from "@/lib/hooks/useAudio";
+import { usePlaylist } from "@/lib/hooks/usePlaylistProvider";
 import Song from "@/types/song";
 import Image from "next/image";
 import { useEffect, useState } from "react";
@@ -9,6 +10,8 @@ import IconButton from "../common/IconButton";
 export default function NowPlayingView() {
   const { song } = useAudio()!;
   const [suggestions, setSuggestions] = useState<Song[]>([]);
+  const { searchInPlaylist, addToPlaylist, removeFromPlaylist } =
+    usePlaylist()!;
 
   useEffect(() => {
     const fetchSuggestions = async () => {
@@ -67,12 +70,17 @@ export default function NowPlayingView() {
                 .join(", ")}
             </p>
           </div>
-          <Image
-            src="assets/favourite-filled.svg"
-            alt="Like"
-            width={24}
-            height={24}
-            className="flex invert"
+          <IconButton
+            iconPath="assets/favourite-outlined.svg"
+            altIconPath="assets/favourite-filled.svg"
+            isActive={searchInPlaylist(song["id"], "_liked")}
+            iconSize={24}
+            className="mx-2 mb-2"
+            onClick={() =>
+              searchInPlaylist(song["id"], "_liked")
+                ? removeFromPlaylist(song["id"], "_liked")
+                : addToPlaylist(song, "_liked")
+            }
           />
         </div>
         <div className="-translate-x-1">
