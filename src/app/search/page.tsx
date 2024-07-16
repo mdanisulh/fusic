@@ -100,7 +100,9 @@ export default function Page() {
               style={{ scrollbarWidth: "none" }}
             >
               {searchResults.playlists.map((playlist) => (
-                <PlaylistCard key={playlist.id} playlist={playlist} />
+                <div key={playlist.id} className="min-w-44">
+                  <PlaylistCard playlist={playlist} />
+                </div>
               ))}
             </div>
           </div>

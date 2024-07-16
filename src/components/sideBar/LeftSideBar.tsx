@@ -3,13 +3,14 @@ import { useUIConfig } from "@/lib/hooks/useUIConfig";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import IconButton from "../common/IconButton";
+import Library from "./Library";
 
 export default function LeftSideBar() {
   const route = usePathname();
   const { isLSBCollapsed, setLSBCollapsed } = useUIConfig()!;
   return (
     <div className="flex h-full flex-col">
-      <div className="bg-light-black mb-1 rounded-lg px-2 py-1">
+      <div className="mb-1 rounded-lg bg-light-black px-2 py-1">
         <Link href="/">
           <IconButton
             iconPath="/assets/home-outlined.svg"
@@ -33,7 +34,7 @@ export default function LeftSideBar() {
           />
         </Link>
       </div>
-      <div className="bg-light-black mt-1 flex-grow rounded-lg">
+      <div className="mt-1 flex flex-grow flex-col overflow-y-hidden rounded-lg bg-light-black">
         <div className="flex justify-between px-2 py-0">
           <div className="flex-initial self-center">
             <IconButton
@@ -51,12 +52,13 @@ export default function LeftSideBar() {
               <IconButton
                 iconPath="/assets/add.svg"
                 title="Create Playlist"
-                className="hover:bg-dark-grey m-2 rounded-full p-2 font-bold"
+                className="m-2 rounded-full p-2 font-bold hover:bg-dark-grey"
                 iconSize={16}
               />
             </div>
           )}
         </div>
+        <Library />
       </div>
     </div>
   );
