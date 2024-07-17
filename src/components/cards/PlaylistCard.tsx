@@ -23,26 +23,28 @@ export default function PlaylistCard({
   };
 
   return (
-    <div className="group max-w-[400px] flex-1 -translate-x-1 cursor-pointer flex-row rounded-lg p-[7%] hover:bg-dark-grey">
-      <div className="relative">
-        <PlaylistImage playlist={playlist} />
+    <div className="max-w-[400px]">
+      <div className="group flex-1 -translate-x-1 cursor-pointer flex-row rounded-lg p-[7%] hover:bg-dark-grey">
+        <div className="relative">
+          <PlaylistImage playlist={playlist} />
+          {!showOnlyImage && (
+            <IconButton
+              className="absolute bottom-[5%] right-[5%] h-12 w-12 justify-center rounded-full bg-primary opacity-0 group-hover:opacity-100"
+              iconPath="/assets/pause.svg"
+              altIconPath="/assets/play.svg"
+              isActive={id === playlist.id && isPlaying}
+              iconSize={20}
+              isWhite={false}
+              onClick={handleClick}
+            />
+          )}
+        </div>
         {!showOnlyImage && (
-          <IconButton
-            className="absolute bottom-[5%] right-[5%] h-12 w-12 justify-center rounded-full bg-primary opacity-0 group-hover:opacity-100"
-            iconPath="/assets/pause.svg"
-            altIconPath="/assets/play.svg"
-            isActive={id === playlist.id && isPlaying}
-            iconSize={20}
-            isWhite={false}
-            onClick={handleClick}
-          />
+          <div className="line-clamp-2 flex-col justify-between px-1 pt-2 text-white">
+            {playlist.name}
+          </div>
         )}
       </div>
-      {!showOnlyImage && (
-        <div className="line-clamp-2 flex-col justify-between px-1 pt-2 text-white">
-          {playlist.name}
-        </div>
-      )}
     </div>
   );
 }

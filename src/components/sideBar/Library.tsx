@@ -3,7 +3,7 @@ import { usePlaylist } from "@/lib/hooks/usePlaylistProvider";
 import { useUIConfig } from "@/lib/hooks/useUIConfig";
 
 export default function Library() {
-  const { playlists, createPlaylist } = usePlaylist()!;
+  const { playlists } = usePlaylist()!;
   const { isLSBCollapsed } = useUIConfig()!;
   const cardSize = isLSBCollapsed ? 56 : 150;
   return (
@@ -16,9 +16,6 @@ export default function Library() {
         alignContent: "start",
         rowGap: isLSBCollapsed ? "4px" : "0px",
       }}
-      onClick={() =>
-        createPlaylist({ ...playlists["_liked"], id: crypto.randomUUID() })
-      }
     >
       {Object.values(playlists).map((playlist) => {
         return (

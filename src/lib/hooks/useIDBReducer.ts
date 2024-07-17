@@ -10,13 +10,15 @@ export const useIDBReducer = <T>(
   useLocalStorage = false,
 ) => {
   const init = () => {
-    if (!useLocalStorage) return initialValue;
-    const value = localStorage.getItem(key);
-    if (value) {
-      const parsedValue = JSON.parse(value);
-      onInit(parsedValue);
-      return parsedValue;
+    if (useLocalStorage) {
+      const value = localStorage.getItem(key);
+      if (value) {
+        const parsedValue = JSON.parse(value);
+        onInit(parsedValue);
+        return parsedValue;
+      }
     }
+    return initialValue;
   };
   const [state, dispatch] = useReducer(reducer, initialValue, init);
 
