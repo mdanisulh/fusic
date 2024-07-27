@@ -8,7 +8,7 @@ import RightSideBar from "@/components/sideBar/RightSideBar";
 import SideBar from "@/components/sideBar/SideBar";
 import AudioProvider from "@/lib/providers/AudioProvider";
 import CurrentTimeProvider from "@/lib/providers/CurrentTimeProvider";
-import PlaylistProvider from "@/lib/providers/PlaylistProvider";
+import LibraryProvider from "@/lib/providers/LibraryProvider";
 import QueueProvider from "@/lib/providers/QueueProvider";
 import UIConfigProvider from "@/lib/providers/UIConfigProvider";
 import "./globals.css";
@@ -34,7 +34,7 @@ export default function RootLayout({
     <html lang="en" className={inter.className}>
       <body className="h-screen select-none bg-black">
         <NoSSR>
-          <PlaylistProvider>
+          <LibraryProvider>
             <QueueProvider>
               <AudioProvider>
                 <CurrentTimeProvider>
@@ -57,7 +57,7 @@ export default function RootLayout({
                 </CurrentTimeProvider>
               </AudioProvider>
             </QueueProvider>
-          </PlaylistProvider>
+          </LibraryProvider>
         </NoSSR>
       </body>
     </html>

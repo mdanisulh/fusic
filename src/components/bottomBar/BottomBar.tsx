@@ -6,13 +6,16 @@ import { usePathname, useRouter } from "next/navigation";
 import IconButton from "../common/IconButton";
 import PlayerControls from "./PlayerControls";
 import VolumeBar from "./VolumeBar";
-import { usePlaylist } from "@/lib/hooks/usePlaylistProvider";
+import { useLibrary } from "@/lib/hooks/useLibraryProvider";
 
 export default function BottomBar() {
   const { song } = useAudio()!;
   const { rsbView, setRSBView } = useUIConfig()!;
-  const { searchInPlaylist, addToPlaylist, removeFromPlaylist } =
-    usePlaylist()!;
+  const {
+    isSongInPlaylist: searchInPlaylist,
+    addToPlaylist,
+    removeFromPlaylist,
+  } = useLibrary()!;
   const path = usePathname();
   const router = useRouter();
 

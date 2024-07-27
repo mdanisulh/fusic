@@ -1,5 +1,5 @@
 import { useAudio } from "@/lib/hooks/useAudio";
-import { usePlaylist } from "@/lib/hooks/usePlaylistProvider";
+import { useLibrary } from "@/lib/hooks/useLibraryProvider";
 import Song from "@/types/song";
 import Image from "next/image";
 import { useEffect, useState } from "react";
@@ -10,8 +10,11 @@ import IconButton from "../common/IconButton";
 export default function NowPlayingView() {
   const { song } = useAudio()!;
   const [suggestions, setSuggestions] = useState<Song[]>([]);
-  const { searchInPlaylist, addToPlaylist, removeFromPlaylist } =
-    usePlaylist()!;
+  const {
+    isSongInPlaylist: searchInPlaylist,
+    addToPlaylist,
+    removeFromPlaylist,
+  } = useLibrary()!;
 
   useEffect(() => {
     const fetchSuggestions = async () => {

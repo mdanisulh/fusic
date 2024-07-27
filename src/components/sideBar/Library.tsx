@@ -1,9 +1,9 @@
 import PlaylistCard from "@/components/cards/PlaylistCard";
-import { usePlaylist } from "@/lib/hooks/usePlaylistProvider";
+import { useLibrary } from "@/lib/hooks/useLibraryProvider";
 import { useUIConfig } from "@/lib/hooks/useUIConfig";
 
 export default function Library() {
-  const { playlists } = usePlaylist()!;
+  const { playlists } = useLibrary()!;
   const { isLSBCollapsed } = useUIConfig()!;
   const cardSize = isLSBCollapsed ? 56 : 150;
   return (
