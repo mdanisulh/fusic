@@ -4,6 +4,7 @@ import { getPlaylist } from "@/lib/services/playlists";
 import Playlist from "@/types/playlist";
 import IconButton from "../common/IconButton";
 import PlaylistImage from "../common/PlaylistImage";
+import { useContextMenu, MenuItem } from "@/lib/hooks/useContextMenu";
 
 export default function PlaylistCard({
   playlist,
@@ -14,6 +15,7 @@ export default function PlaylistCard({
 }) {
   const { id } = useQueue()!;
   const { isPlaying, togglePlay, setQueue } = useAudio()!;
+  const { handleContextMenu } = useContextMenu()!;
 
   const handleClick = async () => {
     if (id === playlist.id) return togglePlay();
@@ -21,10 +23,14 @@ export default function PlaylistCard({
     const songList = await getPlaylist(playlist.id);
     setQueue(songList.songs, playlist.id);
   };
+  const menuList: MenuItem[] = [{ text: "Play", onClick: handleClick }];
 
   return (
     <div className="max-w-[400px]">
-      <div className="group flex-1 -translate-x-1 cursor-pointer flex-row rounded-lg p-[7%] hover:bg-dark-grey">
+      <div
+        className="group flex-1 -translate-x-1 cursor-pointer flex-row rounded-lg p-[7%] hover:bg-dark-grey"
+        onContextMenu={(e) => handleContextMenu(e, menuList)}
+      >
         <div className="relative">
           <PlaylistImage playlist={playlist} />
           {!showOnlyImage && (

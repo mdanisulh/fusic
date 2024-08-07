@@ -151,7 +151,7 @@ export default function UIConfigProvider({
     }
   };
 
-  const value = {
+  const value: UIConfigInterface = {
     ...state,
     setLSBWidth,
     setRSBWidth,

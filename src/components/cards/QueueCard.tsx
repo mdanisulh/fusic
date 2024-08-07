@@ -1,7 +1,8 @@
 import Song from "@/types/song";
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import IconButton from "../common/IconButton";
+import { useContextMenu } from "@/lib/hooks/useContextMenu";
 
 export default function QueueCard({
   isPlaying,
@@ -30,29 +31,25 @@ export default function QueueCard({
 }) {
   const overlaySrc =
     isPlaying && isNowPlaying ? "/assets/play.svg" : "/assets/pause.svg";
-  const [showContextMenu, setShowContextMenu] = useState(false);
-
-  const handleRightClick = (event: React.MouseEvent) => {
-    event.preventDefault();
-    setShowContextMenu(true);
-  };
-
-  const handleCloseContextMenu = () => {
-    setShowContextMenu(false);
-  };
-
-  useEffect(() => {
-    if (showContextMenu) {
-      window.addEventListener("click", handleCloseContextMenu);
-    }
-    return () => {
-      window.removeEventListener("click", handleCloseContextMenu);
-    };
-  }, [showContextMenu]);
+  const menuList = [
+    {
+      text: "Add to Queue",
+      onClick: () => addToExtraQueue(song),
+      icon: "/assets/add-queue.svg",
+    },
+  ];
+  if (isInQueue !== -1) {
+    menuList.push({
+      text: "Remove from Queue",
+      onClick: () => removeFromExtraQueue(isInQueue),
+      icon: "/assets/delete.svg",
+    });
+  }
+  const { handleContextMenu } = useContextMenu()!;
   return (
     <div
-      className="hover:bg-dark-grey group flex cursor-pointer truncate rounded-md p-2"
-      onContextMenu={handleRightClick}
+      className="group relative flex cursor-pointer truncate rounded-md p-2 hover:bg-dark-grey"
+      onContextMenu={(e) => handleContextMenu(e, menuList)}
     >
       <div
         className="group relative flex-shrink-0"
@@ -86,7 +83,7 @@ export default function QueueCard({
         <div className="my-1 flex-shrink truncate text-sm text-white">
           {song["name"]}
         </div>
-        <div className="text-light-grey truncate text-sm">
+        <div className="truncate text-sm text-light-grey">
           {song["artists"][0]["name"]}
         </div>
       </div>
@@ -94,25 +91,8 @@ export default function QueueCard({
         iconPath="/assets/more.svg"
         title={`More options for ${song["name"]}`}
         className="flex-shrink-0 opacity-0 group-hover:opacity-100"
+        onClick={(e) => handleContextMenu(e, menuList)}
       />
-      {showContextMenu && (
-        <div className="absolute right-0 z-50 mt-2 w-48 rounded-md bg-white py-1 shadow-lg">
-          <button
-            className="block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100"
-            onClick={() => addToExtraQueue(song)}
-          >
-            Add to Queue
-          </button>
-          {isInQueue !== -1 && (
-            <button
-              className="block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100"
-              onClick={() => removeFromExtraQueue(isInQueue)}
-            >
-              Remove from Queue
-            </button>
-          )}
-        </div>
-      )}
     </div>
   );
 }

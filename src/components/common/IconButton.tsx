@@ -12,7 +12,7 @@ export default function IconButton({
   title = "",
   onClick,
 }: {
-  iconPath: string;
+  iconPath?: string;
   altIconPath?: string;
   iconSize?: number;
   text?: string;
@@ -21,7 +21,7 @@ export default function IconButton({
   isActive?: boolean;
   isWhite?: boolean;
   title?: string;
-  onClick?: () => void;
+  onClick?: (e: React.MouseEvent) => void;
 }) {
   return (
     <div
@@ -29,24 +29,26 @@ export default function IconButton({
       title={title}
       onClick={onClick}
     >
-      <div className="relative flex-col content-center">
-        <Image
-          src={
-            isActive && altIconPath && altIconPath !== "dot"
-              ? altIconPath
-              : iconPath
-          }
-          alt={title}
-          width={iconSize}
-          height={iconSize}
-          className="icon self-center"
-        />
-        {altIconPath === "dot" && isActive && (
-          <div className="absolute bottom-0 left-1.5 h-1 w-1 rounded-full bg-white"></div>
-        )}
-      </div>
+      {iconPath && (
+        <div className="relative flex-col content-center">
+          <Image
+            src={
+              isActive && altIconPath && altIconPath !== "dot"
+                ? altIconPath
+                : iconPath
+            }
+            alt={title}
+            width={iconSize}
+            height={iconSize}
+            className="icon self-center"
+          />
+          {altIconPath === "dot" && isActive && (
+            <div className="absolute bottom-0 left-1.5 h-1 w-1 rounded-full bg-white"></div>
+          )}
+        </div>
+      )}
       {text?.length && iconPath && <div style={{ width: spacing }} />}
-      <div>{text}</div>
+      <div className="self-center">{text}</div>
     </div>
   );
 }
