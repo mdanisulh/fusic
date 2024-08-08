@@ -1,4 +1,5 @@
 "use client";
+import { useLibrary } from "@/lib/hooks/useLibraryProvider";
 import { useUIConfig } from "@/lib/hooks/useUIConfig";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -8,6 +9,7 @@ import Library from "./Library";
 export default function LeftSideBar() {
   const route = usePathname();
   const { isLSBCollapsed, setLSBCollapsed } = useUIConfig()!;
+  const { createPlaylist, playlists } = useLibrary()!;
   return (
     <div className="flex h-full flex-col">
       <div className="mb-1 rounded-lg bg-light-black px-2 py-1">
@@ -54,6 +56,15 @@ export default function LeftSideBar() {
                 title="Create Playlist"
                 className="m-2 rounded-full p-2 font-bold hover:bg-dark-grey"
                 iconSize={16}
+                onClick={() =>
+                  createPlaylist({
+                    id: crypto.randomUUID(),
+                    name: `My Playlist #${Object.keys(playlists).length}`,
+                    image: [],
+                    songs: [],
+                    artists: [],
+                  })
+                }
               />
             </div>
           )}

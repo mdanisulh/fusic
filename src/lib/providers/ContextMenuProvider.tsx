@@ -1,6 +1,6 @@
 "use client";
-import React, { createContext, useEffect, useState } from "react";
 import IconButton from "@/components/common/IconButton";
+import React, { createContext, useEffect, useState } from "react";
 import { MenuItem } from "../hooks/useContextMenu";
 
 interface ContextMenuInterface {
@@ -29,7 +29,7 @@ export default function ContextMenuProvider({
     event.preventDefault();
     setMenuList(menuList);
     const top = event.clientY < window.innerHeight / 2;
-    const left = event.clientX + 200 < window.innerWidth;
+    const left = event.clientX + 224 < window.innerWidth;
     setContextMenu({
       show: true,
       top,
@@ -72,7 +72,7 @@ export default function ContextMenuProvider({
               ? "auto"
               : `${window.innerHeight - contextMenu.mouseY}px`,
           }}
-          className="z-50 rounded-md bg-zinc-700 p-1 shadow-md"
+          className="z-50 max-h-[40%] min-w-56 overflow-y-auto scroll-smooth rounded-md bg-zinc-700 p-1 shadow-md"
         >
           {menuList.map((item, index) => (
             <IconButton
@@ -82,7 +82,7 @@ export default function ContextMenuProvider({
               text={item.text}
               onClick={item.onClick}
               spacing={10}
-              className="block w-full rounded-md px-2 py-2 text-left text-sm hover:bg-zinc-500"
+              className="block w-full rounded-md p-2 text-sm hover:bg-zinc-500"
             />
           ))}
         </div>

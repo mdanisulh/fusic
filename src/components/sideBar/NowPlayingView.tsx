@@ -1,5 +1,6 @@
 import { useAudio } from "@/lib/hooks/useAudio";
 import { useLibrary } from "@/lib/hooks/useLibraryProvider";
+import { useUIConfig } from "@/lib/hooks/useUIConfig";
 import Song from "@/types/song";
 import Image from "next/image";
 import { useEffect, useState } from "react";
@@ -9,12 +10,9 @@ import IconButton from "../common/IconButton";
 
 export default function NowPlayingView() {
   const { song } = useAudio()!;
+  const { setRSBView } = useUIConfig()!;
   const [suggestions, setSuggestions] = useState<Song[]>([]);
-  const {
-    isSongInPlaylist: searchInPlaylist,
-    addToPlaylist,
-    removeFromPlaylist,
-  } = useLibrary()!;
+  const { isSongInPlaylist, addToPlaylist, removeFromPlaylist } = useLibrary()!;
 
   useEffect(() => {
     const fetchSuggestions = async () => {
@@ -44,6 +42,7 @@ export default function NowPlayingView() {
             title="Close"
             className="m-4 ml-1 rounded-full p-2 font-bold hover:bg-dark-grey"
             iconSize={16}
+            onClick={() => setRSBView("none")}
           />
         </div>
       </div>
@@ -76,11 +75,11 @@ export default function NowPlayingView() {
           <IconButton
             iconPath="assets/favourite-outlined.svg"
             altIconPath="assets/favourite-filled.svg"
-            isActive={searchInPlaylist(song["id"], "_liked")}
+            isActive={isSongInPlaylist(song["id"], "_liked")}
             iconSize={24}
             className="mx-2 mb-2"
             onClick={() =>
-              searchInPlaylist(song["id"], "_liked")
+              isSongInPlaylist(song["id"], "_liked")
                 ? removeFromPlaylist(song["id"], "_liked")
                 : addToPlaylist(song, "_liked")
             }

@@ -1,10 +1,12 @@
 "use client";
 import { useAudio } from "@/lib/hooks/useAudio";
 import { useQueue } from "@/lib/hooks/useQueue";
+import { useUIConfig } from "@/lib/hooks/useUIConfig";
 import QueueCard from "../cards/QueueCard";
 import IconButton from "../common/IconButton";
 
 export default function QueueView() {
+  const { setRSBView } = useUIConfig()!;
   const { isPlaying, setSong, togglePlay, song } = useAudio()!;
   const {
     setCurrentIndex,
@@ -19,14 +21,15 @@ export default function QueueView() {
 
   const upcoming = shuffleIndices.slice(currentIndex + 1);
   return (
-    <div className="bg-light-black flex h-full flex-col rounded-lg">
+    <div className="flex h-full flex-col rounded-lg bg-light-black">
       <div className="sticky top-0 flex justify-between">
         <p className="my-1 p-4 font-bold text-white">Queue</p>
         <IconButton
           iconPath="/assets/close.svg"
           title="Close"
-          className="hover:bg-dark-grey m-4 rounded-full p-2 font-bold"
+          className="m-4 rounded-full p-2 font-bold hover:bg-dark-grey"
           iconSize={16}
+          onClick={() => setRSBView("none")}
         />
       </div>
       <div className="mr-3 flex-grow overflow-y-hidden scroll-smooth hover:mr-0 hover:overflow-y-scroll">
@@ -51,7 +54,7 @@ export default function QueueView() {
             <div className="mt-1 flex justify-between p-2">
               <p className="font-bold text-white">Next in queue</p>
               <p
-                className="text-light-grey self-center pr-1 text-sm font-bold hover:pr-0 hover:text-[15px] hover:text-white"
+                className="self-center pr-1 text-sm font-bold text-light-grey hover:pr-0 hover:text-[15px] hover:text-white"
                 onClick={clearQueue}
               >
                 Clear Queue

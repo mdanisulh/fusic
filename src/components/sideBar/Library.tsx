@@ -1,10 +1,12 @@
 import PlaylistCard from "@/components/cards/PlaylistCard";
+import { useContextMenu } from "@/lib/hooks/useContextMenu";
 import { useLibrary } from "@/lib/hooks/useLibraryProvider";
 import { useUIConfig } from "@/lib/hooks/useUIConfig";
 
 export default function Library() {
-  const { playlists } = useLibrary()!;
+  const { playlists, createPlaylist } = useLibrary()!;
   const { isLSBCollapsed } = useUIConfig()!;
+  const { handleContextMenu } = useContextMenu()!;
   const cardSize = isLSBCollapsed ? 56 : 150;
   return (
     <div
@@ -16,6 +18,22 @@ export default function Library() {
         alignContent: "start",
         rowGap: isLSBCollapsed ? "4px" : "0px",
       }}
+      onContextMenu={(e) =>
+        handleContextMenu(e, [
+          {
+            text: "Create Playlist",
+            onClick: () =>
+              createPlaylist({
+                id: crypto.randomUUID(),
+                name: `New Playlist #${Object.keys(playlists).length}`,
+                songs: [],
+                artists: [],
+                image: [],
+              }),
+            icon: "/assets/add.svg",
+          },
+        ])
+      }
     >
       {Object.values(playlists).map((playlist) => {
         return (

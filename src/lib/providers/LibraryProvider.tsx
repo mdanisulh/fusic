@@ -1,10 +1,10 @@
 "use client";
+import Album from "@/types/album";
+import Artist from "@/types/artist";
 import Playlist from "@/types/playlist";
 import Song from "@/types/song";
 import React, { createContext, useCallback } from "react";
 import { useIDBReducer } from "../hooks/useIDBReducer";
-import Artist from "@/types/artist";
-import Album from "@/types/album";
 
 export const LibraryContext = createContext<LibraryInterface | null>(null);
 interface LibraryState {
@@ -123,7 +123,9 @@ export default function PlaylistProvider({
     dispatch({ type: "DELETE_PLAYLIST", payload: playlistId });
   };
   const addToPlaylist = (song: Song, playlistId: string = "_liked") => {
-    dispatch({ type: "ADD_TO_PLAYLIST", payload: { song, playlistId } });
+    if (!isSongInPlaylist(song.id, playlistId)) {
+      dispatch({ type: "ADD_TO_PLAYLIST", payload: { song, playlistId } });
+    }
   };
   const removeFromPlaylist = (
     songId: string,

@@ -1,8 +1,9 @@
+import { MenuItem, useContextMenu } from "@/lib/hooks/useContextMenu";
+import { useLibrary } from "@/lib/hooks/useLibraryProvider";
 import Song from "@/types/song";
 import Image from "next/image";
 import React from "react";
 import IconButton from "../common/IconButton";
-import { useContextMenu } from "@/lib/hooks/useContextMenu";
 
 export default function QueueCard({
   isPlaying,
@@ -31,7 +32,51 @@ export default function QueueCard({
 }) {
   const overlaySrc =
     isPlaying && isNowPlaying ? "/assets/play.svg" : "/assets/pause.svg";
+  const { handleContextMenu } = useContextMenu()!;
+  const {
+    playlists,
+    addToPlaylist,
+    createPlaylist,
+    isSongInPlaylist,
+    removeFromPlaylist,
+  } = useLibrary()!;
   const menuList = [
+    {
+      text: "Add to Playlist",
+      onClick: (e: React.MouseEvent) => {
+        const list: MenuItem[] = Object.entries(playlists).map(
+          ([id, playlist]) => ({
+            text: playlist.name,
+            onClick: () => addToPlaylist(song, id),
+          }),
+        );
+        list.unshift({
+          icon: "/assets/add.svg",
+          text: "New Playlist",
+          onClick: () =>
+            createPlaylist({
+              id: crypto.randomUUID(),
+              name: song.name,
+              songs: [song],
+              artists: [song.artists[0]],
+              image: [],
+            }),
+        });
+        handleContextMenu(e, list);
+      },
+      icon: "/assets/add.svg",
+    },
+    isSongInPlaylist(song.id, "_liked")
+      ? {
+          text: "Remove from Liked Songs",
+          onClick: () => removeFromPlaylist(song["id"], "_liked"),
+          icon: "/assets/favourite-filled.svg",
+        }
+      : {
+          text: "Add to Liked Songs",
+          onClick: () => addToPlaylist(song, "_liked"),
+          icon: "/assets/favourite-outlined.svg",
+        },
     {
       text: "Add to Queue",
       onClick: () => addToExtraQueue(song),
@@ -45,7 +90,6 @@ export default function QueueCard({
       icon: "/assets/delete.svg",
     });
   }
-  const { handleContextMenu } = useContextMenu()!;
   return (
     <div
       className="group relative flex cursor-pointer truncate rounded-md p-2 hover:bg-dark-grey"
