@@ -30,7 +30,7 @@ export default function PlaylistCard({
       icon: "/assets/add-queue.svg",
       text: "Add to Queue",
       onClick: () => {
-        if ("songs" in playlist)
+        if ("songs" in playlist && playlist.songs)
           playlist.songs.map((song) => addToExtraQueue(song));
         else
           getPlaylist(playlist.id).then((playlist) =>
@@ -48,7 +48,8 @@ export default function PlaylistCard({
           icon: "/assets/add.svg",
           text: "Add to Library",
           onClick: () => {
-            if ("songs" in playlist) return createPlaylist(playlist);
+            if ("songs" in playlist && playlist.songs)
+              return createPlaylist(playlist);
             getPlaylist(playlist.id).then((playlist) =>
               createPlaylist(playlist),
             );
@@ -82,9 +83,18 @@ export default function PlaylistCard({
           )}
         </div>
         {!showOnlyImage && (
-          <div className="line-clamp-2 flex-col justify-between px-1 pt-2 text-white">
-            {playlist.name}
-          </div>
+          <>
+            <div className="truncate text-white">{playlist.name}</div>
+            <div className="truncate text-sm text-light-grey">
+              <span>Playlist</span>
+              {"songs" in playlist && (
+                <>
+                  <span className="text-lg font-black"> · </span>
+                  <span>{`${playlist.songs.length} songs`}</span>
+                </>
+              )}
+            </div>
+          </>
         )}
       </div>
     </div>

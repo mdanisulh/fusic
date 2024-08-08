@@ -49,13 +49,15 @@ function libraryReducer(
       return action.payload;
     case "CREATE_PLAYLIST":
       return {
+        ...state,
         playlists: { ...state.playlists, [action.payload.id]: action.payload },
       };
     case "DELETE_PLAYLIST":
       const { [action.payload]: _, ...playlists } = state.playlists;
-      return { playlists };
+      return { ...state, playlists };
     case "ADD_TO_PLAYLIST":
       return {
+        ...state,
         playlists: {
           ...state.playlists,
           [action.payload.playlistId]: {
@@ -69,6 +71,7 @@ function libraryReducer(
       };
     case "REMOVE_FROM_PLAYLIST":
       return {
+        ...state,
         playlists: {
           ...state.playlists,
           [action.payload.playlistId]: {
@@ -150,7 +153,7 @@ export default function PlaylistProvider({
     dispatch({ type: "UNFOLLOW_ARTIST", payload: artistId });
   };
   const isFollowingArtist = (artistId: string) => {
-    return artistId in state.artists;
+    return state.artists.some((artist) => artist.id === artistId);
   };
 
   const addAlbum = (album: Album) => {
@@ -160,7 +163,7 @@ export default function PlaylistProvider({
     dispatch({ type: "REMOVE_ALBUM", payload: albumId });
   };
   const isAlbumInLibrary = (albumId: string) => {
-    return albumId in state.albums;
+    return state.albums.some((album) => album.id === albumId);
   };
 
   const value = {

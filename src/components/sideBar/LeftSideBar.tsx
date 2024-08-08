@@ -1,5 +1,4 @@
 "use client";
-import { useLibrary } from "@/lib/hooks/useLibraryProvider";
 import { useUIConfig } from "@/lib/hooks/useUIConfig";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -9,7 +8,6 @@ import Library from "./Library";
 export default function LeftSideBar() {
   const route = usePathname();
   const { isLSBCollapsed, setLSBCollapsed } = useUIConfig()!;
-  const { createPlaylist, playlists } = useLibrary()!;
   return (
     <div className="flex h-full flex-col">
       <div className="mb-1 rounded-lg bg-light-black px-2 py-1">
@@ -36,41 +34,7 @@ export default function LeftSideBar() {
           />
         </Link>
       </div>
-      <div className="mt-1 flex flex-grow flex-col overflow-y-hidden rounded-lg bg-light-black">
-        <div className="flex justify-between px-2 py-0">
-          <div className="flex-initial self-center">
-            <IconButton
-              iconPath="/assets/library-filled.svg"
-              altIconPath="/assets/library-outlined.svg"
-              title={`${isLSBCollapsed ? "Expand" : "Collapse"} Your Library`}
-              text={isLSBCollapsed ? undefined : "Your Library"}
-              className="m-2 p-2 font-bold"
-              spacing={10}
-              onClick={() => setLSBCollapsed(!isLSBCollapsed)}
-            />
-          </div>
-          {!isLSBCollapsed && (
-            <div className="flex-initial self-center">
-              <IconButton
-                iconPath="/assets/add.svg"
-                title="Create Playlist"
-                className="m-2 rounded-full p-2 font-bold hover:bg-dark-grey"
-                iconSize={16}
-                onClick={() =>
-                  createPlaylist({
-                    id: crypto.randomUUID(),
-                    name: `My Playlist #${Object.keys(playlists).length}`,
-                    image: [],
-                    songs: [],
-                    artists: [],
-                  })
-                }
-              />
-            </div>
-          )}
-        </div>
-        <Library />
-      </div>
+      <Library />
     </div>
   );
 }

@@ -70,7 +70,9 @@ export default function Page() {
               style={{ scrollbarWidth: "none" }}
             >
               {searchResults.artists.map((artist) => (
-                <ArtistCard key={artist.id} artist={artist} />
+                <div key={artist.id} className="w-44">
+                  <ArtistCard artist={artist} />
+                </div>
               ))}
             </div>
           </div>
@@ -85,7 +87,9 @@ export default function Page() {
               style={{ scrollbarWidth: "none" }}
             >
               {searchResults.albums.map((album) => (
-                <AlbumCard key={album.id} album={album} />
+                <div key={album.id} className="w-44">
+                  <AlbumCard album={album} />
+                </div>
               ))}
             </div>
           </div>
@@ -100,7 +104,7 @@ export default function Page() {
               style={{ scrollbarWidth: "none" }}
             >
               {searchResults.playlists.map((playlist) => (
-                <div key={playlist.id} className="min-w-44">
+                <div key={playlist.id} className="w-44">
                   <PlaylistCard playlist={playlist} />
                 </div>
               ))}
