@@ -40,7 +40,7 @@ export default function IconButton({
             alt={title}
             width={iconSize}
             height={iconSize}
-            className="icon self-center"
+            className="icon flex-shrink-0 self-center"
           />
           {altIconPath === "dot" && isActive && (
             <div className="absolute bottom-0 left-1.5 h-1 w-1 rounded-full bg-white"></div>

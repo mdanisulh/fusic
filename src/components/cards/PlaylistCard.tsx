@@ -26,18 +26,6 @@ export default function PlaylistCard({
     setQueue(songList.songs, playlist.id);
   };
   const menuList: MenuItem[] = [
-    {
-      icon: "/assets/add-queue.svg",
-      text: "Add to Queue",
-      onClick: () => {
-        if ("songs" in playlist && playlist.songs)
-          playlist.songs.map((song) => addToExtraQueue(song));
-        else
-          getPlaylist(playlist.id).then((playlist) =>
-            playlist.songs.map((song) => addToExtraQueue(song)),
-          );
-      },
-    },
     isPlaylistInLibrary(playlist.id)
       ? {
           icon: "/assets/delete.svg",
@@ -55,9 +43,21 @@ export default function PlaylistCard({
             );
           },
         },
+    {
+      icon: "/assets/add-queue.svg",
+      text: "Add to Queue",
+      onClick: () => {
+        if ("songs" in playlist && playlist.songs)
+          playlist.songs.map((song) => addToExtraQueue(song));
+        else
+          getPlaylist(playlist.id).then((playlist) =>
+            playlist.songs.map((song) => addToExtraQueue(song)),
+          );
+      },
+    },
   ];
   if (playlist.id === "_liked") {
-    menuList.pop();
+    menuList.shift();
   }
   return (
     <div className="max-w-[400px]">
@@ -87,10 +87,10 @@ export default function PlaylistCard({
             <div className="truncate text-white">{playlist.name}</div>
             <div className="truncate text-sm text-light-grey">
               <span>Playlist</span>
-              {"songs" in playlist && (
+              {("songs" in playlist || playlist.songCount) && (
                 <>
                   <span className="text-lg font-black"> · </span>
-                  <span>{`${playlist.songs.length} songs`}</span>
+                  <span>{`${"songs" in playlist ? playlist.songs.length : playlist.songCount} songs`}</span>
                 </>
               )}
             </div>

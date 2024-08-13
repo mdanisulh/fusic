@@ -26,12 +26,12 @@ export default function AlbumCard({
   const menuList: MenuItem[] = [
     isFollowingArtist(artist.id)
       ? {
-          icon: "/assets/delete.svg",
+          icon: "/assets/close.svg",
           text: "Unfollow Artist",
           onClick: () => unfollowArtist(artist.id),
         }
       : {
-          icon: "/assets/add.svg",
+          icon: "/assets/follow.svg",
           text: "Follow Artist",
           onClick: () => followArtist({ ...artist, songs: [] }),
         },

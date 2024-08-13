@@ -113,7 +113,7 @@ export default function PlaylistProvider({
   children: React.ReactNode;
 }) {
   const [state, dispatch] = useIDBReducer(
-    "playlists",
+    "library",
     libraryReducer,
     initialState,
     useCallback(() => {}, []),

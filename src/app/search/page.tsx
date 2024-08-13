@@ -62,15 +62,18 @@ export default function Page() {
         )}
         {searchResults.artists.length > 0 && (
           <div>
-            <div className="cursor-text p-2 pt-8 text-2xl font-bold text-white">
+            <div className="cursor-text p-2 pt-4 text-2xl font-bold text-white">
               Artists
             </div>
             <div
-              className="flex flex-row overflow-x-auto"
+              className="flex flex-row overflow-x-auto pb-4"
               style={{ scrollbarWidth: "none" }}
             >
               {searchResults.artists.map((artist) => (
-                <div key={artist.id} className="w-44">
+                <div
+                  key={artist.id}
+                  className="min-w-48 max-w-48 translate-x-1"
+                >
                   <ArtistCard artist={artist} />
                 </div>
               ))}
@@ -79,15 +82,15 @@ export default function Page() {
         )}
         {searchResults.albums.length > 0 && (
           <div>
-            <div className="cursor-text p-2 pt-8 text-2xl font-bold text-white">
+            <div className="cursor-text p-2 pt-4 text-2xl font-bold text-white">
               Albums
             </div>
             <div
-              className="flex flex-row overflow-x-auto"
+              className="flex flex-row overflow-x-auto pb-4"
               style={{ scrollbarWidth: "none" }}
             >
               {searchResults.albums.map((album) => (
-                <div key={album.id} className="w-44">
+                <div key={album.id} className="min-w-48 max-w-48 translate-x-1">
                   <AlbumCard album={album} />
                 </div>
               ))}
@@ -96,15 +99,18 @@ export default function Page() {
         )}
         {searchResults.playlists.length > 0 && (
           <div>
-            <div className="cursor-text p-2 pt-8 text-2xl font-bold text-white">
+            <div className="cursor-text p-2 pt-4 text-2xl font-bold text-white">
               Playlists
             </div>
             <div
-              className="flex flex-row overflow-x-auto"
+              className="flex flex-row overflow-x-auto pb-4"
               style={{ scrollbarWidth: "none" }}
             >
               {searchResults.playlists.map((playlist) => (
-                <div key={playlist.id} className="w-44">
+                <div
+                  key={playlist.id}
+                  className="min-w-48 max-w-48 translate-x-1"
+                >
                   <PlaylistCard playlist={playlist} />
                 </div>
               ))}
