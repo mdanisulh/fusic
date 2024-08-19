@@ -82,8 +82,10 @@ export default function LyricsPage() {
     if (!song.lyrics) {
       fetchLyrics();
     }
-    getAverageColor(document.querySelector(".abc")!).then((res: string) => {
-      setColor(res);
+    getAverageColor(
+      document.querySelector(".current-song-img")! as HTMLImageElement,
+    ).then((color) => {
+      setColor(color);
     });
   }, [song, setLyrics, fetchLyrics]);
 
@@ -105,10 +107,10 @@ export default function LyricsPage() {
   return (
     <div className="relative h-full text-center text-white">
       <div
-        className="h-full overflow-y-hidden scroll-smooth rounded-lg bg-scroll px-24 py-16 hover:overflow-y-scroll hover:pr-[84px]"
+        className="h-full overflow-y-hidden scroll-smooth rounded-lg bg-scroll p-16 hover:overflow-y-scroll hover:pr-[52px]"
         style={{ backgroundColor: color }}
       >
-        <div className="inline-flex flex-col items-center text-2xl font-bold leading-10">
+        <div className="inline-flex flex-col items-center text-4xl font-bold leading-snug">
           {lyrics.map((item: { time: number; line: string }, index: number) => (
             <p
               key={`line-${index}`}
@@ -117,10 +119,13 @@ export default function LyricsPage() {
                 lyrics[lyrics.length - 1].time !== 0 && setTime(item.time)
               }
               className={
-                currentTime >= item.time &&
+                "cursor-pointer " +
+                (currentTime >= item.time &&
                 currentTime < (lyrics[index + 1]?.time || Infinity)
-                  ? "text-3xl"
-                  : "opacity-50"
+                  ? ""
+                  : currentTime < item.time
+                    ? "text-black opacity-60"
+                    : "text-white opacity-50")
               }
             >
               {item.line}

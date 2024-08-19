@@ -7,7 +7,7 @@ import Library from "./Library";
 
 export default function LeftSideBar() {
   const route = usePathname();
-  const { isLSBCollapsed, setLSBCollapsed } = useUIConfig()!;
+  const { isLSBCollapsed } = useUIConfig()!;
   return (
     <div className="flex h-full flex-col">
       <div className="mb-1 rounded-lg bg-light-black px-2 py-1">

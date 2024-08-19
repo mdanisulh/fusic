@@ -33,6 +33,7 @@ export async function getPlaylist(
   );
   const data = await response.json();
   const playlist = data.data;
+  if (!playlist) return null;
   const res: Playlist = {
     id: playlist.id,
     name: playlist.name.replace(/&quot;/g, '"'),

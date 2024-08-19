@@ -73,8 +73,8 @@ export default function NowPlayingView() {
             </p>
           </div>
           <IconButton
-            iconPath="assets/favourite-outlined.svg"
-            altIconPath="assets/favourite-filled.svg"
+            iconPath="/assets/favourite-outlined.svg"
+            altIconPath="/assets/favourite-filled.svg"
             isActive={isSongInPlaylist(song["id"], "_liked")}
             iconSize={24}
             className="mx-2 mb-2 flex-shrink-0"

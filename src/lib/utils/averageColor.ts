@@ -1,9 +1,16 @@
 "use client";
+
 export default function getAverageColor(
-  image: HTMLImageElement,
+  data: HTMLImageElement | string,
 ): Promise<string> {
+  let image = new Image(56, 56);
+  if (typeof data === "string") {
+    image.src = data;
+  } else if (data instanceof HTMLImageElement) {
+    image = data;
+  }
+  image.crossOrigin = "Anonymous";
   return new Promise((resolve, reject) => {
-    image.crossOrigin = "Anonymous";
     const tryResolveColor = () => {
       const canvas = document.createElement("canvas");
       const ctx = canvas.getContext("2d");

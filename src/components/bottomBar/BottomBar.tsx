@@ -1,12 +1,12 @@
 "use client";
 import { useAudio } from "@/lib/hooks/useAudio";
+import { useLibrary } from "@/lib/hooks/useLibraryProvider";
 import { useUIConfig } from "@/lib/hooks/useUIConfig";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import IconButton from "../common/IconButton";
 import PlayerControls from "./PlayerControls";
 import VolumeBar from "./VolumeBar";
-import { useLibrary } from "@/lib/hooks/useLibraryProvider";
 
 export default function BottomBar() {
   const { song } = useAudio()!;
@@ -28,7 +28,7 @@ export default function BottomBar() {
           title={song["name"]}
           width={56}
           height={56}
-          className="abc m-2 rounded-md"
+          className="current-song-img m-2 rounded-md"
           style={{ height: "56px", width: "56px", objectFit: "fill" }}
           priority={true}
         />
@@ -39,8 +39,8 @@ export default function BottomBar() {
           </div>
         </div>
         <IconButton
-          iconPath="assets/favourite-outlined.svg"
-          altIconPath="assets/favourite-filled.svg"
+          iconPath="/assets/favourite-outlined.svg"
+          altIconPath="/assets/favourite-filled.svg"
           isActive={searchInPlaylist(song["id"], "_liked")}
           iconSize={24}
           className="mx-2 mb-2 flex-shrink-0"
