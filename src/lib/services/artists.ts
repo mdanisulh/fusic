@@ -1,8 +1,8 @@
 import Artist from "@/types/artist";
+import Song from "@/types/song";
 import { apiEndpoint } from "../constants/constants";
 import { transformAlbum } from "./albums";
 import { transformSong } from "./songs";
-import Song from "@/types/song";
 
 export async function searchArtists(query: string, limit = 10, page = 0) {
   const response = await fetch(
@@ -36,19 +36,19 @@ export async function getArtist(
   page: number = 0,
   songCount: number = 10,
   albumCount: number = 10,
-): Promise<Artist> {
+): Promise<Artist | null> {
   const response = await fetch(
-    `${apiEndpoint}/artists/${id}?page=${page}&songCount=${songCount}&albumCount=${albumCount}&sortBy=pouplarity&sortOrder=desc`,
+    `${apiEndpoint}/artists/${id}?page=${page}&songCount=${songCount}&albumCount=${albumCount}&sortBy=popularity&sortOrder=desc`,
   );
   const data = await response.json();
   const artist = data.data;
+  if (!artist) return null;
   return {
     id: artist.id,
     name: artist.name.replace(/&quot;/g, '"'),
     image: artist.image.map((img: { url: string }) => img.url),
     songs: artist.topSongs.map(transformSong),
     albums: artist.topAlbums.map(transformAlbum),
-    singles: artist.singles.map(transformSong),
     fanCount: artist.fanCount,
   };
 }

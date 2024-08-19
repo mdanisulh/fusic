@@ -1,4 +1,5 @@
 "use client";
+import AlbumCard from "@/components/cards/AlbumCard";
 import SongCard from "@/components/cards/SongCard";
 import IconButton from "@/components/common/IconButton";
 import Router from "@/components/common/Router";
@@ -6,66 +7,72 @@ import { useAudio } from "@/lib/hooks/useAudio";
 import { MenuItem, useContextMenu } from "@/lib/hooks/useContextMenu";
 import { useLibrary } from "@/lib/hooks/useLibraryProvider";
 import { useQueue } from "@/lib/hooks/useQueue";
-import { getAlbum } from "@/lib/services/albums";
+import { getArtist } from "@/lib/services/artists";
 import getAverageColor from "@/lib/utils/averageColor";
 import { formatDuration } from "@/lib/utils/formatTime";
-import Album from "@/types/album";
+import Artist from "@/types/artist";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 
-export default function AlbumPage({ params }: { params: { id: string } }) {
-  const { albums, addAlbum, isAlbumInLibrary, removeAlbum } = useLibrary()!;
-  const [album, setAlbum] = useState<Album | null>(null);
+export default function ArtistPage({ params }: { params: { id: string } }) {
+  const { artists, isFollowingArtist, followArtist, unfollowArtist } =
+    useLibrary()!;
+  const [artist, setArtist] = useState<Artist | null>(null);
   const [color, setColor] = useState("");
   const { id, addToExtraQueue } = useQueue()!;
   const { isPlaying, togglePlay, setQueue } = useAudio()!;
   const { handleContextMenu } = useContextMenu()!;
 
   const menuList: MenuItem[] = [
-    isAlbumInLibrary(params.id)
+    isFollowingArtist(params.id)
       ? {
           icon: "/assets/delete.svg",
           text: "Remove from Library",
-          onClick: () => removeAlbum(params.id),
+          onClick: () => unfollowArtist(params.id),
         }
       : {
           icon: "/assets/add.svg",
           text: "Add to Library",
-          onClick: () => album && addAlbum(album),
+          onClick: () => artist && followArtist(artist),
         },
     {
       icon: "/assets/add-queue.svg",
       text: "Add to Queue",
-      onClick: () => album && album.songs.map((song) => addToExtraQueue(song)),
+      onClick: () =>
+        artist && artist.songs.map((song) => addToExtraQueue(song)),
     },
   ];
+  if (params.id === "_liked") {
+    menuList.shift();
+  }
 
   const handleClick = async (e: React.MouseEvent) => {
     e.stopPropagation();
     e.preventDefault();
-    if (!album) return;
-    if (id === album.id) return togglePlay();
-    if (album.songs) return setQueue(album.songs, album.id);
+    if (!artist) return;
+    if (id === artist.id) return togglePlay();
+    if (artist.songs) return setQueue(artist.songs, artist.id);
   };
 
   useEffect(() => {
-    getAlbum(params.id).then((album) => {
-      setAlbum(album);
+    getArtist(params.id, 0, 999, 999).then((artist) => {
+      if (!artist) return;
+      setArtist(artist);
     });
-  }, [albums, isAlbumInLibrary, params.id]);
+  }, [isFollowingArtist, params.id, artists]);
   useEffect(() => {
-    if (!album) return;
-    let gradientImage = album.image[1];
-    if (!gradientImage && album.songs.length)
-      gradientImage = album.songs[0].image[1];
+    if (!artist) return;
+    let gradientImage = artist.image[1];
+    if (!gradientImage && artist.songs.length)
+      gradientImage = artist.songs[0].image[1];
     if (!gradientImage) return;
     getAverageColor(gradientImage).then((color) => {
       setColor(color);
     });
-  }, [album]);
+  }, [artist]);
 
-  if (!album || !album.songs) return <div>Loading...</div>;
-  const totalDuration = album.songs.reduce(
+  if (!artist) return <div>Loading...</div>;
+  const totalDuration = artist.songs.reduce(
     (acc, song) => acc + song.duration,
     0,
   );
@@ -85,15 +92,15 @@ export default function AlbumPage({ params }: { params: { id: string } }) {
         <div className="absolute bottom-0 z-10 flex h-60 w-full p-5">
           <div className="mr-5 mt-2 w-48 flex-shrink-0">
             <Image
-              src={album.image[1] ?? album.songs[0].image[1]}
+              src={artist.image[1]}
               alt=""
               width={192}
               height={192}
-              className="rounded-lg"
+              className="rounded-full"
             />
           </div>
           <div className="flex h-full flex-grow flex-col justify-evenly text-white">
-            <div className="p-1 text-sm">Album</div>
+            <div className="p-1 text-sm">Artist</div>
             <div
               className="overflow-hidden text-pretty p-1 text-5xl font-black"
               style={{
@@ -104,9 +111,9 @@ export default function AlbumPage({ params }: { params: { id: string } }) {
                 boxOrient: "vertical",
               }}
             >
-              {album.name}
+              {artist.name}
             </div>
-            <div className="p-1 text-sm">{`${album.songs.length} songs, ${formatDuration(totalDuration)}`}</div>
+            <div className="p-1 text-sm">{`${artist.songs.length} songs, ${formatDuration(totalDuration)}`}</div>
           </div>
         </div>
         <div
@@ -130,7 +137,7 @@ export default function AlbumPage({ params }: { params: { id: string } }) {
             className="h-14 w-14 justify-center rounded-full bg-primary hover:scale-105"
             iconPath="/assets/pause.svg"
             altIconPath="/assets/play.svg"
-            isActive={id === album.id && isPlaying}
+            isActive={id === artist.id && isPlaying}
             iconSize={20}
             isWhite={false}
             onClick={handleClick}
@@ -140,7 +147,7 @@ export default function AlbumPage({ params }: { params: { id: string } }) {
             iconPath="/assets/more.svg"
             iconSize={30}
             isWhite={true}
-            title={`More options for ${album.name}`}
+            title={`More options for ${artist.name}`}
             onClick={(e) => handleContextMenu(e, menuList)}
           />
         </div>
@@ -159,13 +166,28 @@ export default function AlbumPage({ params }: { params: { id: string } }) {
           </div>
         </div>
         <div className="m-3 ml-6">
-          {album.songs.map((song, index) => (
+          {artist.songs.map((song, index) => (
             <SongCard
               song={song}
               index={index}
-              queueId={album.id}
+              queueId={artist.id}
               key={index}
             />
+          ))}
+        </div>
+        {artist.albums.length > 0 && (
+          <div className="pl-10 pt-10 text-2xl font-bold text-white">
+            {`Albums by ${artist.name}`}
+          </div>
+        )}
+        <div
+          className="m-3 ml-6 flex flex-row overflow-x-auto"
+          style={{ scrollbarWidth: "none" }}
+        >
+          {artist.albums.map((album, index) => (
+            <div key={index} className="min-w-48 max-w-48 translate-x-1">
+              <AlbumCard album={album} />
+            </div>
           ))}
         </div>
       </div>

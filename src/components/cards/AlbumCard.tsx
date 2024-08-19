@@ -19,10 +19,12 @@ export default function AlbumCard({
   const { isPlaying, togglePlay, setQueue } = useAudio()!;
   const { handleContextMenu } = useContextMenu()!;
   const { isAlbumInLibrary, addAlbum, removeAlbum } = useLibrary()!;
-  const handleClick = async () => {
+  const handleClick = async (e: React.MouseEvent) => {
+    e.stopPropagation();
+    e.preventDefault();
     if (id === album.id) return togglePlay();
     const newAlbum = await getAlbum(album.id);
-    setQueue(newAlbum.songs, album.id);
+    if (newAlbum) setQueue(newAlbum.songs, album.id);
   };
   const menuList: MenuItem[] = [
     isAlbumInLibrary(album.id)

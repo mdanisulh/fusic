@@ -59,7 +59,8 @@ export const transformSong = (song: {
   id: song.id,
   name: song.name.replace(/&quot;/g, '"'),
   image: song.image.map((img) => img.url),
-  url: song.downloadUrl[downloadQuality].url,
+  url:
+    song.downloadUrl[downloadQuality] && song.downloadUrl[downloadQuality].url,
   duration: song.duration ?? 0,
   artists: song.artists.primary.map((artist) => ({
     id: artist.id,
@@ -67,7 +68,7 @@ export const transformSong = (song: {
   })),
   album: song.album && {
     id: song.album.id,
-    name: song.album.name.replace(/&quot;/g, '"'),
+    name: song.album.name && song.album.name.replace(/&quot;/g, '"'),
   },
   playCount: song.playCount,
   year: song.year,

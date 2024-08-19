@@ -7,6 +7,7 @@ export async function searchPlaylists(query: string, limit = 10, page = 0) {
     `${apiEndpoint}/search/playlists?query=${query}&limit=${limit}&page=${page}`,
   );
   const data = await response.json();
+  if (!data.data || !data.data.results) return [];
   const res: Omit<Playlist, "songs">[] = data.data.results.map(
     (playlist: {
       id: string;
