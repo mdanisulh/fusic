@@ -1,81 +1,75 @@
 "use client";
 import SongCard from "@/components/cards/SongCard";
 import IconButton from "@/components/common/IconButton";
-import PlaylistImage from "@/components/common/PlaylistImage";
 import Router from "@/components/common/Router";
 import { useAudio } from "@/lib/hooks/useAudio";
 import { MenuItem, useContextMenu } from "@/lib/hooks/useContextMenu";
 import { useLibrary } from "@/lib/hooks/useLibraryProvider";
 import { useQueue } from "@/lib/hooks/useQueue";
-import { getPlaylist } from "@/lib/services/playlists";
+import { getAlbum } from "@/lib/services/albums";
 import getAverageColor from "@/lib/utils/averageColor";
 import { formatDuration } from "@/lib/utils/formatTime";
-import Playlist from "@/types/playlist";
+import Album from "@/types/album";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 
-export default function PlaylistPage({ params }: { params: { id: string } }) {
-  const { playlists, isPlaylistInLibrary, deletePlaylist, createPlaylist } =
-    useLibrary()!;
-  const [playlist, setPlaylist] = useState<Playlist | null>(null);
+export default function AlbumPage({ params }: { params: { id: string } }) {
+  const { albums, addAlbum, isAlbumInLibrary, removeAlbum } = useLibrary()!;
+  const [album, setAlbum] = useState<Album | null>(null);
   const [color, setColor] = useState("");
   const { id, addToExtraQueue } = useQueue()!;
   const { isPlaying, togglePlay, setQueue } = useAudio()!;
   const { handleContextMenu } = useContextMenu()!;
 
   const menuList: MenuItem[] = [
-    isPlaylistInLibrary(params.id)
+    isAlbumInLibrary(params.id)
       ? {
           icon: "/assets/delete.svg",
           text: "Remove from Library",
-          onClick: () => deletePlaylist(params.id),
+          onClick: () => removeAlbum(params.id),
         }
       : {
           icon: "/assets/add.svg",
           text: "Add to Library",
-          onClick: () => playlist && createPlaylist(playlist),
+          onClick: () => album && addAlbum(album),
         },
     {
       icon: "/assets/add-queue.svg",
       text: "Add to Queue",
-      onClick: () =>
-        playlist && playlist.songs.map((song) => addToExtraQueue(song)),
+      onClick: () => album && album.songs.map((song) => addToExtraQueue(song)),
     },
   ];
-  if (params.id === "_liked") {
-    menuList.shift();
-  }
 
   const handleClick = async (e: React.MouseEvent) => {
     e.stopPropagation();
     e.preventDefault();
-    if (!playlist) return;
-    if (id === playlist.id) return togglePlay();
-    if (playlist.songs) return setQueue(playlist.songs, playlist.id);
+    if (!album) return;
+    if (id === album.id) return togglePlay();
+    if (album.songs) return setQueue(album.songs, album.id);
   };
 
   useEffect(() => {
-    if (isPlaylistInLibrary(params.id)) {
-      setPlaylist(playlists[params.id]);
+    if (isAlbumInLibrary(params.id)) {
+      setAlbum(albums[params.id]);
     } else {
-      getPlaylist(params.id).then((playlist) => {
-        setPlaylist(playlist);
+      getAlbum(params.id).then((album) => {
+        setAlbum(album);
       });
     }
-  }, [isPlaylistInLibrary, params.id, playlists]);
+  }, [albums, isAlbumInLibrary, params.id]);
   useEffect(() => {
-    if (!playlist) return;
-    let gradientImage = playlist.image[1];
-    if (!gradientImage && playlist.songs.length)
-      gradientImage = playlist.songs[0].image[1];
+    if (!album) return;
+    let gradientImage = album.image[1];
+    if (!gradientImage && album.songs.length)
+      gradientImage = album.songs[0].image[1];
     if (!gradientImage) return;
     getAverageColor(gradientImage).then((color) => {
       setColor(color);
     });
-  }, [playlist]);
+  }, [album]);
 
-  if (!playlist) return <div>Loading...</div>;
-  const totalDuration = playlist.songs.reduce(
+  if (!album || !album.songs) return <div>Loading...</div>;
+  const totalDuration = album.songs.reduce(
     (acc, song) => acc + song.duration,
     0,
   );
@@ -94,10 +88,16 @@ export default function PlaylistPage({ params }: { params: { id: string } }) {
       <div className="absolute top-0 h-72 w-full">
         <div className="absolute bottom-0 z-10 flex h-60 w-full p-5">
           <div className="mr-5 mt-2 w-48 flex-shrink-0">
-            <PlaylistImage playlist={playlist} />
+            <Image
+              src={album.image[1] ?? album.songs[0].image[1]}
+              alt=""
+              width={192}
+              height={192}
+              className="rounded-lg"
+            />
           </div>
           <div className="flex h-full flex-grow flex-col justify-evenly text-white">
-            <div className="p-1 text-sm">Playlist</div>
+            <div className="p-1 text-sm">Album</div>
             <div
               className="overflow-hidden text-pretty p-1 text-5xl font-black"
               style={{
@@ -108,9 +108,9 @@ export default function PlaylistPage({ params }: { params: { id: string } }) {
                 boxOrient: "vertical",
               }}
             >
-              {playlist.name}
+              {album.name}
             </div>
-            <div className="p-1 text-sm">{`${playlist.songs.length} songs, ${formatDuration(totalDuration)}`}</div>
+            <div className="p-1 text-sm">{`${album.songs.length} songs, ${formatDuration(totalDuration)}`}</div>
           </div>
         </div>
         <div
@@ -134,7 +134,7 @@ export default function PlaylistPage({ params }: { params: { id: string } }) {
             className="h-14 w-14 justify-center rounded-full bg-primary hover:scale-105"
             iconPath="/assets/pause.svg"
             altIconPath="/assets/play.svg"
-            isActive={id === playlist.id && isPlaying}
+            isActive={id === album.id && isPlaying}
             iconSize={20}
             isWhite={false}
             onClick={handleClick}
@@ -144,7 +144,7 @@ export default function PlaylistPage({ params }: { params: { id: string } }) {
             iconPath="/assets/more.svg"
             iconSize={30}
             isWhite={true}
-            title={`More options for ${playlist.name}`}
+            title={`More options for ${album.name}`}
             onClick={(e) => handleContextMenu(e, menuList)}
           />
         </div>
@@ -163,11 +163,11 @@ export default function PlaylistPage({ params }: { params: { id: string } }) {
           </div>
         </div>
         <div className="m-3 ml-6">
-          {playlist.songs.map((song, index) => (
+          {album.songs.map((song, index) => (
             <SongCard
               song={song}
               index={index}
-              queueId={playlist.id}
+              queueId={album.id}
               key={index}
             />
           ))}

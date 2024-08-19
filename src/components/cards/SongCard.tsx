@@ -11,11 +11,11 @@ import IconButton from "../common/IconButton";
 export default function SongCard({
   song,
   index,
-  playlistId,
+  queueId,
 }: {
   song: Song;
   index?: number;
-  playlistId?: string;
+  queueId?: string;
 }) {
   const { setSong, isPlaying, song: currentSong, togglePlay } = useAudio()!;
   const { handleContextMenu } = useContextMenu()!;
@@ -71,14 +71,10 @@ export default function SongCard({
       icon: "/assets/add-queue.svg",
     },
   ];
-  if (
-    playlistId &&
-    playlistId != "_liked" &&
-    isSongInPlaylist(song.id, playlistId)
-  ) {
+  if (queueId && queueId != "_liked" && isSongInPlaylist(song.id, queueId)) {
     menuList.splice(1, 0, {
       text: "Remove from Playlist",
-      onClick: () => removeFromPlaylist(song.id, playlistId),
+      onClick: () => removeFromPlaylist(song.id, queueId),
       icon: "/assets/delete.svg",
     });
   }
@@ -93,7 +89,7 @@ export default function SongCard({
       onContextMenu={(e) => handleContextMenu(e, menuList)}
       style={{
         backgroundColor:
-          playlistId === pId && song.id === currentSong.id
+          queueId === pId && song.id === currentSong.id
             ? "rgba(138,32,240,0.3)"
             : "",
       }}

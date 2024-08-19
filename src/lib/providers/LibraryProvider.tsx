@@ -9,8 +9,8 @@ import { useIDBReducer } from "../hooks/useIDBReducer";
 export const LibraryContext = createContext<LibraryInterface | null>(null);
 interface LibraryState {
   playlists: Record<string, Playlist>;
-  artists: Artist[];
-  albums: Album[];
+  artists: Record<string, Artist>;
+  albums: Record<string, Album>;
 }
 interface LibraryInterface extends LibraryState {
   createPlaylist: (playlist: Playlist) => void;
@@ -36,8 +36,8 @@ const initialState: LibraryState = {
       artists: [],
     },
   },
-  artists: [],
-  albums: [],
+  artists: {},
+  albums: {},
 };
 
 function libraryReducer(
@@ -85,23 +85,19 @@ function libraryReducer(
     case "FOLLOW_ARTIST":
       return {
         ...state,
-        artists: [...state.artists, action.payload],
+        artists: { ...state.artists, [action.payload.id]: action.payload },
       };
     case "UNFOLLOW_ARTIST":
-      return {
-        ...state,
-        artists: state.artists.filter((artist) => artist.id !== action.payload),
-      };
+      const { [action.payload]: removedArtist, ...artists } = state.artists;
+      return { ...state, artists };
     case "ADD_ALBUM":
       return {
         ...state,
-        albums: [...state.albums, action.payload],
+        albums: { ...state.albums, [action.payload.id]: action.payload },
       };
     case "REMOVE_ALBUM":
-      return {
-        ...state,
-        albums: state.albums.filter((album) => album.id !== action.payload),
-      };
+      const { [action.payload]: removedAlbum, ...albums } = state.albums;
+      return { ...state, albums };
     default:
       throw new Error(`Unhandled action type: ${action.type}`);
   }
@@ -153,7 +149,7 @@ export default function PlaylistProvider({
     dispatch({ type: "UNFOLLOW_ARTIST", payload: artistId });
   };
   const isFollowingArtist = (artistId: string) => {
-    return state.artists.some((artist) => artist.id === artistId);
+    return artistId in state.artists;
   };
 
   const addAlbum = (album: Album) => {
@@ -163,7 +159,7 @@ export default function PlaylistProvider({
     dispatch({ type: "REMOVE_ALBUM", payload: albumId });
   };
   const isAlbumInLibrary = (albumId: string) => {
-    return state.albums.some((album) => album.id === albumId);
+    return albumId in state.albums;
   };
 
   const value = {

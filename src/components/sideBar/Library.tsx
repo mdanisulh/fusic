@@ -91,7 +91,7 @@ export default function Library() {
             </div>
           );
         })}
-        {albums.map((album) => {
+        {Object.values(albums).map((album) => {
           return (
             <div
               className={isLSBCollapsed ? "" : "translate-x-1"}
@@ -101,7 +101,7 @@ export default function Library() {
             </div>
           );
         })}
-        {artists.map((artist) => {
+        {Object.values(artists).map((artist) => {
           return (
             <div
               className={isLSBCollapsed ? "" : "translate-x-1"}
