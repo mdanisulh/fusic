@@ -2,6 +2,7 @@
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useDebouncedCallback } from "use-debounce";
 import IconButton from "./IconButton";
+import Router from "./Router";
 
 export default function SearchBar() {
   const searchParams = useSearchParams();
@@ -19,9 +20,12 @@ export default function SearchBar() {
   }, 300);
 
   return (
-    <div className="bg-light-black sticky top-0 z-50 flex h-16 flex-1 p-2">
+    <div className="sticky top-0 z-50 flex h-16 flex-1 bg-light-black p-2 pl-1">
+      <div className="py-2 pr-4">
+        <Router />
+      </div>
       <input
-        className="bg-dark-grey peer max-w-96 flex-grow rounded-full p-3 pl-9 pr-5 text-sm text-white focus:outline-none focus:outline-white"
+        className="peer max-w-96 flex-grow rounded-full bg-dark-grey p-3 pl-9 pr-5 text-sm text-white focus:outline-none focus:outline-white"
         placeholder="Search for songs, albums, artists, and more"
         onChange={(e) => handleSearch(e.target.value)}
         defaultValue={searchParams.get("query")?.toString()}
@@ -31,7 +35,7 @@ export default function SearchBar() {
       <IconButton
         iconPath="/assets/search-outlined.svg"
         iconSize={16}
-        className="peer-focus:white absolute left-5 top-6"
+        className="peer-focus:white absolute left-[104px] top-6"
       />
     </div>
   );

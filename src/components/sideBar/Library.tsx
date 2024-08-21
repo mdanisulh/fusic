@@ -23,6 +23,7 @@ export default function Library() {
             className="m-2 p-2 font-bold"
             spacing={10}
             onClick={() => setLSBCollapsed(!isLSBCollapsed)}
+            isActive={isLSBCollapsed}
           />
         </div>
         {!isLSBCollapsed && (

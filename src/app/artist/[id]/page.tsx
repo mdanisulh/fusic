@@ -77,7 +77,7 @@ export default function ArtistPage({ params }: { params: { id: string } }) {
     0,
   );
   return (
-    <div className="relative h-full w-full overflow-y-scroll">
+    <div className="relative h-full w-full overflow-y-scroll rounded-lg">
       <header
         className="sticky top-0 z-20 p-4"
         style={{

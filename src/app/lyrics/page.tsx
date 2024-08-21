@@ -1,4 +1,5 @@
 "use client";
+import Router from "@/components/common/Router";
 import { useAudio } from "@/lib/hooks/useAudio";
 import { useCurrentTime } from "@/lib/hooks/useCurrentTime";
 import getAverageColor from "@/lib/utils/averageColor";
@@ -106,6 +107,9 @@ export default function LyricsPage() {
 
   return (
     <div className="relative h-full text-center text-white">
+      <header className="fixed top-0 mx-4 mt-6">
+        <Router />
+      </header>
       <div
         className="h-full overflow-y-hidden scroll-smooth rounded-lg bg-scroll p-16 hover:overflow-y-scroll hover:pr-[52px]"
         style={{ backgroundColor: color }}
