@@ -1,4 +1,5 @@
 "use client";
+import NotFound from "@/app/not-found";
 import SongCard from "@/components/cards/SongCard";
 import IconButton from "@/components/common/IconButton";
 import Router from "@/components/common/Router";
@@ -56,15 +57,15 @@ export default function AlbumPage({ params }: { params: { id: string } }) {
   useEffect(() => {
     if (!album) return;
     let gradientImage = album.image[1];
-    if (!gradientImage && album.songs.length)
+    if (!gradientImage && album.songs && album.songs.length)
       gradientImage = album.songs[0].image[1];
     if (!gradientImage) return;
     getAverageColor(gradientImage).then((color) => {
       setColor(color);
     });
   }, [album]);
-
-  if (!album || !album.songs) return <div>Loading...</div>;
+  if (!album) return null;
+  if (!album.songs) return <NotFound />;
   const totalDuration = album.songs.reduce(
     (acc, song) => acc + song.duration,
     0,

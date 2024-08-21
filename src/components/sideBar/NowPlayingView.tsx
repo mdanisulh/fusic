@@ -3,10 +3,12 @@ import { useLibrary } from "@/lib/hooks/useLibraryProvider";
 import { useUIConfig } from "@/lib/hooks/useUIConfig";
 import Song from "@/types/song";
 import Image from "next/image";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import { getSongSuggestions } from "../../lib/services/songs";
 import SongCard from "../cards/SongCard";
 import IconButton from "../common/IconButton";
+import ScrollableDiv from "../common/ScrollableDiv";
 
 export default function NowPlayingView() {
   const { song } = useAudio()!;
@@ -63,14 +65,34 @@ export default function NowPlayingView() {
         </div>
         <div className="flex justify-between px-1 py-4">
           <div className="flex flex-col truncate">
-            <p className="truncate text-2xl font-bold text-white">
-              {song["name"]}
-            </p>
-            <p className="truncate text-sm text-light-grey">
-              {song["artists"]
-                .map((artist: { name: string }) => artist.name)
-                .join(", ")}
-            </p>
+            <ScrollableDiv className="truncate text-2xl font-bold text-white">
+              <Link href={`/track/${song.id}`} className="hover:underline">
+                {song["name"]}
+              </Link>
+            </ScrollableDiv>
+            <ScrollableDiv
+              className="truncate text-sm text-light-grey"
+              onHover={false}
+            >
+              {song["artists"].reduce(
+                (acc: React.ReactNode[], artist, index) => {
+                  acc.push(
+                    <Link
+                      key={artist.id}
+                      href={`/artist/${artist.id}`}
+                      className="hover:text-white hover:underline"
+                    >
+                      {artist.name}
+                    </Link>,
+                  );
+                  if (index < song.artists.length - 1) {
+                    acc.push(", ");
+                  }
+                  return acc;
+                },
+                [],
+              )}
+            </ScrollableDiv>
           </div>
           <IconButton
             iconPath="/assets/favourite-outlined.svg"

@@ -3,8 +3,10 @@ import { useAudio } from "@/lib/hooks/useAudio";
 import { useLibrary } from "@/lib/hooks/useLibraryProvider";
 import { useUIConfig } from "@/lib/hooks/useUIConfig";
 import Image from "next/image";
+import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import IconButton from "../common/IconButton";
+import ScrollableDiv from "../common/ScrollableDiv";
 import PlayerControls from "./PlayerControls";
 import VolumeBar from "./VolumeBar";
 
@@ -18,7 +20,6 @@ export default function BottomBar() {
   } = useLibrary()!;
   const path = usePathname();
   const router = useRouter();
-
   return (
     <div className="z-50 flex h-20 w-full p-2 pt-0">
       <div className="flex flex-[3_0_0%] truncate">
@@ -33,10 +34,28 @@ export default function BottomBar() {
           priority={true}
         />
         <div className="flex-col content-center truncate p-2 align-text-bottom">
-          <div className="text-s truncate text-white">{song["name"]}</div>
-          <div className="truncate text-xs text-light-grey">
-            {song["artists"][0]["name"]}
-          </div>
+          <ScrollableDiv className="text-s truncate text-white">
+            <Link href={`/track/${song.id}`} className="hover:underline">
+              {song["name"]}
+            </Link>
+          </ScrollableDiv>
+          <ScrollableDiv className="text-xs text-light-grey" onHover={false}>
+            {song.artists.reduce((acc: React.ReactNode[], artist, index) => {
+              acc.push(
+                <Link
+                  key={artist.id}
+                  href={`/artist/${artist.id}`}
+                  className="hover:text-white hover:underline"
+                >
+                  {artist.name}
+                </Link>,
+              );
+              if (index < song.artists.length - 1) {
+                acc.push(", ");
+              }
+              return acc;
+            }, [])}
+          </ScrollableDiv>
         </div>
         <IconButton
           iconPath="/assets/favourite-outlined.svg"

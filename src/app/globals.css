@@ -28,4 +28,23 @@
     background: rgba(255, 255, 255, 0.2);
     border-radius: 4px;
   }
+
+  @keyframes scroll {
+    0% {
+      transform: translateX(0);
+    }
+    45% {
+      transform: translateX(var(--scroll-distance));
+    }
+    50% {
+      transform: translateX(var(--scroll-distance));
+    }
+    95% {
+      transform: translateX(0);
+    }
+  }
+
+  .animate-scroll {
+    animation: scroll linear infinite;
+  }
 }

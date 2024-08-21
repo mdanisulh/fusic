@@ -4,6 +4,7 @@ import { useLibrary } from "@/lib/hooks/useLibraryProvider";
 import { useQueue } from "@/lib/hooks/useQueue";
 import Song from "@/types/song";
 import Image from "next/image";
+import Link from "next/link";
 import React from "react";
 import formatTime from "../../lib/utils/formatTime";
 import IconButton from "../common/IconButton";
@@ -157,17 +158,38 @@ export default function SongCard({
       <div className="flex h-full flex-1 truncate">
         <div className="flex flex-col truncate pr-4">
           <div className="mb-1 flex-shrink truncate text-sm text-white">
-            {song["name"]}
+            <Link href={`/track/${song.id}`} className="hover:underline">
+              {song["name"]}
+            </Link>
           </div>
           <div className="truncate text-sm text-light-grey">
-            {song["artists"].map((artist) => artist["name"]).join(", ")}
+            {song.artists.reduce((acc: React.ReactNode[], artist, index) => {
+              acc.push(
+                <Link
+                  key={artist.id}
+                  href={`/artist/${artist.id}`}
+                  className="hover:text-white hover:underline"
+                >
+                  {artist.name}
+                </Link>,
+              );
+              if (index < song.artists.length - 1) {
+                acc.push(", ");
+              }
+              return acc;
+            }, [])}
           </div>
         </div>
       </div>
       {index !== undefined && (
         <>
           <div className="my-auto flex-1 truncate pr-4 text-sm text-light-grey">
-            {song.album?.name}
+            <Link
+              href={`/album/${song.album?.id}`}
+              className="hover:text-white hover:underline"
+            >
+              {song.album?.name}
+            </Link>
           </div>
           <IconButton
             iconPath="/assets/favourite-outlined.svg"
