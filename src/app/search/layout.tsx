@@ -6,7 +6,7 @@ export default function SearchLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="h-full overflow-y-hidden scroll-smooth px-3 hover:overflow-y-scroll hover:pr-0">
+    <div className="group/a h-full overflow-y-hidden scroll-smooth rounded-lg pl-3 hover:overflow-y-scroll">
       <Search />
       {children}
     </div>

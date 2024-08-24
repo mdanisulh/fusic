@@ -53,7 +53,7 @@ export default function Page() {
             <div className="cursor-text p-2 pt-4 text-2xl font-bold text-white">
               Songs
             </div>
-            <div className="flex-col">
+            <div className="flex-col pr-3 group-hover/a:pr-2">
               {searchResults.songs.map((song) => (
                 <SongCard key={song.id} song={song} />
               ))}
@@ -70,10 +70,7 @@ export default function Page() {
               style={{ scrollbarWidth: "none" }}
             >
               {searchResults.artists.map((artist) => (
-                <div
-                  key={artist.id}
-                  className="min-w-48 max-w-48 translate-x-1"
-                >
+                <div key={artist.id} className="min-w-48 max-w-48">
                   <ArtistCard artist={artist} />
                 </div>
               ))}
@@ -90,7 +87,7 @@ export default function Page() {
               style={{ scrollbarWidth: "none" }}
             >
               {searchResults.albums.map((album) => (
-                <div key={album.id} className="min-w-48 max-w-48 translate-x-1">
+                <div key={album.id} className="min-w-48 max-w-48">
                   <AlbumCard album={album} />
                 </div>
               ))}
@@ -107,10 +104,7 @@ export default function Page() {
               style={{ scrollbarWidth: "none" }}
             >
               {searchResults.playlists.map((playlist) => (
-                <div
-                  key={playlist.id}
-                  className="min-w-48 max-w-48 translate-x-1"
-                >
+                <div key={playlist.id} className="min-w-48 max-w-48">
                   <PlaylistCard playlist={playlist} />
                 </div>
               ))}

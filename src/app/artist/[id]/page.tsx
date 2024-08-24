@@ -79,7 +79,7 @@ export default function ArtistPage({ params }: { params: { id: string } }) {
   return (
     <div className="relative h-full w-full overflow-y-scroll rounded-lg">
       <header
-        className="sticky top-0 z-20 p-4"
+        className="sticky top-0 z-20 rounded-t-lg p-4"
         style={{
           backgroundColor: color,
           opacity: 1,
@@ -151,7 +151,7 @@ export default function ArtistPage({ params }: { params: { id: string } }) {
             onClick={(e) => handleContextMenu(e, menuList)}
           />
         </div>
-        <div className="sticky top-16 z-10 ml-6 mr-3 flex border-b-2 border-dark-grey bg-light-black py-2 text-sm text-light-grey">
+        <div className="sticky top-16 z-10 ml-3 mr-2 flex border-b-2 border-dark-grey bg-light-black py-2 text-sm text-light-grey">
           <div className="w-8 flex-shrink-0 text-end">#</div>
           <div className="mx-6 flex-1">Title</div>
           <div className="mx-6 flex-1">Album</div>
@@ -165,7 +165,7 @@ export default function ArtistPage({ params }: { params: { id: string } }) {
             />
           </div>
         </div>
-        <div className="m-3 ml-6">
+        <div className="m-3 mr-2">
           {artist.songs.map((song, index) => (
             <SongCard
               song={song}
@@ -176,16 +176,16 @@ export default function ArtistPage({ params }: { params: { id: string } }) {
           ))}
         </div>
         {artist.albums.length > 0 && (
-          <div className="pl-10 pt-10 text-2xl font-bold text-white">
+          <div className="pl-6 pt-10 text-2xl font-bold text-white">
             {`Albums by ${artist.name}`}
           </div>
         )}
         <div
-          className="m-3 ml-6 flex flex-row overflow-x-auto"
+          className="m-3 mr-0 flex flex-row overflow-x-auto"
           style={{ scrollbarWidth: "none" }}
         >
           {artist.albums.map((album, index) => (
-            <div key={index} className="min-w-48 max-w-48 translate-x-1">
+            <div key={index} className="min-w-48 max-w-48">
               <AlbumCard album={album} />
             </div>
           ))}

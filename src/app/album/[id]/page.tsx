@@ -73,7 +73,7 @@ export default function AlbumPage({ params }: { params: { id: string } }) {
   return (
     <div className="relative h-full w-full overflow-y-scroll rounded-lg">
       <header
-        className="sticky top-0 z-20 p-4"
+        className="sticky top-0 z-20 rounded-t-lg p-4"
         style={{
           backgroundColor: color,
           opacity: 1,
@@ -145,7 +145,7 @@ export default function AlbumPage({ params }: { params: { id: string } }) {
             onClick={(e) => handleContextMenu(e, menuList)}
           />
         </div>
-        <div className="sticky top-16 z-10 ml-6 mr-3 flex border-b-2 border-dark-grey bg-light-black py-2 text-sm text-light-grey">
+        <div className="sticky top-16 z-10 ml-3 mr-2 flex border-b-2 border-dark-grey bg-light-black py-2 text-sm text-light-grey">
           <div className="w-8 flex-shrink-0 text-end">#</div>
           <div className="mx-6 flex-1">Title</div>
           <div className="mx-6 flex-1">Album</div>
@@ -159,7 +159,7 @@ export default function AlbumPage({ params }: { params: { id: string } }) {
             />
           </div>
         </div>
-        <div className="m-3 ml-6">
+        <div className="m-3 mr-2">
           {album.songs.map((song, index) => (
             <SongCard
               song={song}

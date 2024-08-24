@@ -111,7 +111,7 @@ export default function LyricsPage() {
         <Router />
       </header>
       <div
-        className="h-full overflow-y-hidden scroll-smooth rounded-lg bg-scroll p-16 hover:overflow-y-scroll hover:pr-[52px]"
+        className="h-full overflow-y-hidden scroll-smooth rounded-lg bg-scroll p-16 hover:overflow-y-scroll hover:pr-[60px]"
         style={{ backgroundColor: color }}
       >
         <div className="inline-flex flex-col items-center text-4xl font-bold leading-snug">

@@ -196,7 +196,7 @@ export default function SongCard({
             altIconPath="/assets/favourite-filled.svg"
             isActive={isSongInPlaylist(song["id"], "_liked")}
             iconSize={24}
-            className="my-auto mr-2 flex-shrink-0 opacity-0 group-hover:opacity-100"
+            className={`my-auto mr-2 flex-shrink-0 group-hover:opacity-100 ${isSongInPlaylist(song.id, "_liked") ? "" : "opacity-0"}`}
             onClick={() =>
               isSongInPlaylist(song["id"], "_liked")
                 ? removeFromPlaylist(song["id"], "_liked")

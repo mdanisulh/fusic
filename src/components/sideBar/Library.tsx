@@ -47,7 +47,7 @@ export default function Library() {
         )}
       </div>
       <div
-        className={`flex-grow overflow-hidden p-3 hover:overflow-y-scroll hover:pr-0`}
+        className={`flex-grow overflow-hidden p-2 hover:overflow-y-scroll hover:pr-1`}
         style={{
           display: "grid",
           gridTemplateColumns: `repeat(auto-fit, minmax(${cardSize}px, 1fr))`,
@@ -72,44 +72,36 @@ export default function Library() {
           ])
         }
       >
-        <div className={isLSBCollapsed ? "" : "translate-x-1"}>
-          <PlaylistCard
-            playlist={playlists["_liked"]}
-            showOnlyImage={cardSize < 150}
-          />
-        </div>
+        <PlaylistCard
+          playlist={playlists["_liked"]}
+          showOnlyImage={cardSize < 150}
+        />
         {Object.values(playlists).map((playlist) => {
           if (playlist.id === "_liked") return null;
           return (
-            <div
-              className={isLSBCollapsed ? "" : "translate-x-1"}
+            <PlaylistCard
+              playlist={playlist}
+              showOnlyImage={cardSize < 150}
               key={playlist.id}
-            >
-              <PlaylistCard
-                playlist={playlist}
-                showOnlyImage={cardSize < 150}
-              />
-            </div>
+            />
           );
         })}
         {Object.values(albums).map((album) => {
           return (
-            <div
-              className={isLSBCollapsed ? "" : "translate-x-1"}
+            <AlbumCard
+              album={album}
+              showOnlyImage={cardSize < 150}
               key={album.id}
-            >
-              <AlbumCard album={album} showOnlyImage={cardSize < 150} />
-            </div>
+            />
           );
         })}
         {Object.values(artists).map((artist) => {
           return (
-            <div
-              className={isLSBCollapsed ? "" : "translate-x-1"}
+            <ArtistCard
+              artist={artist}
+              showOnlyImage={cardSize < 150}
               key={artist.id}
-            >
-              <ArtistCard artist={artist} showOnlyImage={cardSize < 150} />
-            </div>
+            />
           );
         })}
       </div>

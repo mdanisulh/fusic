@@ -58,7 +58,7 @@ export default function AlbumCard({
     <div className="max-w-[400px]">
       <Link href={`/album/${album.id}`}>
         <div
-          className="group flex-1 -translate-x-1 cursor-pointer flex-row rounded-lg p-[7%] hover:bg-dark-grey"
+          className="group flex-1 cursor-pointer flex-row rounded-lg p-[7%] hover:bg-dark-grey"
           onContextMenu={(e) => {
             e.stopPropagation();
             handleContextMenu(e, menuList);

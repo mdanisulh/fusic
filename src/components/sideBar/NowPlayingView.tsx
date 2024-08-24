@@ -48,7 +48,7 @@ export default function NowPlayingView() {
           />
         </div>
       </div>
-      <div className="overflow-y-hidden p-3 pt-0 hover:overflow-y-scroll hover:pr-0">
+      <div className="overflow-y-hidden p-3 pt-0 hover:overflow-y-scroll hover:pr-2">
         <div className="px-1">
           <Image
             src={song["image"][2]}
@@ -107,7 +107,7 @@ export default function NowPlayingView() {
             }
           />
         </div>
-        <div className="-translate-x-1">
+        <div className="">
           {suggestions.length > 0 && (
             <p className="p-2 text-lg font-bold text-white">Recommended</p>
           )}
