@@ -12,13 +12,15 @@ import getAverageColor from "@/lib/utils/averageColor";
 import { formatDuration } from "@/lib/utils/formatTime";
 import Artist from "@/types/artist";
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 export default function ArtistPage({ params }: { params: { id: string } }) {
   const { artists, isFollowingArtist, followArtist, unfollowArtist } =
     useLibrary()!;
   const [artist, setArtist] = useState<Artist | null>(null);
   const [color, setColor] = useState("");
+  const [showHeader, setShowHeader] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
   const { id, addToExtraQueue } = useQueue()!;
   const { isPlaying, togglePlay, setQueue } = useAudio()!;
   const { handleContextMenu } = useContextMenu()!;
@@ -70,6 +72,20 @@ export default function ArtistPage({ params }: { params: { id: string } }) {
       setColor(color);
     });
   }, [artist]);
+  useEffect(() => {
+    const div = ref.current;
+    if (!div) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setShowHeader(!entry.isIntersecting);
+      },
+      { threshold: [0.7] },
+    );
+    observer.observe(div);
+    return () => {
+      observer.disconnect();
+    };
+  }, [ref, artist]);
 
   if (!artist) return <div>Loading...</div>;
   const totalDuration = artist.songs.reduce(
@@ -79,17 +95,34 @@ export default function ArtistPage({ params }: { params: { id: string } }) {
   return (
     <div className="relative h-full w-full overflow-y-scroll rounded-lg">
       <header
-        className="sticky top-0 z-20 rounded-t-lg p-4"
+        className="sticky top-0 z-20 flex rounded-t-lg"
         style={{
           backgroundColor: color,
-          opacity: 1,
           backgroundImage: `linear-gradient(transparent 0, rgba(18,18,18,0.1) 100%), url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDov…sdGVyPSJ1cmwoI2EpIiBvcGFjaXR5PSIuMDUiLz48L3N2Zz4=)`,
         }}
       >
-        <Router />
+        <div className="p-4 pr-0">
+          <Router />
+        </div>
+        {showHeader && (
+          <div className="flex truncate pl-4">
+            <IconButton
+              className="my-auto h-14 w-14 justify-center rounded-full bg-primary hover:scale-105"
+              iconPath="/assets/pause.svg"
+              altIconPath="/assets/play.svg"
+              isActive={id === artist.id && isPlaying}
+              iconSize={20}
+              isWhite={false}
+              onClick={handleClick}
+            />
+            <p className="my-auto line-clamp-1 truncate text-pretty px-3 text-2xl font-bold text-white">
+              {artist.name}
+            </p>
+          </div>
+        )}
       </header>
       <div className="absolute top-0 h-72 w-full">
-        <div className="absolute bottom-0 z-10 flex h-60 w-full p-5">
+        <div className="absolute bottom-0 z-10 flex h-60 w-full p-5" ref={ref}>
           <div className="mr-5 mt-2 w-48 flex-shrink-0">
             <Image
               src={artist.image[1]}

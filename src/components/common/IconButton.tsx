@@ -25,7 +25,7 @@ export default function IconButton({
 }) {
   return (
     <div
-      className={`flex ${isWhite ? (isActive ? "white" : "grey") : ""} ${className} cursor-pointer`}
+      className={`flex flex-shrink-0 ${isWhite ? (isActive ? "white" : "grey") : ""} ${className} cursor-pointer`}
       title={title}
       onClick={onClick}
     >
