@@ -107,7 +107,7 @@ export default function NowPlayingView() {
             }
           />
         </div>
-        <div className="">
+        <div>
           {suggestions.length > 0 && (
             <p className="p-2 text-lg font-bold text-white">Recommended</p>
           )}

@@ -31,7 +31,7 @@ export async function searchSongs(
 export const getSong = async (id: string) => {
   const response = await fetch(`${apiEndpoint}/songs/${id}`);
   const data = await response.json();
-  return transformSong(data.data);
+  return transformSong(data.data[0]);
 };
 
 export const getSongSuggestions = async (

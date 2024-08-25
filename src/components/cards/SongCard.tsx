@@ -29,7 +29,7 @@ export default function SongCard({
     removeFromPlaylist,
   } = useLibrary()!;
 
-  const menuList = [
+  const menuList: MenuItem[] = [
     {
       text: "Add to Playlist",
       onClick: (e: React.MouseEvent) => {
