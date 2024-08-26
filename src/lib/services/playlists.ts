@@ -1,5 +1,6 @@
 import Playlist from "@/types/playlist";
 import { apiEndpoint } from "../constants/constants";
+import { decodeHtmlEntities } from "../utils/decodeHTMLEntities";
 import { transformSong } from "./songs";
 
 export async function searchPlaylists(query: string, limit = 10, page = 0) {
@@ -37,12 +38,12 @@ export async function getPlaylist(
   if (!playlist) return null;
   const res: Playlist = {
     id: playlist.id,
-    name: playlist.name.replace(/&quot;/g, '"'),
+    name: decodeHtmlEntities(playlist.name),
     image: playlist.image.map((img: { url: string }) => img.url),
     songs: playlist.songs.map((song: any) => transformSong(song)),
     artists: playlist.artists.map((artist: { id: string; name: string }) => ({
       id: artist.id,
-      name: artist.name.replace(/&quot;/g, '"'),
+      name: decodeHtmlEntities(artist.name),
     })),
     playCount: playlist.playCount,
     songCount: playlist.songCount,

@@ -1,5 +1,6 @@
 import Song from "@/types/song";
 import { apiEndpoint } from "../constants/constants";
+import { decodeHtmlEntities } from "../utils/decodeHTMLEntities";
 
 const downloadQuality = 2; // 0 - 4
 
@@ -57,18 +58,18 @@ export const transformSong = (song: {
   playCount?: number;
 }): Song => ({
   id: song.id,
-  name: song.name.replace(/&quot;/g, '"'),
+  name: decodeHtmlEntities(song.name),
   image: song.image.map((img) => img.url),
   url:
     song.downloadUrl[downloadQuality] && song.downloadUrl[downloadQuality].url,
   duration: song.duration ?? 0,
   artists: song.artists.primary.map((artist) => ({
     id: artist.id,
-    name: artist.name.replace(/&quot;/g, '"'),
+    name: decodeHtmlEntities(artist.name),
   })),
   album: song.album && {
     id: song.album.id,
-    name: song.album.name && song.album.name.replace(/&quot;/g, '"'),
+    name: song.album.name && decodeHtmlEntities(song.album.name),
   },
   playCount: song.playCount,
   year: song.year,

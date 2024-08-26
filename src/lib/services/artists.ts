@@ -1,6 +1,7 @@
 import Artist from "@/types/artist";
 import Song from "@/types/song";
 import { apiEndpoint } from "../constants/constants";
+import { decodeHtmlEntities } from "../utils/decodeHTMLEntities";
 import { transformAlbum } from "./albums";
 import { transformSong } from "./songs";
 
@@ -45,7 +46,7 @@ export async function getArtist(
   if (!artist) return null;
   return {
     id: artist.id,
-    name: artist.name.replace(/&quot;/g, '"'),
+    name: decodeHtmlEntities(artist.name),
     image: artist.image.map((img: { url: string }) => img.url),
     songs: artist.topSongs.map(transformSong),
     albums: artist.topAlbums.map(transformAlbum),

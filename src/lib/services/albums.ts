@@ -1,5 +1,6 @@
 import Album from "@/types/album";
 import { apiEndpoint } from "../constants/constants";
+import { decodeHtmlEntities } from "../utils/decodeHTMLEntities";
 import { transformSong } from "./songs";
 
 export async function searchAlbums(query: string, limit = 10, page = 0) {
@@ -13,13 +14,13 @@ export async function searchAlbums(query: string, limit = 10, page = 0) {
 
 export const transformAlbum = (album: any): Album => ({
   id: album.id,
-  name: album.name.replace(/&quot;/g, '"'),
+  name: decodeHtmlEntities(album.name),
   image: album.image.map((img: { url: string }) => img.url),
   songs: album.songs && album.songs.map((song: any) => transformSong(song)),
   artists: album.artists.primary.map(
     (artist: { id: string; name: string }) => ({
       id: artist.id,
-      name: artist.name.replace(/&quot;/g, '"'),
+      name: decodeHtmlEntities(artist.name),
     }),
   ),
   playCount: album.playCount,
