@@ -3,10 +3,12 @@ import React, { useEffect, useRef, useState } from "react";
 export default function ScrollableDiv({
   children,
   className,
+  style,
   onHover = true,
 }: {
   children: React.ReactNode;
   className?: string;
+  style?: React.CSSProperties;
   onHover?: boolean;
 }) {
   const ref = useRef<HTMLDivElement>(null);
@@ -47,18 +49,18 @@ export default function ScrollableDiv({
     };
   }, []);
   return (
-    <div ref={ref} className={className}>
-      <div
-        className={`inline-block whitespace-nowrap transition-transform ease-linear ${onHover ? "hover:animate-scroll" : "animate-scroll"}`}
-        style={
-          {
-            animationDuration: scrollDuration,
-            "--scroll-distance": scrollDistance,
-          } as React.CSSProperties
-        }
-      >
-        {children}
-      </div>
+    <div
+      ref={ref}
+      className={`${className} whitespace-nowrap transition-transform ease-linear ${onHover ? "hover:animate-scroll" : "animate-scroll"}`}
+      style={
+        {
+          animationDuration: scrollDuration,
+          "--scroll-distance": scrollDistance,
+          ...style,
+        } as React.CSSProperties
+      }
+    >
+      {children}
     </div>
   );
 }

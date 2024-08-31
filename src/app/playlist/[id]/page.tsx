@@ -15,8 +15,13 @@ import Image from "next/image";
 import React, { useEffect, useRef, useState } from "react";
 
 export default function PlaylistPage({ params }: { params: { id: string } }) {
-  const { playlists, isPlaylistInLibrary, deletePlaylist, createPlaylist } =
-    useLibrary()!;
+  const {
+    playlists,
+    isPlaylistInLibrary,
+    deletePlaylist,
+    createPlaylist,
+    addToPlaylist,
+  } = useLibrary()!;
   const [playlist, setPlaylist] = useState<Playlist | null>(null);
   const [color, setColor] = useState("");
   const [showHeader, setShowHeader] = useState(false);
@@ -42,6 +47,56 @@ export default function PlaylistPage({ params }: { params: { id: string } }) {
       text: "Add to Queue",
       onClick: () =>
         playlist && playlist.songs.map((song) => addToExtraQueue(song)),
+    },
+    {
+      icon: "/assets/add.svg",
+      text: "Add all songs to playlist",
+      onClick: (e: React.MouseEvent) => {
+        const list: MenuItem[] = Object.entries(playlists).map(([id, _]) => ({
+          text: _?.name ?? "Playlist",
+          onClick: () =>
+            playlist &&
+            playlist.songs.forEach((song) => addToPlaylist(song, id)),
+        }));
+        list.unshift({
+          icon: "/assets/add.svg",
+          text: "New Playlist",
+          onClick: () =>
+            createPlaylist({
+              id: crypto.randomUUID(),
+              name: playlist?.name ?? "",
+              songs: playlist?.songs ?? [],
+              artists: [],
+              image: [],
+            }),
+        });
+        handleContextMenu(e, list);
+      },
+    },
+    {
+      icon: "/assets/share.svg",
+      text: "Export Playlist",
+      onClick: () => {
+        if (!playlist) return;
+        const data = new Blob(
+          [
+            JSON.stringify({
+              name: playlist.name,
+              image: playlist.image,
+              songIds: playlist.songs.map((song) => song.id),
+            }),
+          ],
+          {
+            type: "application/json",
+          },
+        );
+        const url = URL.createObjectURL(data);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = `${playlist.name}.fusic`;
+        a.click();
+        URL.revokeObjectURL(url);
+      },
     },
   ];
   if (params.id === "_liked") {

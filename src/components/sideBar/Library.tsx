@@ -1,7 +1,9 @@
 import PlaylistCard from "@/components/cards/PlaylistCard";
-import { useContextMenu } from "@/lib/hooks/useContextMenu";
+import { MenuItem, useContextMenu } from "@/lib/hooks/useContextMenu";
 import { useLibrary } from "@/lib/hooks/useLibraryProvider";
 import { useUIConfig } from "@/lib/hooks/useUIConfig";
+import { idbSet } from "@/lib/services/idb";
+import { useRouter } from "next/navigation";
 import AlbumCard from "../cards/AlbumCard";
 import ArtistCard from "../cards/ArtistCard";
 import IconButton from "../common/IconButton";
@@ -10,6 +12,42 @@ export default function Library() {
   const { playlists, albums, artists, createPlaylist } = useLibrary()!;
   const { isLSBCollapsed, setLSBCollapsed } = useUIConfig()!;
   const { handleContextMenu } = useContextMenu()!;
+  const router = useRouter();
+  const menuList: MenuItem[] = [
+    {
+      text: "Create New Playlist",
+      onClick: () =>
+        createPlaylist({
+          id: crypto.randomUUID(),
+          name: `New Playlist #${Object.keys(playlists).length}`,
+          songs: [],
+          artists: [],
+          image: [],
+        }),
+    },
+    {
+      text: "Import Playlist",
+      onClick: () => {
+        const input = document.createElement("input");
+        input.type = "file";
+        input.accept = ".fusic";
+        input.onchange = async (e) => {
+          try {
+            const file = (e.target as HTMLInputElement).files?.[0];
+            if (!file) return;
+            const fileExtension = file.name.split(".").pop();
+            if (!fileExtension) return;
+            const data = await file.text();
+            idbSet("importPlaylist", JSON.parse(data));
+            router.push("/import");
+          } catch (e) {
+            console.error(e);
+          }
+        };
+        input.click();
+      },
+    },
+  ];
   const cardSize = isLSBCollapsed ? 56 : 150;
   return (
     <div className="mt-1 flex flex-grow flex-col overflow-y-hidden rounded-lg bg-light-black">
@@ -33,15 +71,7 @@ export default function Library() {
               title="Create Playlist"
               className="m-2 rounded-full p-2 font-bold hover:bg-dark-grey"
               iconSize={16}
-              onClick={() =>
-                createPlaylist({
-                  id: crypto.randomUUID(),
-                  name: `My Playlist #${Object.keys(playlists).length}`,
-                  image: [],
-                  songs: [],
-                  artists: [],
-                })
-              }
+              onClick={(e) => handleContextMenu(e, menuList)}
             />
           </div>
         )}

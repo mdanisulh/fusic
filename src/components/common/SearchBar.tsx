@@ -17,7 +17,7 @@ export default function SearchBar() {
       params.delete("query");
     }
     replace(`${pathname}?${params.toString()}`);
-  }, 300);
+  }, 800);
 
   return (
     <div className="sticky top-0 z-50 flex h-16 flex-1 bg-light-black p-2 pl-1">
