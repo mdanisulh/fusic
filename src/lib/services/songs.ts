@@ -75,3 +75,55 @@ export const transformSong = (song: {
   playCount: song.playCount,
   year: song.year,
 });
+
+export const downloadSong = async (song: Song) => {
+  const serverUrl = "https://fusic.vercel.app/api";
+  // const serverUrl = "http://localhost:50516";
+
+  const downloadDirectly = (song: Song) => {
+    console.log("Downloading directly");
+    fetch(song.url)
+      .then((response) => response.blob())
+      .then((blob) => {
+        const url = window.URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = `${song.name} - ${song.artists.map((artist) => artist.name).join(", ")}.m4a`;
+        link.click();
+        window.URL.revokeObjectURL(url);
+      })
+      .catch((error) => console.error("Error downloading the song:", error));
+  };
+
+  try {
+    const serverCheckResponse = await fetch(`${serverUrl}/health-check`, {
+      method: "GET",
+    });
+
+    if (serverCheckResponse.ok) {
+      const response = await fetch(`${serverUrl}/download`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(song),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to download the song from the server");
+      }
+      console.log("Downloaded from server");
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `${song.name} - ${song.artists.map((artist) => artist.name).join(", ")}.m4a`;
+      link.click();
+      window.URL.revokeObjectURL(url);
+    } else {
+      downloadDirectly(song);
+    }
+  } catch (error) {
+    downloadDirectly(song);
+  }
+};

@@ -2,6 +2,7 @@ import { useAudio } from "@/lib/hooks/useAudio";
 import { MenuItem, useContextMenu } from "@/lib/hooks/useContextMenu";
 import { useLibrary } from "@/lib/hooks/useLibraryProvider";
 import { useQueue } from "@/lib/hooks/useQueue";
+import { downloadSong } from "@/lib/services/songs";
 import Song from "@/types/song";
 import Image from "next/image";
 import Link from "next/link";
@@ -70,6 +71,11 @@ export default function SongCard({
       text: "Add to Queue",
       onClick: () => addToExtraQueue(song),
       icon: "/assets/add-queue.svg",
+    },
+    {
+      text: "Download",
+      onClick: () => downloadSong(song),
+      icon: "/assets/download.svg",
     },
   ];
   if (queueId && queueId != "_liked" && isSongInPlaylist(song.id, queueId)) {
