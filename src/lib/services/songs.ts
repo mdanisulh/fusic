@@ -77,9 +77,6 @@ export const transformSong = (song: {
 });
 
 export const downloadSong = async (song: Song) => {
-  const serverUrl = "https://fusic.vercel.app/api";
-  // const serverUrl = "http://localhost:50516";
-
   const downloadDirectly = (song: Song) => {
     console.log("Downloading directly");
     fetch(song.url)
@@ -96,12 +93,12 @@ export const downloadSong = async (song: Song) => {
   };
 
   try {
-    const serverCheckResponse = await fetch(`${serverUrl}/health-check`, {
+    const serverCheckResponse = await fetch(`/api/health-check`, {
       method: "GET",
     });
 
     if (serverCheckResponse.ok) {
-      const response = await fetch(`${serverUrl}/download`, {
+      const response = await fetch(`/api/download`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -112,14 +109,13 @@ export const downloadSong = async (song: Song) => {
       if (!response.ok) {
         throw new Error("Failed to download the song from the server");
       }
-      console.log("Downloaded from server");
       const blob = await response.blob();
-      const url = window.URL.createObjectURL(blob);
+      const url = URL.createObjectURL(blob);
       const link = document.createElement("a");
       link.href = url;
       link.download = `${song.name} - ${song.artists.map((artist) => artist.name).join(", ")}.m4a`;
       link.click();
-      window.URL.revokeObjectURL(url);
+      URL.revokeObjectURL(url);
     } else {
       downloadDirectly(song);
     }

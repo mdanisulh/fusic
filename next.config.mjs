@@ -11,6 +11,17 @@ const nextConfig = {
       },
     ],
   },
+  rewrites: async () => {
+    return [
+      {
+        source: "/api/:path*",
+        destination:
+          process.env.NODE_ENV === "development"
+            ? "http://localhost:50516/api/:path*"
+            : "/api/",
+      },
+    ];
+  },
 };
 
 export default nextConfig;
