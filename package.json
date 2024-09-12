@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@google/generative-ai": "^0.14.1",
+    "babel-plugin-react-compiler": "0.0.0-experimental-4e0eccf-20240830",
     "dotenv": "^16.4.5",
     "idb": "^8.0.0",
     "next": "15.0.0-rc.0",

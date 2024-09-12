@@ -11,6 +11,9 @@ const nextConfig = {
       },
     ],
   },
+  experimental: {
+    reactCompiler: true,
+  },
   rewrites: async () => {
     return [
       {
