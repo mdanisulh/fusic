@@ -1,0 +1,18 @@
+{
+  "manifest_version": 3,
+  "name": "Spotify to Fusic Playlist Exporter",
+  "version": "1.0",
+  "description": "Exports Spotify playlists to Fusic",
+  "permissions": ["activeTab", "scripting", "notifications"],
+  "action": {
+    "default_title": "Spotify to Fusic Playlist Exporter"
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "icons": {
+    "16": "logo.png",
+    "48": "logo.png",
+    "128": "logo.png"
+  }
+}
