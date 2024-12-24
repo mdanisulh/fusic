@@ -36,7 +36,7 @@ export const POST = async (request: Request) => {
       safetySettings,
     });
     const prompt =
-      "Transliterate the text in English as it is and just output the text\n" +
+      "Transliterate the text present in any other language to English. Only use English alphabets and puncuation. If numbers not in Indo-Arabic convert it otherwise keep special symbols and numbers as it is.\n" +
       input;
     const result = await model.generateContent(prompt);
     const res = result.response.text();

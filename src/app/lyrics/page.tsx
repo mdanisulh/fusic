@@ -50,7 +50,9 @@ export default function LyricsPage() {
             }
           });
           if (toTransliterate) {
-            syncedLyrics.pop();
+            while (syncedLyrics[syncedLyrics.length - 1]?.time === undefined) {
+              syncedLyrics.pop();
+            }
             syncedLyrics.unshift({ time: -1, line: "" });
           }
           setLyrics(syncedLyrics);
