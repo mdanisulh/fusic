@@ -34,7 +34,7 @@ export default function BottomBar() {
           priority={true}
         />
         <div className="flex-col content-center truncate p-2 align-text-bottom">
-          <ScrollableDiv className="text-s truncate text-white">
+          <ScrollableDiv className="truncate text-white">
             <Link href={`/track/${song.id}`} className="hover:underline">
               {song["name"]}
             </Link>

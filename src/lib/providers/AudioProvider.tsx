@@ -2,6 +2,7 @@
 import React, { createContext, useCallback, useEffect, useRef } from "react";
 
 import Song, { dummySong } from "@/types/song";
+import { useHistory } from "../hooks/useHistory";
 import { useIDBReducer } from "../hooks/useIDBReducer";
 import { useQueue } from "../hooks/useQueue";
 
@@ -63,6 +64,7 @@ export default function AudioProvider({
     removeFromExtraQueue,
     updateQueue,
   } = useQueue()!;
+  const { addSong } = useHistory()!;
 
   const initialState = {
     isPlaying: false,
@@ -193,6 +195,9 @@ export default function AudioProvider({
 
   const setSong = (song: Song, play = true) => {
     if (!song) return;
+    if (audio.currentTime >= 10) {
+      addSong(state.song, Math.floor(audio.currentTime));
+    }
     audio.src = song.url;
     if (play) audio.play();
     if (!state.isPlaying) togglePlay();
