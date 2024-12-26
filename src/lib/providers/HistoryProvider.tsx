@@ -18,6 +18,7 @@ export const HistoryContext = createContext<HistoryInterface | null>(null);
 
 interface HistoryInterface extends HistoryState {
   addSong: (song: Song, duration: number) => void;
+  getMostPlayedSongIds: (n: number) => string[];
 }
 
 export default function HistoryProvider({
@@ -42,8 +43,16 @@ export default function HistoryProvider({
       return { history: newHistory, last100 };
     });
   };
+  const getMostPlayedSongIds = (n: number) => {
+    return Object.entries(state.history)
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, n)
+      .map(([id]) => id);
+  };
   return (
-    <HistoryContext.Provider value={{ ...state, addSong }}>
+    <HistoryContext.Provider
+      value={{ ...state, addSong, getMostPlayedSongIds }}
+    >
       {children}
     </HistoryContext.Provider>
   );
