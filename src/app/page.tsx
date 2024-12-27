@@ -46,6 +46,7 @@ const recommendedArtistIds = [
   "455130",
   "455782",
   "881158",
+  "455125",
   "4878402",
   "467309",
   "455109",
@@ -57,16 +58,15 @@ const recommendedArtistIds = [
   "485956",
   "610240",
   "578407",
-  "455125",
 ];
 export default function Home() {
   const { last100, getMostPlayedSongIds } = useHistory()!;
-  const recentlyPlayed = last100.slice(0, 8);
+  const recentlyPlayed = last100.slice(0, 10);
   const [color, setColor] = useState("");
   const { song } = useAudio()!;
   const gridRef = useRef<HTMLDivElement>(null);
   const cardRef = useRef<HTMLDivElement>(null);
-  const [numColumns, setNumColumns] = useState(8);
+  const [numItems, setNumItems] = useState(10);
 
   const [mostPlayedSongs, setMostPlayedSongs] = useState<Song[]>([]);
   const [trendingPlaylists, setTrendingPlaylists] = useState<Playlist[]>([]);
@@ -120,7 +120,8 @@ export default function Home() {
       });
   }, []);
   useEffect(() => {
-    const mostPlayedSongIds = getMostPlayedSongIds(8);
+    if (mostPlayedSongs.length > 0) return;
+    const mostPlayedSongIds = getMostPlayedSongIds(10);
     Promise.all(
       mostPlayedSongIds.map(async (id) => {
         const song = await getSong(id);
@@ -133,23 +134,24 @@ export default function Home() {
       .catch((error) => {
         console.error("Error fetching most played songs:", error);
       });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [getMostPlayedSongIds, mostPlayedSongs.length]);
 
   useEffect(() => {
-    const calculateColumns = () => {
+    const calculateNumItems = () => {
       if (gridRef.current && cardRef.current) {
         const gridWidth = gridRef.current.offsetWidth;
         const cardWidth = cardRef.current.offsetWidth;
-        const maxColumns = Math.floor(gridWidth / cardWidth);
-        const columns =
-          recentlyPlayed.length - (recentlyPlayed.length % maxColumns);
-        setNumColumns(columns);
+        const columns = Math.floor(gridWidth / cardWidth);
+        const items =
+          columns < 3
+            ? columns * 4
+            : recentlyPlayed.length - (recentlyPlayed.length % columns);
+        setNumItems(items);
       }
     };
-    calculateColumns();
+    calculateNumItems();
     const resizeObserver = new ResizeObserver(() => {
-      calculateColumns();
+      calculateNumItems();
     });
     const currentGridRef = gridRef.current;
     if (currentGridRef) {
@@ -215,7 +217,7 @@ export default function Home() {
               gridTemplateColumns: `repeat(auto-fit, minmax(300px, 1fr))`,
             }}
           >
-            {recentlyPlayed.slice(0, numColumns).map((song, index) => (
+            {recentlyPlayed.slice(0, numItems).map((song, index) => (
               <div
                 key={song.id}
                 ref={index == 0 ? cardRef : null}
@@ -239,7 +241,7 @@ export default function Home() {
               gridTemplateColumns: `repeat(auto-fit, minmax(300px, 1fr))`,
             }}
           >
-            {mostPlayedSongs.map((song) => (
+            {mostPlayedSongs.slice(0, numItems).map((song) => (
               <div
                 key={song.id}
                 className="w-full rounded-lg bg-white bg-opacity-10"
