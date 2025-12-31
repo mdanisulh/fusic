@@ -25,7 +25,7 @@ export default function SearchBar() {
         <Router />
       </div>
       <input
-        className="peer max-w-96 flex-grow rounded-full bg-dark-grey p-3 pl-9 pr-5 text-sm text-white focus:outline-none focus:outline-white"
+        className="peer max-w-96 grow rounded-full bg-dark-grey p-3 pr-5 pl-9 text-sm text-white focus:outline-white focus:outline-none"
         placeholder="Search for songs, albums, artists, and more"
         onChange={(e) => handleSearch(e.target.value)}
         defaultValue={searchParams.get("query")?.toString()}
@@ -35,7 +35,7 @@ export default function SearchBar() {
       <IconButton
         iconPath="/assets/search-outlined.svg"
         iconSize={16}
-        className="peer-focus:white absolute left-[104px] top-6"
+        className="peer-focus:white absolute top-6 left-26"
       />
     </div>
   );

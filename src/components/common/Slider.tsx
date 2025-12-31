@@ -79,7 +79,7 @@ export default function Slider({
         minWidth: minWidth,
         height: thumbSize,
       }}
-      className="group relative flex flex-grow cursor-pointer self-center"
+      className="group relative flex grow cursor-pointer self-center"
       onClick={handleSliderMove}
     >
       <div

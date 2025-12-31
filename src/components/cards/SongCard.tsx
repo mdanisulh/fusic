@@ -103,7 +103,7 @@ export default function SongCard({
     >
       {index == undefined && (
         <div
-          className="group relative mr-2 flex-shrink-0"
+          className="group relative mr-2 shrink-0"
           style={{ width: "40px", height: "40px" }}
           onClick={() => {
             song.id === currentSong.id ? togglePlay() : setSong(song);
@@ -124,7 +124,7 @@ export default function SongCard({
             alt="Overlay"
             width={16}
             height={16}
-            className="absolute left-3 top-3 rounded-md opacity-0 invert group-hover:opacity-100"
+            className="absolute top-3 left-3 rounded-md opacity-0 invert group-hover:opacity-100"
             style={{ objectFit: "cover" }}
           />
         </div>
@@ -163,7 +163,7 @@ export default function SongCard({
       )}
       <div className="flex h-full flex-1 truncate">
         <div className="flex flex-col truncate pr-4">
-          <div className="mb-1 flex-shrink truncate text-sm text-white">
+          <div className="mb-1 shrink truncate text-sm text-white">
             <Link href={`/track/${song.id}`} className="hover:underline">
               {song["name"]}
             </Link>
@@ -202,7 +202,7 @@ export default function SongCard({
             altIconPath="/assets/favourite-filled.svg"
             isActive={isSongInPlaylist(song["id"], "_liked")}
             iconSize={24}
-            className={`my-auto mr-2 flex-shrink-0 group-hover:opacity-100 ${isSongInPlaylist(song.id, "_liked") ? "" : "opacity-0"}`}
+            className={`my-auto mr-2 shrink-0 group-hover:opacity-100 ${isSongInPlaylist(song.id, "_liked") ? "" : "opacity-0"}`}
             onClick={() =>
               isSongInPlaylist(song["id"], "_liked")
                 ? removeFromPlaylist(song["id"], "_liked")
@@ -211,14 +211,14 @@ export default function SongCard({
           />
         </>
       )}
-      <div className="my-auto w-8 flex-shrink-0 text-center text-sm text-light-grey">
+      <div className="my-auto w-8 shrink-0 text-center text-sm text-light-grey">
         {formatTime(song["duration"])}
       </div>
       <IconButton
         iconPath="/assets/more.svg"
         iconSize={22}
         title={`More options for ${song["name"]}`}
-        className="flex-shrink-0 pl-2 opacity-0 group-hover:opacity-100"
+        className="shrink-0 pl-2 opacity-0 group-hover:opacity-100"
         onClick={(e) => handleContextMenu(e, menuList)}
       />
     </div>

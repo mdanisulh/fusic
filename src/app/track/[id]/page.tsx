@@ -12,9 +12,10 @@ import { formatDuration } from "@/lib/utils/formatTime";
 import Song from "@/types/song";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, use } from "react";
 
-export default function TrackPage({ params }: { params: { id: string } }) {
+export default function TrackPage(props: { params: Promise<{ id: string }> }) {
+  const params = use(props.params);
   const {
     isSongInPlaylist,
     addToPlaylist,
@@ -104,7 +105,7 @@ export default function TrackPage({ params }: { params: { id: string } }) {
   }, [params.id]);
   useEffect(() => {
     if (!song) return;
-    let gradientImage = song.image[1];
+    const gradientImage = song.image[1];
     if (!gradientImage) return;
     getAverageColor(gradientImage).then((color) => {
       setColor(color);
@@ -149,7 +150,7 @@ export default function TrackPage({ params }: { params: { id: string } }) {
               isWhite={false}
               onClick={handleClick}
             />
-            <p className="my-auto line-clamp-1 truncate text-pretty px-3 text-2xl font-bold text-white">
+            <p className="my-auto line-clamp-1 truncate px-3 text-2xl font-bold text-pretty text-white">
               {song.name}
             </p>
           </div>
@@ -157,7 +158,7 @@ export default function TrackPage({ params }: { params: { id: string } }) {
       </header>
       <div className="absolute top-0 h-72 w-full">
         <div className="absolute bottom-0 z-10 flex h-60 w-full p-5" ref={ref}>
-          <div className="mr-5 mt-2 w-48 flex-shrink-0">
+          <div className="mt-2 mr-5 w-48 shrink-0">
             <Image
               src={song.image[1]}
               alt=""
@@ -167,10 +168,10 @@ export default function TrackPage({ params }: { params: { id: string } }) {
               priority
             />
           </div>
-          <div className="flex h-full flex-grow flex-col justify-evenly text-white">
+          <div className="flex h-full grow flex-col justify-evenly text-white">
             <div className="p-1 text-sm">Song</div>
             <div
-              className="overflow-hidden text-pretty p-1 text-5xl font-black"
+              className="overflow-hidden p-1 text-5xl font-black text-pretty"
               style={{
                 display: "-webkit-box",
                 WebkitLineClamp: 2,
@@ -249,7 +250,7 @@ export default function TrackPage({ params }: { params: { id: string } }) {
             altIconPath="/assets/favourite-filled.svg"
             isActive={isSongInPlaylist(song["id"], "_liked")}
             iconSize={40}
-            className={`mx-4 my-auto ml-8 flex-shrink-0`}
+            className={`mx-4 my-auto ml-8 shrink-0`}
             onClick={() =>
               isSongInPlaylist(song["id"], "_liked")
                 ? removeFromPlaylist(song["id"], "_liked")
@@ -265,7 +266,7 @@ export default function TrackPage({ params }: { params: { id: string } }) {
             onClick={(e) => handleContextMenu(e, menuList)}
           />
         </div>
-        <div className="pb-3 pl-3 pr-2">
+        <div className="pr-2 pb-3 pl-3">
           {suggestions.length > 0 && (
             <p className="p-3 text-lg font-bold text-white">Recommended</p>
           )}

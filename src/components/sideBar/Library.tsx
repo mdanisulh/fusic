@@ -50,7 +50,7 @@ export default function Library() {
   ];
   const cardSize = isLSBCollapsed ? 56 : 150;
   return (
-    <div className="mt-1 flex flex-grow flex-col overflow-y-hidden rounded-lg bg-light-black">
+    <div className="mt-1 flex grow flex-col overflow-y-hidden rounded-lg bg-light-black">
       <div className="flex justify-between px-2 py-0">
         <div className="flex-initial self-center">
           <IconButton
@@ -77,7 +77,7 @@ export default function Library() {
         )}
       </div>
       <div
-        className={`flex-grow overflow-hidden p-2 hover:overflow-y-scroll hover:pr-1`}
+        className={`grow overflow-hidden p-2 hover:overflow-y-scroll hover:pr-1`}
         style={{
           display: "grid",
           gridTemplateColumns: `repeat(auto-fit, minmax(${cardSize}px, 1fr))`,

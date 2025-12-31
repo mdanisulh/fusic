@@ -19,7 +19,7 @@ export default function Router() {
   }, []);
 
   return (
-    <div className="flex w-[72px] justify-between">
+    <div className="flex w-18 justify-between">
       <div
         className={`h-8 w-8 rounded-full ${canGoBack ? "bg-black" : "bg-dark-grey"} p-2`}
         onClick={() => canGoBack && router.back()}

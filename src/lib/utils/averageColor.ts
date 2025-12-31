@@ -61,7 +61,9 @@ function getColor(arr: Uint8ClampedArray) {
 
 function adjustColorLightness(r: number, g: number, b: number) {
   // Convert RGB to HSL
-  (r /= 255), (g /= 255), (b /= 255);
+  r /= 255;
+  g /= 255;
+  b /= 255;
   const max = Math.max(r, g, b),
     min = Math.min(r, g, b);
   let h,
@@ -98,8 +100,8 @@ function adjustColorLightness(r: number, g: number, b: number) {
   }
 
   // Convert HSL back to RGB
-  let q = l < 0.5 ? l * (1 + s) : l + s - l * s;
-  let p = 2 * l - q;
+  const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+  const p = 2 * l - q;
   function hue2rgb(p: number, q: number, t: number) {
     if (t < 0) t += 1;
     if (t > 1) t -= 1;

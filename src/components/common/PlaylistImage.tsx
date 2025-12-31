@@ -53,7 +53,7 @@ export default function PlaylistImage({
         <div className="relative w-full pt-[100%]">
           <Image
             src={playlist.songs[0].image[1]}
-            className="absolute left-0 top-0 h-full w-full rounded-tl-lg object-cover"
+            className="absolute top-0 left-0 h-full w-full rounded-tl-lg object-cover"
             layout="fill"
             style={{ objectFit: "cover" }}
             priority={true}
@@ -63,7 +63,7 @@ export default function PlaylistImage({
         <div className="relative w-full pt-[100%]">
           <Image
             src={playlist.songs[1].image[1]}
-            className="absolute left-0 top-0 h-full w-full rounded-tr-lg object-cover"
+            className="absolute top-0 left-0 h-full w-full rounded-tr-lg object-cover"
             layout="fill"
             style={{ objectFit: "cover" }}
             priority={true}
@@ -73,7 +73,7 @@ export default function PlaylistImage({
         <div className="relative w-full pt-[100%]">
           <Image
             src={playlist.songs[2].image[1]}
-            className="absolute left-0 top-0 h-full w-full rounded-bl-lg object-cover"
+            className="absolute top-0 left-0 h-full w-full rounded-bl-lg object-cover"
             layout="fill"
             style={{ objectFit: "cover" }}
             priority={true}
@@ -83,7 +83,7 @@ export default function PlaylistImage({
         <div className="relative w-full pt-[100%]">
           <Image
             src={playlist.songs[3].image[1]}
-            className="absolute left-0 top-0 h-full w-full rounded-br-lg object-cover"
+            className="absolute top-0 left-0 h-full w-full rounded-br-lg object-cover"
             layout="fill"
             style={{ objectFit: "cover" }}
             priority={true}

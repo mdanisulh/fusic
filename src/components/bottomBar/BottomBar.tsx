@@ -62,7 +62,7 @@ export default function BottomBar() {
           altIconPath="/assets/favourite-filled.svg"
           isActive={searchInPlaylist(song["id"], "_liked")}
           iconSize={24}
-          className="mx-2 mb-2 flex-shrink-0"
+          className="mx-2 mb-2 shrink-0"
           onClick={() =>
             searchInPlaylist(song["id"], "_liked")
               ? removeFromPlaylist(song["id"], "_liked")

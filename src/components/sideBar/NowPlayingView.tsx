@@ -33,7 +33,7 @@ export default function NowPlayingView() {
         >
           {song["name"]}
         </p>
-        <div className="flex flex-shrink-0">
+        <div className="flex shrink-0">
           <IconButton
             iconPath="/assets/more.svg"
             iconSize={24}
@@ -99,7 +99,7 @@ export default function NowPlayingView() {
             altIconPath="/assets/favourite-filled.svg"
             isActive={isSongInPlaylist(song["id"], "_liked")}
             iconSize={24}
-            className="mx-2 mb-2 flex-shrink-0"
+            className="mx-2 mb-2 shrink-0"
             onClick={() =>
               isSongInPlaylist(song["id"], "_liked")
                 ? removeFromPlaylist(song["id"], "_liked")

@@ -1,6 +1,16 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+@theme {
+  --breakpoint-md: 800px;
+  --breakpoint-lg: 1024px;
+
+  --color-primary: #8020f0;
+  --color-grey: #3f3f3f;
+  --color-light-grey: #b2b2b2;
+  --color-dark-grey: #242424;
+  --color-dark-white: #f6f6f6;
+  --color-light-black: #121212;
+}
 
 @layer components {
   .white .icon,

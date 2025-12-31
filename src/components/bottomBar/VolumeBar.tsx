@@ -15,7 +15,7 @@ export default function VolumeBar() {
     volume == 0 ? icons[0] : icons[Math.min(Math.floor(volume * 3) + 1, 3)];
 
   return (
-    <div className="grey flex max-w-36 flex-grow p-1">
+    <div className="grey flex max-w-36 grow p-1">
       <IconButton
         iconPath={iconPath}
         iconSize={16}

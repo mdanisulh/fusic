@@ -57,7 +57,7 @@ export default function SideBar({
   return (
     (name !== "right" || uiConfig.rsbView !== "none") && (
       <div
-        className="flex flex-shrink-0"
+        className="flex shrink-0"
         style={{ cursor: isResizing ? "e-resize" : "default" }}
       >
         {name === "right" && resizer}

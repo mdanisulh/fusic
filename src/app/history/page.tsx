@@ -160,7 +160,7 @@ export default function HistoryPage() {
               isWhite={false}
               onClick={handleClick}
             />
-            <p className="my-auto line-clamp-1 truncate text-pretty px-3 text-2xl font-bold text-white">
+            <p className="my-auto line-clamp-1 truncate px-3 text-2xl font-bold text-pretty text-white">
               {playlist.name}
             </p>
           </div>
@@ -168,13 +168,13 @@ export default function HistoryPage() {
       </header>
       <div className="absolute top-0 h-72 w-full">
         <div className="absolute bottom-0 z-10 flex h-60 w-full p-5" ref={ref}>
-          <div className="mr-5 mt-2 w-48 flex-shrink-0">
+          <div className="mt-2 mr-5 w-48 shrink-0">
             <PlaylistImage playlist={playlist} />
           </div>
-          <div className="flex h-full flex-grow flex-col justify-evenly text-white">
+          <div className="flex h-full grow flex-col justify-evenly text-white">
             <div className="p-1 text-sm">Playlist</div>
             <div
-              className="overflow-hidden text-pretty p-1 text-5xl font-black"
+              className="overflow-hidden p-1 text-5xl font-black text-pretty"
               style={{
                 display: "-webkit-box",
                 WebkitLineClamp: 2,
@@ -223,11 +223,11 @@ export default function HistoryPage() {
             onClick={(e) => handleContextMenu(e, menuList)}
           />
         </div>
-        <div className="sticky top-16 z-10 ml-3 mr-2 flex border-b-2 border-dark-grey bg-light-black py-2 text-sm text-light-grey">
-          <div className="w-8 flex-shrink-0 text-end">#</div>
+        <div className="sticky top-16 z-10 mr-2 ml-3 flex border-b-2 border-dark-grey bg-light-black py-2 text-sm text-light-grey">
+          <div className="w-8 shrink-0 text-end">#</div>
           <div className="mx-6 flex-1">Title</div>
           <div className="mx-6 flex-1">Album</div>
-          <div className="m-auto w-20 flex-shrink-0 pr-8">
+          <div className="m-auto w-20 shrink-0 pr-8">
             <Image
               src="/assets/duration.svg"
               alt=""
@@ -237,7 +237,7 @@ export default function HistoryPage() {
             />
           </div>
         </div>
-        <div className="ml-3 mr-2 mt-3">
+        <div className="mt-3 mr-2 ml-3">
           {playlist.songs.map((song, index) => (
             <SongCard
               song={song}

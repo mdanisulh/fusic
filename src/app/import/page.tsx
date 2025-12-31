@@ -9,7 +9,7 @@ import Playlist from "@/types/playlist";
 import Song from "@/types/song";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { JSX, useEffect, useRef, useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
 
 function getbgColor(a: string, b: string): string {
@@ -164,15 +164,15 @@ export default function ImportPlaylist() {
               type="checkbox"
               checked={song && selectedSongs.has(song.id)}
               onChange={() => song && handleCheckboxChange(song)}
-              className="mr-2 flex-shrink-0"
+              className="mr-2 shrink-0"
               style={{ accentColor: "#8020f0" }}
             />
           )}
           {!song && (
-            <div className="w-5 flex-shrink-0 text-end text-sm text-light-grey"></div>
+            <div className="w-5 shrink-0 text-end text-sm text-light-grey"></div>
           )}
           <div
-            className="group relative mr-2 flex-shrink-0"
+            className="group relative mr-2 shrink-0"
             style={{ width: "44px", height: "44px" }}
             onClick={() => {
               song && song.id === currentSong.id ? togglePlay() : setSong(song);
@@ -199,14 +199,14 @@ export default function ImportPlaylist() {
                   alt="Overlay"
                   width={16}
                   height={16}
-                  className="absolute left-4 top-4 rounded-md opacity-0 invert group-hover:opacity-100"
+                  className="absolute top-4 left-4 rounded-md opacity-0 invert group-hover:opacity-100"
                   style={{ objectFit: "cover" }}
                 />
               </>
             )}
           </div>
           <div
-            className="py-auto flex flex-grow flex-col truncate rounded-lg px-1.5 text-sm text-white"
+            className="py-auto flex grow flex-col truncate rounded-lg px-1.5 text-sm text-white"
             style={{
               backgroundColor: query
                 ? getbgColor(query[0], song?.name ?? "")
@@ -221,7 +221,7 @@ export default function ImportPlaylist() {
             <ScrollableDiv className="my-auto">{song?.name}</ScrollableDiv>
           </div>
           <div
-            className="py-auto ml-3 flex w-[25%] flex-shrink-0 flex-col truncate rounded-lg px-1.5 text-sm text-light-grey"
+            className="py-auto ml-3 flex w-[25%] shrink-0 flex-col truncate rounded-lg px-1.5 text-sm text-light-grey"
             style={{
               backgroundColor: query
                 ? getbgColor(
@@ -254,7 +254,7 @@ export default function ImportPlaylist() {
             </ScrollableDiv>
           </div>
           <div
-            className="py-auto ml-3 flex w-[25%] flex-shrink-0 flex-col truncate rounded-lg px-1.5 text-sm text-light-grey"
+            className="py-auto shrink-0-col ml-3 flex w-[25%] truncate rounded-lg px-1.5 text-sm text-light-grey"
             style={{
               backgroundColor: query
                 ? getbgColor(query[2], song?.album?.name ?? "")
@@ -274,7 +274,7 @@ export default function ImportPlaylist() {
             <IconButton
               iconPath="/assets/next.svg"
               iconSize={16}
-              className={`${songs.length > 1 ? "" : "cursor-not-allowed"} mx-2 flex-shrink-0 ${isExpanded && index != undefined && isExpanded[index] ? "-rotate-90" : "rotate-90"}`}
+              className={`${songs.length > 1 ? "" : "cursor-not-allowed"} mx-2 shrink-0 ${isExpanded && index != undefined && isExpanded[index] ? "-rotate-90" : "rotate-90"}`}
               isWhite
               onClick={() =>
                 songs.length > 1 &&
@@ -304,14 +304,14 @@ export default function ImportPlaylist() {
         ref={searchRef}
       >
         <div
-          className="flex h-10 w-20 flex-shrink-0 cursor-pointer items-center justify-center rounded-lg bg-red-600 text-center text-white"
+          className="shrink-0or-pointer flex h-10 w-20 items-center justify-center rounded-lg bg-red-600 text-center text-white"
           onClick={handleCancel}
         >
           Cancel
         </div>
-        <div className="relative mx-3 h-10 flex-grow">
+        <div className="relative mx-3 h-10 grow">
           <input
-            className="peer h-full w-full rounded-lg bg-dark-grey pl-9 text-sm text-white focus:outline-none focus:outline-offset-0 focus:outline-white"
+            className="peer h-full w-full rounded-lg bg-dark-grey pl-9 text-sm text-white focus:outline-offset-0 focus:outline-white focus:outline-none"
             style={{ paddingRight: searchQuery ? "36px" : "20px" }}
             placeholder="Search for songs, albums, artists, and more"
             onChange={(e) => {
@@ -325,17 +325,17 @@ export default function ImportPlaylist() {
           <IconButton
             iconPath="/assets/search-outlined.svg"
             iconSize={16}
-            className="peer-focus:white absolute left-3 top-3"
+            className="peer-focus:white absolute top-3 left-3"
           />
           <IconButton
             iconPath="/assets/close.svg"
             iconSize={16}
-            className={`peer-focus:white absolute right-3 top-3 ${searchQuery ? "" : "hidden"}`}
+            className={`peer-focus:white absolute top-3 right-3 ${searchQuery ? "" : "hidden"}`}
             onClick={clearSearch}
           />
         </div>
         <div
-          className="flex h-10 w-20 flex-shrink-0 cursor-pointer items-center justify-center rounded-lg bg-primary text-center text-white"
+          className="flex h-10 w-20 shrink-0 cursor-pointer items-center justify-center rounded-lg bg-primary text-center text-white"
           onClick={handleImport}
         >
           Import
@@ -354,14 +354,14 @@ export default function ImportPlaylist() {
         </div>
         <div className="m-2 flex">
           <input
-            className="peer h-8 w-full rounded-lg bg-dark-grey px-4 text-sm text-white focus:outline-none focus:outline-offset-0 focus:outline-white"
+            className="peer h-8 w-full rounded-lg bg-dark-grey px-4 text-sm text-white focus:outline-offset-0 focus:outline-white focus:outline-none"
             placeholder="Enter playlist name"
             value={name}
             onChange={(e) => setName(e.target.value)}
             onFocus={() => ((window as any).isInputFocused = true)}
             onBlur={() => ((window as any).isInputFocused = false)}
           />
-          <div className="mx-4 flex-shrink-0">
+          <div className="mx-4 shrink-0">
             {selectedSongs.size} songs selected
           </div>
         </div>
@@ -371,10 +371,10 @@ export default function ImportPlaylist() {
               key={index}
               className="flex w-full rounded-lg hover:bg-dark-grey"
             >
-              <div className="m-auto ml-2 w-8 flex-shrink-0 text-end text-sm text-light-grey">
+              <div className="m-auto ml-2 w-8 shrink-0 text-end text-sm text-light-grey">
                 {index + 1}
               </div>
-              <div className="flex-grow overflow-hidden">
+              <div className="grow overflow-hidden">
                 {songQueries && songQueries[index] && SongCard(song, index)}
                 {!(songQueries && songQueries[index]) && SongCard(song)}
               </div>

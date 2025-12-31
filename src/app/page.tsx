@@ -166,13 +166,13 @@ export default function Home() {
 
   useEffect(() => {
     if (!song) return;
-    let gradientImage = song.image[1];
+    const gradientImage = song.image[1];
     if (!gradientImage) return;
     getAverageColor(gradientImage).then((color) => {
       setColor(color);
     });
   }, [song]);
-
+  
   return (
     <div
       className="relative h-full w-full overflow-y-scroll rounded-lg"
@@ -207,7 +207,7 @@ export default function Home() {
             <IconButton
               iconPath="/assets/next.svg"
               iconSize={16}
-              className="absolute right-0 top-0 m-4 h-8 w-8 justify-center self-center rounded-full bg-dark-grey"
+              className="absolute top-0 right-0 m-4 h-8 w-8 justify-center self-center rounded-full bg-dark-grey"
             />
           </Link>
           <div
@@ -221,7 +221,7 @@ export default function Home() {
               <div
                 key={song.id}
                 ref={index == 0 ? cardRef : null}
-                className="w-full rounded-lg bg-white bg-opacity-10"
+                className="w-full rounded-lg bg-white/10"
               >
                 <SongCard song={song} />
               </div>
@@ -242,10 +242,7 @@ export default function Home() {
             }}
           >
             {mostPlayedSongs.slice(0, numItems).map((song) => (
-              <div
-                key={song.id}
-                className="w-full rounded-lg bg-white bg-opacity-10"
-              >
+              <div key={song.id} className="w-full rounded-lg bg-white/10">
                 <SongCard song={song} />
               </div>
             ))}
@@ -262,7 +259,7 @@ export default function Home() {
             style={{ scrollbarWidth: "none" }}
           >
             {trendingPlaylists.map((playlist) => (
-              <div key={playlist.id} className="min-w-48 max-w-48">
+              <div key={playlist.id} className="max-w-48 min-w-48">
                 <PlaylistCard playlist={playlist} />
               </div>
             ))}
@@ -279,7 +276,7 @@ export default function Home() {
             style={{ scrollbarWidth: "none" }}
           >
             {recommendedArtists.map((artist) => (
-              <div key={artist.id} className="min-w-48 max-w-48">
+              <div key={artist.id} className="max-w-48 min-w-48">
                 <ArtistCard artist={artist} />
               </div>
             ))}
@@ -296,7 +293,7 @@ export default function Home() {
             style={{ scrollbarWidth: "none" }}
           >
             {recommendedPlaylists.map((playlist) => (
-              <div key={playlist.id} className="min-w-48 max-w-48">
+              <div key={playlist.id} className="max-w-48 min-w-48">
                 <PlaylistCard playlist={playlist} />
               </div>
             ))}

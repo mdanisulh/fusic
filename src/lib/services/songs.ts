@@ -78,7 +78,6 @@ export const transformSong = (song: {
 
 export const downloadSong = async (song: Song) => {
   const downloadDirectly = (song: Song) => {
-    console.log("Downloading directly");
     fetch(song.url)
       .then((response) => response.blob())
       .then((blob) => {
@@ -119,7 +118,7 @@ export const downloadSong = async (song: Song) => {
     } else {
       downloadDirectly(song);
     }
-  } catch (error) {
+  } catch (_) {
     downloadDirectly(song);
   }
 };

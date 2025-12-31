@@ -32,7 +32,7 @@ export default function QueueView() {
           onClick={() => setRSBView("none")}
         />
       </div>
-      <div className="flex-grow overflow-y-hidden scroll-smooth pl-1 pr-3 hover:overflow-y-scroll hover:pr-2">
+      <div className="grow overflow-y-hidden scroll-smooth pr-3 pl-1 hover:overflow-y-scroll hover:pr-2">
         <div className="mb-0 p-2 pr-0">
           <p className="mt-1 p-2 font-bold text-white">Now playing</p>
           <QueueCard

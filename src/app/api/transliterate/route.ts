@@ -32,7 +32,7 @@ export const POST = async (request: Request) => {
   const { input } = await request.json();
   try {
     const model = genAI.getGenerativeModel({
-      model: "gemini-1.5-flash",
+      model: "gemini-3-flash-preview",
       safetySettings,
     });
     const prompt =
@@ -41,7 +41,7 @@ export const POST = async (request: Request) => {
     const result = await model.generateContent(prompt);
     const res = result.response.text();
     return new Response(JSON.stringify(res), { status: 200 });
-  } catch (error) {
+  } catch (_) {
     return new Response("Couldn't transliterate", { status: 500 });
   }
 };

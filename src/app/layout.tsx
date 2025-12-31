@@ -34,7 +34,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={inter.className}>
-      <body className="h-screen select-none bg-black">
+      <body className="h-screen bg-black select-none">
         <NoSSR>
           <LibraryProvider>
             <QueueProvider>

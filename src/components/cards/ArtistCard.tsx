@@ -42,7 +42,7 @@ export default function ArtistCard({
         },
   ];
   return (
-    <div className="max-w-[400px]">
+    <div className="max-w-100">
       <Link href={`/artist/${artist.id}`}>
         <div
           className="group flex-1 cursor-pointer flex-row rounded-lg p-[7%] hover:bg-dark-grey"
@@ -67,7 +67,7 @@ export default function ArtistCard({
             />
             {!showOnlyImage && (
               <IconButton
-                className="absolute bottom-[5%] right-[5%] h-12 w-12 justify-center rounded-full bg-primary opacity-0 group-hover:opacity-100"
+                className="absolute right-[5%] bottom-[5%] h-12 w-12 justify-center rounded-full bg-primary opacity-0 group-hover:opacity-100"
                 iconPath="/assets/pause.svg"
                 altIconPath="/assets/play.svg"
                 isActive={id === artist.id && isPlaying}

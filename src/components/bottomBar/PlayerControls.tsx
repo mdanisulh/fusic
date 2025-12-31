@@ -11,7 +11,7 @@ export default function PlayerControls() {
   const { toggleShuffle, toggleRepeat, shuffle, repeat } = useQueue()!;
   const { currentTime, setTime } = useCurrentTime()!;
   return (
-    <div className="flex-grow flex-col">
+    <div className="grow flex-col">
       <div className="flex content-center justify-center">
         <IconButton
           iconPath="/assets/shuffle.svg"
@@ -58,8 +58,8 @@ export default function PlayerControls() {
           onClick={toggleRepeat}
         />
       </div>
-      <div className="flex flex-grow p-2 pt-0">
-        <div className="text-light-grey mr-2 flex w-10 justify-end text-xs">
+      <div className="flex grow p-2 pt-0">
+        <div className="mr-2 flex w-10 justify-end text-xs text-light-grey">
           {formatTime(currentTime)}
         </div>
         <Slider
@@ -67,7 +67,7 @@ export default function PlayerControls() {
           value={currentTime}
           onChange={setTime}
         />
-        <div className="text-light-grey ml-2 flex w-10 text-xs">
+        <div className="ml-2 flex w-10 text-xs text-light-grey">
           {formatTime(song["duration"])}
         </div>
       </div>

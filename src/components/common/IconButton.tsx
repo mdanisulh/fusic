@@ -25,7 +25,7 @@ export default function IconButton({
 }) {
   return (
     <div
-      className={`flex flex-shrink-0 ${isWhite ? (isActive ? "white" : "grey") : ""} ${className} cursor-pointer`}
+      className={`flex shrink-0 ${isWhite ? (isActive ? "white" : "grey") : ""} ${className} cursor-pointer`}
       title={title}
       onClick={onClick}
     >
@@ -40,7 +40,7 @@ export default function IconButton({
             alt={title}
             width={iconSize}
             height={iconSize}
-            className="icon flex-shrink-0 self-center"
+            className="icon shrink-0 self-center"
             priority
           />
           {altIconPath === "dot" && isActive && (

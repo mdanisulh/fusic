@@ -96,7 +96,7 @@ export default function QueueCard({
       onContextMenu={(e) => handleContextMenu(e, menuList)}
     >
       <div
-        className="group relative flex-shrink-0"
+        className="group relative shrink-0"
         style={{ width: "48px", height: "48px" }}
         onClick={() => {
           setCurrentIndex(shuffleIndices.indexOf(index));
@@ -119,12 +119,12 @@ export default function QueueCard({
           alt="Overlay"
           width={16}
           height={16}
-          className="absolute left-4 top-4 rounded-md opacity-0 invert group-hover:opacity-100"
+          className="absolute top-4 left-4 rounded-md opacity-0 invert group-hover:opacity-100"
           style={{ objectFit: "cover" }}
         />
       </div>
-      <div className="flex-grow flex-col truncate px-3">
-        <div className="my-1 flex-shrink truncate text-sm text-white">
+      <div className="grow flex-col truncate px-3">
+        <div className="my-1 shrink truncate text-sm text-white">
           {song["name"]}
         </div>
         <div className="truncate text-sm text-light-grey">
@@ -134,7 +134,7 @@ export default function QueueCard({
       <IconButton
         iconPath="/assets/more.svg"
         title={`More options for ${song["name"]}`}
-        className="flex-shrink-0 opacity-0 group-hover:opacity-100"
+        className="shrink-0 opacity-0 group-hover:opacity-100"
         onClick={(e) => handleContextMenu(e, menuList)}
       />
     </div>

@@ -113,10 +113,10 @@ export default function LyricsPage() {
         <Router />
       </header>
       <div
-        className="h-full overflow-y-hidden scroll-smooth rounded-lg bg-scroll p-16 hover:overflow-y-scroll hover:pr-[60px]"
+        className="h-full overflow-y-hidden scroll-smooth rounded-lg bg-scroll p-16 hover:overflow-y-scroll hover:pr-15"
         style={{ backgroundColor: color }}
       >
-        <div className="inline-flex flex-col items-center text-4xl font-bold leading-snug">
+        <div className="inline-flex flex-col items-center text-4xl leading-snug font-bold">
           {lyrics.map((item: { time: number; line: string }, index: number) => (
             <p
               key={`line-${index}`}
@@ -142,7 +142,7 @@ export default function LyricsPage() {
       {lyrics.length > 1 && (
         <div
           title="Transliterate"
-          className="absolute bottom-4 right-6 h-8 w-8 cursor-pointer rounded-lg border-2 border-white text-xl font-black leading-7 opacity-70 hover:opacity-100"
+          className="absolute right-6 bottom-4 h-8 w-8 cursor-pointer rounded-lg border-2 border-white text-xl leading-7 font-black opacity-70 hover:opacity-100"
           style={
             lyrics[0].time === -1 // Checking if lyrics are transliterated
               ? {
