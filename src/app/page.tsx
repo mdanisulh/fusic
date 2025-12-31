@@ -172,7 +172,7 @@ export default function Home() {
       setColor(color);
     });
   }, [song]);
-  
+
   return (
     <div
       className="relative h-full w-full overflow-y-scroll rounded-lg"
