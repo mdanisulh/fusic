@@ -1,1 +1,1 @@
-export const apiEndpoint = "https://fusic-api.vercel.app/api";
+export const apiEndpoint = "https://saavn.sumit.co/api";
