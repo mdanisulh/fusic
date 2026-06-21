@@ -1,1 +1,1 @@
-export const apiEndpoint = "https://saavn.sumit.co/api";
+export const apiEndpoint = "https://jiosaavn-apix.arcadopredator.workers.dev/api";
